@@ -1,0 +1,3 @@
+﻿  main.cpp
+C:\Dev\CLI-Game\CLI-Game\src\main.cpp(24): warning C4715: 'GetKeyInput': not all control paths return a value
+  CLI-Game.vcxproj -> C:\Dev\CLI-Game\x64\Debug\CLI-Game.exe
