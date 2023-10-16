@@ -1,26 +1,15 @@
 #include <iostream>
 #include <Windows.h>
 
+#include <bitset>
+
 struct Block {
     int x, y;
     int width, height;
 };
 
-enum KeyStatus {
-    KeyStateUp = 0,         // no signal
-    KeyStateDown = 0x8000,  // high-order bit
-    KeyStateToggled = 1     // lower-order bit
-};
-
-KeyStatus GetKeyInput(int key) {
-    switch (GetKeyState(key)) {
-    case(1):
-        return KeyStateToggled;
-    case(0x8000):
-        return KeyStateDown;
-    case(0):
-        return KeyStateUp;
-    }
+bool GetKeyDown(int key) {
+    return GetKeyState(key) & 0x8000;
 }
 
 void FillBlock(Block block, char character) {
@@ -34,14 +23,13 @@ void FillBlock(Block block, char character) {
             std::cout << character;
         }
     }
-
 }
 
 
-void DrawBlockBasedOnInput(KeyStatus key, Block block, char texture) {
+void DrawBlockBasedOnInput(bool keyState, Block block, char texture) {
     FillBlock(
         block,
-        key == KeyStateUp ? ' ' : texture
+        keyState ? texture : ' '
     );
 }
 
@@ -61,25 +49,43 @@ int main()
     int count = 0;
 
     while (running) {
+        // Debug Info
+        SetConsoleCursorPosition( GetStdHandle(STD_OUTPUT_HANDLE), { 0, 0 });
+        
+          // Display cycle
         count++;
-        SetConsoleCursorPosition(
-            GetStdHandle(STD_OUTPUT_HANDLE),
-            { 0, 0 }
-        );
-        std::cout << "Running... Cycle: " << count;
+        std::cout << "Running... Cycle: " << count << std::endl;
+
+
+        SHORT aKS = GetKeyState(0x41);
+        std::bitset<8> aBin(aKS);
+
+          // Display input 
+        std::cout << "Key state of 'A' byte: " << aBin << std::endl;
+        std::cout << "Key state of 'A' SHORT: " << aKS << std::endl;
+
+        // !! Our answer right here!
+        std::cout << "A Down State: " << (GetKeyDown(0x41)) << std::endl;
+        std::cout << "size of short: " << sizeof(SHORT);
+
 
         // === Get key presses === 
-        KeyStatus spacebar = GetKeyInput(VK_SPACE);
+            //KeyState spacebar = GetKeyDown(VK_SPACE);
 
-        KeyStatus upArrow = GetKeyInput(VK_UP);
-        KeyStatus leftArrow = GetKeyInput(VK_LEFT);
-        KeyStatus downArrow = GetKeyInput(VK_DOWN);
-        KeyStatus rightArrow = GetKeyInput(VK_RIGHT);
+            //KeyState upArrow = GetKeyDown(VK_UP);
+            //KeyState leftArrow = GetKeyDown(VK_LEFT);
+            //KeyState downArrow = GetKeyDown(VK_DOWN);
+            //KeyState rightArrow = GetKeyDown(VK_RIGHT);
 
-        KeyStatus wKey = GetKeyInput(87);
-        KeyStatus aKey = GetKeyInput(65);
-        KeyStatus sKey = GetKeyInput(83);
-        KeyStatus dKey = GetKeyInput(68);
+            //KeyState wKey = GetKeyDown(87);
+            //KeyState aKey = GetKeyDown(0x41);
+            //KeyState sKey = GetKeyDown(83);
+            //KeyState dKey = GetKeyDown(0x44);
+
+        bool wKey = GetKeyDown(87);
+        bool aKey = GetKeyDown(0x41);
+        bool sKey = GetKeyDown(83);
+        bool dKey = GetKeyDown(0x44);
 
         // This is somehow TOGGLING...
         // From my understanding, should only appear when held.
@@ -91,8 +97,9 @@ int main()
 
 
 
-        if (spacebar & KeyStateDown)
+        if (GetKeyDown(VK_SPACE))
         {
+            system("cls");
             std::cout << "Space Detected. " << std::endl;
             running = false;
         }
@@ -103,7 +110,7 @@ int main()
         { 0, 0 }
     );
 
-    std::cout << "Exiting..." << std::endl;
+    std::cout << "Press Enter to exit..." << std::endl;
 
     std::cin.get();
 
