@@ -1,16 +1,12 @@
 #include <iostream>
 #include <Windows.h>
-
 #include <bitset>
+#include "Input.h"
 
 struct Block {
     int x, y;
     int width, height;
 };
-
-bool GetKeyDown(int key) {
-    return GetKeyState(key) & 0x8000;
-}
 
 void FillBlock(Block block, char character) {
 
@@ -64,41 +60,25 @@ int main()
         std::cout << "Key state of 'A' byte: " << aBin << std::endl;
         std::cout << "Key state of 'A' SHORT: " << aKS << std::endl;
 
-        // !! Our answer right here!
-        std::cout << "A Down State: " << (GetKeyDown(0x41)) << std::endl;
+        std::cout << "A Down State: " << (GetKeyDown(KeyCode_A)) << std::endl;
         std::cout << "size of short: " << sizeof(SHORT);
 
-
-        // === Get key presses === 
-            //KeyState spacebar = GetKeyDown(VK_SPACE);
-
-            //KeyState upArrow = GetKeyDown(VK_UP);
-            //KeyState leftArrow = GetKeyDown(VK_LEFT);
-            //KeyState downArrow = GetKeyDown(VK_DOWN);
-            //KeyState rightArrow = GetKeyDown(VK_RIGHT);
-
-            //KeyState wKey = GetKeyDown(87);
-            //KeyState aKey = GetKeyDown(0x41);
-            //KeyState sKey = GetKeyDown(83);
-            //KeyState dKey = GetKeyDown(0x44);
-
-        bool wKey = GetKeyDown(87);
-        bool aKey = GetKeyDown(0x41);
-        bool sKey = GetKeyDown(83);
-        bool dKey = GetKeyDown(0x44);
+        bool upKey = GetKeyDown(KeyCode_Up);
+        bool leftKey = GetKeyDown(KeyCode_Left);
+        bool downKey = GetKeyDown(KeyCode_Down);
+        bool rightKey = GetKeyDown(KeyCode_Right);
 
         // This is somehow TOGGLING...
         // From my understanding, should only appear when held.
 
-        DrawBlockBasedOnInput(wKey, blockN, '^');
-        DrawBlockBasedOnInput(aKey, blockW, '<');
-        DrawBlockBasedOnInput(sKey, blockS, 'v');
-        DrawBlockBasedOnInput(dKey, blockE, '>');
+        DrawBlockBasedOnInput(upKey, blockN, '^');
+        DrawBlockBasedOnInput(leftKey, blockW, '<');
+        DrawBlockBasedOnInput(downKey, blockS, 'v');
+        DrawBlockBasedOnInput(rightKey, blockE, '>');
 
 
 
-        if (GetKeyDown(VK_SPACE))
-        {
+        if (GetKeyDown(KeyCode_Space)){
             system("cls");
             std::cout << "Space Detected. " << std::endl;
             running = false;
