@@ -21,7 +21,6 @@ void FillBlock(Block block, char character) {
     }
 }
 
-
 void DrawBlockBasedOnInput(bool keyState, Block block, char texture) {
     FillBlock(
         block,
@@ -33,10 +32,10 @@ void DrawBlockBasedOnInput(bool keyState, Block block, char texture) {
 const short width = 3;
 const short height = 2;
 
-Block blockN = {9, 6, width, height};
-Block blockW = {4, 9, width, height};
-Block blockS = {9, 9, width, height};
-Block blockE = {14, 9, width, height};
+Block blockN = {9, 16, width, height};
+Block blockW = {4, 19, width, height};
+Block blockS = {9, 19, width, height};
+Block blockE = {14, 19, width, height};
 
 int main()
 {
@@ -45,10 +44,10 @@ int main()
     int count = 0;
 
     while (running) {
-        // Debug Info
-        SetConsoleCursorPosition( GetStdHandle(STD_OUTPUT_HANDLE), { 0, 0 });
-        
-          // Display cycle
+        #pragma region Debug Info
+        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { 0, 0 });
+
+        // Display cycle
         count++;
         std::cout << "Running... Cycle: " << count << std::endl;
 
@@ -56,33 +55,38 @@ int main()
         SHORT aKS = GetKeyState(0x41);
         std::bitset<8> aBin(aKS);
 
-          // Display input 
+        // Display input 
         std::cout << "Key state of 'A' byte: " << aBin << std::endl;
         std::cout << "Key state of 'A' SHORT: " << aKS << std::endl;
 
-        std::cout << "A Down State: " << (GetKeyDown(KeyCode_A)) << std::endl;
+        std::cout << "A Down State: " << (GetKeyDown(Input::KeyCode_A)) << std::endl;
         std::cout << "size of short: " << sizeof(SHORT);
+        #pragma endregion
 
-        bool upKey = GetKeyDown(KeyCode_Up);
-        bool leftKey = GetKeyDown(KeyCode_Left);
-        bool downKey = GetKeyDown(KeyCode_Down);
-        bool rightKey = GetKeyDown(KeyCode_Right);
+#pragma region Logic
 
-        // This is somehow TOGGLING...
-        // From my understanding, should only appear when held.
-
-        DrawBlockBasedOnInput(upKey, blockN, '^');
-        DrawBlockBasedOnInput(leftKey, blockW, '<');
-        DrawBlockBasedOnInput(downKey, blockS, 'v');
-        DrawBlockBasedOnInput(rightKey, blockE, '>');
+        // Grab Inputs
+        bool upKey = GetKeyDown(Input::KeyCode_Up);
+        bool leftKey = GetKeyDown(Input::KeyCode_Left);
+        bool downKey = GetKeyDown(Input::KeyCode_Down);
+        bool rightKey = GetKeyDown(Input::KeyCode_Right);
 
 
 
-        if (GetKeyDown(KeyCode_Space)){
+        // Exit condition
+        if (GetKeyDown(Input::KeyCode_Space)) {
             system("cls");
             std::cout << "Space Detected. " << std::endl;
             running = false;
         }
+#pragma endregion
+
+        #pragma region Render
+        DrawBlockBasedOnInput(upKey, blockN, '^');
+        DrawBlockBasedOnInput(leftKey, blockW, '<');
+        DrawBlockBasedOnInput(downKey, blockS, 'v');
+        DrawBlockBasedOnInput(rightKey, blockE, '>');
+#pragma endregion 
     }
 
     SetConsoleCursorPosition(
