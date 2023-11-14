@@ -9,7 +9,7 @@
 
 ## Quick Start
 #include "Input.h"
-Use `Input::InitActiveKeys()` to initialize Input system with keys you want to keep track of during the life time of your application./ 
+Use `Input::InitActiveKeys()` to initialize Input system with keys you want to keep track of during the life time of your application.\ 
 Sync key states with `Input::UpdateActiveKeys()` the updater to sync all cached keys.
 Use `Input::GetKeyDown()`, `Input::GetKeyDown()`, and `Input::GetKeyDown()` to get key states
 
