@@ -1,16 +1,12 @@
 #include <iostream>
 #include <Windows.h>
-
 #include <bitset>
+#include "Input.h"
 
 struct Block {
     int x, y;
     int width, height;
 };
-
-bool GetKeyDown(int key) {
-    return GetKeyState(key) & 0x8000;
-}
 
 void FillBlock(Block block, char character) {
 
@@ -25,7 +21,6 @@ void FillBlock(Block block, char character) {
     }
 }
 
-
 void DrawBlockBasedOnInput(bool keyState, Block block, char texture) {
     FillBlock(
         block,
@@ -37,10 +32,10 @@ void DrawBlockBasedOnInput(bool keyState, Block block, char texture) {
 const short width = 3;
 const short height = 2;
 
-Block blockN = {9, 6, width, height};
-Block blockW = {4, 9, width, height};
-Block blockS = {9, 9, width, height};
-Block blockE = {14, 9, width, height};
+Block blockN = {9, 16, width, height};
+Block blockW = {4, 19, width, height};
+Block blockS = {9, 19, width, height};
+Block blockE = {14, 19, width, height};
 
 int main()
 {
@@ -49,10 +44,10 @@ int main()
     int count = 0;
 
     while (running) {
-        // Debug Info
-        SetConsoleCursorPosition( GetStdHandle(STD_OUTPUT_HANDLE), { 0, 0 });
-        
-          // Display cycle
+#pragma region Debug Info
+        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { 0, 0 });
+
+        // Display cycle
         count++;
         std::cout << "Running... Cycle: " << count << std::endl;
 
@@ -60,49 +55,40 @@ int main()
         SHORT aKS = GetKeyState(0x41);
         std::bitset<8> aBin(aKS);
 
-          // Display input 
-        std::cout << "Key state of 'A' byte: " << aBin << std::endl;
-        std::cout << "Key state of 'A' SHORT: " << aKS << std::endl;
+#pragma endregion
 
-        // !! Our answer right here!
-        std::cout << "A Down State: " << (GetKeyDown(0x41)) << std::endl;
-        std::cout << "size of short: " << sizeof(SHORT);
+#pragma region Logic
 
+#pragma region Input
+        // Init inputs
+        Input::Input::InitActiveKeys(
+            {
+            Input::KeyCode::Left,
+            Input::KeyCode::Right,
+            Input::KeyCode::Up,
+            Input::KeyCode::Down,
+            Input::KeyCode::Space,
+            }
+        );
 
-        // === Get key presses === 
-            //KeyState spacebar = GetKeyDown(VK_SPACE);
-
-            //KeyState upArrow = GetKeyDown(VK_UP);
-            //KeyState leftArrow = GetKeyDown(VK_LEFT);
-            //KeyState downArrow = GetKeyDown(VK_DOWN);
-            //KeyState rightArrow = GetKeyDown(VK_RIGHT);
-
-            //KeyState wKey = GetKeyDown(87);
-            //KeyState aKey = GetKeyDown(0x41);
-            //KeyState sKey = GetKeyDown(83);
-            //KeyState dKey = GetKeyDown(0x44);
-
-        bool wKey = GetKeyDown(87);
-        bool aKey = GetKeyDown(0x41);
-        bool sKey = GetKeyDown(83);
-        bool dKey = GetKeyDown(0x44);
-
-        // This is somehow TOGGLING...
-        // From my understanding, should only appear when held.
-
-        DrawBlockBasedOnInput(wKey, blockN, '^');
-        DrawBlockBasedOnInput(aKey, blockW, '<');
-        DrawBlockBasedOnInput(sKey, blockS, 'v');
-        DrawBlockBasedOnInput(dKey, blockE, '>');
+        Input::Input::UpdateActiveKeys();
+#pragma endregion
 
 
-
-        if (GetKeyDown(VK_SPACE))
-        {
+        // Exit condition
+        if (Input::Input::GetKeyDownThisCycle(Input::KeyCode::Space)) {
             system("cls");
             std::cout << "Space Detected. " << std::endl;
             running = false;
         }
+#pragma endregion
+
+#pragma region Render
+        DrawBlockBasedOnInput(Input::Input::GetKeyDownThisCycle(Input::KeyCode::Up), blockN, '^');
+        DrawBlockBasedOnInput(Input::Input::GetKeyUpThisCycle(Input::KeyCode::Left), blockW, '<');
+        DrawBlockBasedOnInput(Input::Input::GetKeyDown(Input::KeyCode::Down), blockS, 'v');
+        DrawBlockBasedOnInput(Input::Input::GetKeyDown(Input::KeyCode::Right), blockE, '>');
+#pragma endregion 
     }
 
     SetConsoleCursorPosition(
