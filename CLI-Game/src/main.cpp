@@ -44,7 +44,7 @@ int main()
     int count = 0;
 
     while (running) {
-        #pragma region Debug Info
+#pragma region Debug Info
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { 0, 0 });
 
         // Display cycle
@@ -55,33 +55,30 @@ int main()
         SHORT aKS = GetKeyState(0x41);
         std::bitset<8> aBin(aKS);
 
-        // Display input 
-        std::cout << "Key state of 'A' byte: " << aBin << std::endl;
-        std::cout << "Key state of 'A' SHORT: " << aKS << std::endl;
-
-        std::cout << "A Down State: " << (GetKeyDown(Input::KeyCode_A)) << std::endl;
-        std::cout << "size of short: " << sizeof(SHORT);
-        #pragma endregion
+#pragma endregion
 
 #pragma region Logic
 
+#pragma region Input
         // Grab Inputs
-        bool upKey = GetKeyDown(Input::KeyCode_Up);
-        bool leftKey = GetKeyDown(Input::KeyCode_Left);
-        bool downKey = GetKeyDown(Input::KeyCode_Down);
-        bool rightKey = GetKeyDown(Input::KeyCode_Right);
+        bool upKey = Input::Input::GetKeyDown(Input::KeyCode::Up);
+        bool leftKey = Input::Input::GetKeyDown(Input::KeyCode::Left);
+        bool downKey = Input::Input::GetKeyDown(Input::KeyCode::Down);
+        bool rightKey = Input::Input::GetKeyDown(Input::KeyCode::Right);
 
+        bool keyDown = Input::Input::GetKeyDownThisCycle(Input::KeyCode::Right);
+#pragma endregion
 
 
         // Exit condition
-        if (GetKeyDown(Input::KeyCode_Space)) {
+        if (Input::Input::GetKeyDown(Input::KeyCode::Space)) {
             system("cls");
             std::cout << "Space Detected. " << std::endl;
             running = false;
         }
 #pragma endregion
 
-        #pragma region Render
+#pragma region Render
         DrawBlockBasedOnInput(upKey, blockN, '^');
         DrawBlockBasedOnInput(leftKey, blockW, '<');
         DrawBlockBasedOnInput(downKey, blockS, 'v');

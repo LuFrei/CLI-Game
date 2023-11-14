@@ -1,59 +1,84 @@
 #pragma once
+#include <vector>
 
 // - classless namespace?
 // We don't need to instantiate Input, we just need it to be readily accessible...
 // static class?
 namespace Input {
-	enum KeyState {
-		KeyState_Toggled = 1,
-		KeyState_Down = 0x8000
+
+	enum class KeyCode {
+		Space = 0x20,
+		Left = 0x25,
+		Up,
+		Right,
+		Down,
+		Alpha0 = 0x30,
+		Alpha1,
+		Alpha2,
+		Alpha3,
+		Alpha4,
+		Alpha5,
+		Alpha6,
+		Alpha7,
+		Alpha8,
+		Alpha9,
+		A = 0x41,
+		B,
+		C,
+		D,
+		E,
+		F,
+		G,
+		H,
+		I,
+		J,
+		K,
+		L,
+		M,
+		N,
+		O,
+		P,
+		Q,
+		R,
+		S,
+		T,
+		U,
+		V,
+		W,
+		X,
+		Y,
+		Z,
 	};
 
-	static enum KeyCode {
-		KeyCode_Space = 0x20,
-		KeyCode_Left = 0x25,
-		KeyCode_Up,
-		KeyCode_Right,
-		KeyCode_Down,
-		KeyCode_0 = 0x30,
-		KeyCode_1,
-		KeyCode_2,
-		KeyCode_3,
-		KeyCode_4,
-		KeyCode_5,
-		KeyCode_6,
-		KeyCode_7,
-		KeyCode_8,
-		KeyCode_9,
-		KeyCode_A = 0x41,
-		KeyCode_B,
-		KeyCode_C,
-		KeyCode_D,
-		KeyCode_E,
-		KeyCode_F,
-		KeyCode_G,
-		KeyCode_H,
-		KeyCode_I,
-		KeyCode_J,
-		KeyCode_K,
-		KeyCode_L,
-		KeyCode_M,
-		KeyCode_N,
-		KeyCode_O,
-		KeyCode_P,
-		KeyCode_Q,
-		KeyCode_R,
-		KeyCode_S,
-		KeyCode_T,
-		KeyCode_U,
-		KeyCode_V,
-		KeyCode_W,
-		KeyCode_X,
-		KeyCode_Y,
-		KeyCode_Z,
+
+	class Input {
+	private:
+		/* For the purposes of this project, I'm hardcoding the bits eac hinput is stored in:
+			Bit:Key
+			1	Left
+			2	Right
+			3	Up
+			4	Down
+		*/
+
+	public:
+		/// <summary>
+		/// Specify what keys we want to keep track of for user input.
+		/// </summary>
+		/// <param name="keys">Array of KeyCodes</param>
+		static void SetActiveKeys(std::vector<KeyCode> keys);
+
+		/// <summary>
+		/// Update state of Active Keys
+		/// </summary>
+		static void UpdateActiveKeys();
+
+		static bool GetKeyDown(KeyCode key);
+
+		static bool GetKeyToggled(KeyCode key);
+
+		static bool GetKeyDownThisCycle(KeyCode key);
+
+		static bool GetKeyUpThisCycle(KeyCode key);
 	};
-
-	bool GetKeyDown(KeyCode key);
-
-	bool GetKeyToggled(KeyCode key);
 }
