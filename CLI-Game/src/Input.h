@@ -66,7 +66,7 @@ namespace Input {
 		/// Specify what keys we want to keep track of for user input.
 		/// </summary>
 		/// <param name="keys">Array of KeyCodes</param>
-		static void SetActiveKeys(std::vector<KeyCode> keys);
+		static void InitActiveKeys(std::vector<KeyCode> keys);
 
 		/// <summary>
 		/// Update state of Active Keys
@@ -74,8 +74,6 @@ namespace Input {
 		static void UpdateActiveKeys();
 
 		static bool GetKeyDown(KeyCode key);
-
-		static bool GetKeyToggled(KeyCode key);
 
 		static bool GetKeyDownThisCycle(KeyCode key);
 

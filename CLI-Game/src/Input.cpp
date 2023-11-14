@@ -7,61 +7,60 @@
 
 
 namespace Input {
-	std::map<KeyCode, bool> keyStates;
-	std::map<KeyCode, bool> keyDownState;
-	std::map<KeyCode, bool> keyDownState;
-
+	std::map<KeyCode, bool> keyDownStates;
+	std::map<KeyCode, bool> keyPressedStates;
+	std::map<KeyCode, bool> keyReleasedStates;
+	 
 	enum KeyState {
 		KeyState_Toggled = 1,
 		KeyState_Down = 0x8000
 	};
 
-	void Input::SetActiveKeys(std::vector<KeyCode> keys) {
+	void Input::InitActiveKeys(std::vector<KeyCode> keys) {
 		for (KeyCode key : keys) {
-			keyStates.insert({key, 0});
+			keyDownStates.insert({key, 0});
+			keyPressedStates.insert({ key, 0 });
+			keyReleasedStates.insert({ key, 0 });
 		}
 	}
 
 	void Input::UpdateActiveKeys() {
-		std::map<KeyCode, bool> currentStates;
+		// Temporarily cached keys for Up/Down catches before storing them in keyStates
+		std::map<KeyCode, bool> newStates;
 
-		for (KeyCode key : keys) {
-			keyStates.insert({ key, 0 });
+
+		// Get new states af of this logic cycle.
+		for (auto state : keyDownStates) {
+			newStates.insert({ state.first, GetKeyState(static_cast<int>(state.first)) & KeyState_Down});
 		}
 
-		for (auto state : keyStates) {
-			currentStates.second = GetKeyState(static_cast<int>(state.first)) & KeyState_Down;
+		// get Key changes signifiying a downed state.
+		for (auto state : newStates) {
+			keyPressedStates[state.first] = 0;
+			keyReleasedStates[state.first] = 0;
+			if(newStates[state.first] != keyDownStates[state.first]) {
+				if (newStates[state.first] & KeyState_Down) {
+					keyPressedStates[state.first] = 1;
+				} else {
+					keyReleasedStates[state.first] = 1;
+				}
+			}
 		}
 
-		for (auto state : keyStates) {
-			state.second = GetKeyState(static_cast<int>(state.first)) & KeyState_Down;
-		}
+		// update Down states
+		keyDownStates = newStates;
 	}
 
 	bool Input::GetKeyDown(KeyCode key) {
-		return keyStates[key];
+		return keyDownStates[key];
 	}
 
-	/*GET KEY DOWN
-	* 
-	* Return TRUE if the key was pressed on this call of the function.
-	* Return FALSE if the key is not down OR is down, but was already down before this was called.
-	* 
-	* 
-	*/
+	bool Input::GetKeyDownThisCycle(KeyCode key) {		
+		return keyPressedStates[key];
+	}
 
-
-	bool Input::GetKeyDownThisCycle(KeyCode key) {
-
-
-		bool currentKeyState = GetKeyState(static_cast<int>(key)) & KeyState_Down;
-
-		if (keyStates[key] == currentKeyState) {
-			return 0;
-		}
-		
-
-		return true;
+	bool Input::GetKeyUpThisCycle(KeyCode key) {
+		return keyReleasedStates[key];
 	}
 
 	// This is gross, disgusting, dirty, but I'm tired of playing Socrates on the best possible solution.
