@@ -60,18 +60,23 @@ int main()
 #pragma region Logic
 
 #pragma region Input
-        // Grab Inputs
-        bool upKey = Input::Input::GetKeyDown(Input::KeyCode::Up);
-        bool leftKey = Input::Input::GetKeyDown(Input::KeyCode::Left);
-        bool downKey = Input::Input::GetKeyDown(Input::KeyCode::Down);
-        bool rightKey = Input::Input::GetKeyDown(Input::KeyCode::Right);
+        // Init inputs
+        Input::Input::InitActiveKeys(
+            {
+            Input::KeyCode::Left,
+            Input::KeyCode::Right,
+            Input::KeyCode::Up,
+            Input::KeyCode::Down,
+            Input::KeyCode::Space,
+            }
+        );
 
-        bool keyDown = Input::Input::GetKeyDownThisCycle(Input::KeyCode::Right);
+        Input::Input::UpdateActiveKeys();
 #pragma endregion
 
 
         // Exit condition
-        if (Input::Input::GetKeyDown(Input::KeyCode::Space)) {
+        if (Input::Input::GetKeyDownThisCycle(Input::KeyCode::Space)) {
             system("cls");
             std::cout << "Space Detected. " << std::endl;
             running = false;
@@ -79,10 +84,10 @@ int main()
 #pragma endregion
 
 #pragma region Render
-        DrawBlockBasedOnInput(upKey, blockN, '^');
-        DrawBlockBasedOnInput(leftKey, blockW, '<');
-        DrawBlockBasedOnInput(downKey, blockS, 'v');
-        DrawBlockBasedOnInput(rightKey, blockE, '>');
+        DrawBlockBasedOnInput(Input::Input::GetKeyDownThisCycle(Input::KeyCode::Up), blockN, '^');
+        DrawBlockBasedOnInput(Input::Input::GetKeyUpThisCycle(Input::KeyCode::Left), blockW, '<');
+        DrawBlockBasedOnInput(Input::Input::GetKeyDown(Input::KeyCode::Down), blockS, 'v');
+        DrawBlockBasedOnInput(Input::Input::GetKeyDown(Input::KeyCode::Right), blockE, '>');
 #pragma endregion 
     }
 

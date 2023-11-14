@@ -39,7 +39,7 @@ namespace Input {
 			keyPressedStates[state.first] = 0;
 			keyReleasedStates[state.first] = 0;
 			if(newStates[state.first] != keyDownStates[state.first]) {
-				if (newStates[state.first] & KeyState_Down) {
+				if (newStates[state.first]) {
 					keyPressedStates[state.first] = 1;
 				} else {
 					keyReleasedStates[state.first] = 1;
