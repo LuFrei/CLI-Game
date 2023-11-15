@@ -48,17 +48,19 @@ main {
 
 ## Basic API
 
-enum class KeyCode
+#### `enum class KeyCode`
+Key representation where enum value corresponds to their ASCII values.\
+Includes all alpha-numeric keys as well as Space, and Arrow Keys
 
-static void Input:\:InitActiveKeys(std::vector<KeyCode> keys);
+#### `static void Input::InitActiveKeys(std::vector<KeyCode> keys)`
 
-static void Input::UpdateActiveKeys();
+#### `static void Input::UpdateActiveKeys()`
 
-static bool Input::GetKeyDown(KeyCode key);
+#### `static bool Input::GetKeyDown(KeyCode key)`
 
-static bool Input::GetKeyDownThisCycle(KeyCode key);
+#### `static bool Input::GetKeyDownThisCycle(KeyCode key)`
 
-static bool Input::GetKeyUpThisCycle(KeyCode key);
+#### `static bool Input::GetKeyUpThisCycle(KeyCode key)`
 
 ## Methodology
 
