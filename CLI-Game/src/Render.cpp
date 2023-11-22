@@ -2,10 +2,12 @@
 #include "Render.h"
 
 namespace Render {
+	static std::vector<Rect> rectangles;
+
 	/// <summary>
 	/// Counter to assign new Rets unique Ids.
 	/// </summary>
-	int rectIdCounter = 0;
+	unsigned int rectIdCounter = 0;
 
 	Renderer::Renderer(int x, int y, int width, int height) {
 		rect.id = rectIdCounter;
@@ -25,7 +27,17 @@ namespace Render {
 		// Delete the Rects
 		// Remove it from Rectangles list
 
-		std::cout << 
+		std::cout << "Deleting Renderer with rect id: " << rect.id << std::endl;
+
+		// find the index of the correct Rect within the vector
+		unsigned int idx = rectangles.size()/2;
+
+		if (rectangles[idx].id == rect.id) {
+			std::cout << "Rect found, deleting ";
+		}
+
+
+
 	}
 
 	void Renderer::UpdateRects() {
