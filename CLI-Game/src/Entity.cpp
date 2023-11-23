@@ -1,18 +1,6 @@
 #include "Entity.h"
 
-void Entity::Move(Cardinal direction) {
-	switch (direction) {
-	case North:
-		posY++;
-		break;
-	case East:
-		posX++;
-		break;
-	case South:
-		posY--;
-		break;
-	case West:
-		posX--;
-		break;
-	}
+void Entity::Move(int x, int y) {
+	posX += x;
+	posY += y;
 }
