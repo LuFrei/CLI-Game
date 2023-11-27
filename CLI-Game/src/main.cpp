@@ -2,13 +2,24 @@
 #include <Windows.h>
 #include <bitset>
 #include "Input.h"
+#include "Character.h"
 
 struct Block {
     int x, y;
     int width, height;
 };
 
-void FillBlock(Block block, char character) {
+Block CreateBlockFromEntity(Entity& e) {
+    Block block;
+    block.x = e.x;
+    block.y = e.y;
+    block.width = e.width;
+    block.height = e.height;
+
+    return block;
+}
+
+void DrawBlock(Block block, char character) {
 
     for (short i = 0; i < block.height; i++) {
         SetConsoleCursorPosition(
@@ -22,26 +33,19 @@ void FillBlock(Block block, char character) {
 }
 
 void DrawBlockBasedOnInput(bool keyState, Block block, char texture) {
-    FillBlock(
+    DrawBlock(
         block,
         keyState ? texture : ' '
     );
 }
-
-// Blocks will be 4x4 for now.
-const short width = 3;
-const short height = 2;
-
-Block blockN = {9, 16, width, height};
-Block blockW = {4, 19, width, height};
-Block blockS = {9, 19, width, height};
-Block blockE = {14, 19, width, height};
 
 int main()
 {
     std::cout << "Hello and Welcome!\n";
     bool running = true;
     int count = 0;
+
+    Character* player = new Character();
 
     while (running) {
 #pragma region Debug Info
@@ -74,6 +78,28 @@ int main()
         Input::Input::UpdateActiveKeys();
 #pragma endregion
 
+#pragma region Gameplay
+
+        
+
+        if (Input::Input::GetKeyDownThisCycle(Input::KeyCode::Up)) {
+            std::cout << "Moving player Up" << std::endl;
+            player->Move(0, -1);
+        }
+        if (Input::Input::GetKeyDownThisCycle(Input::KeyCode::Down)) {
+            std::cout << "Moving player Down" << std::endl;
+            player->Move(0, 1);
+        }
+        if (Input::Input::GetKeyDownThisCycle(Input::KeyCode::Left)) {
+            std::cout << "Moving player Left" << std::endl;
+            player->Move(-2, 0);
+        }
+        if (Input::Input::GetKeyDownThisCycle(Input::KeyCode::Right)) {
+            std::cout << "Moving player Right" << std::endl;
+            player->Move(2, 0);
+        }
+
+#pragma endregion
 
         // Exit condition
         if (Input::Input::GetKeyDownThisCycle(Input::KeyCode::Space)) {
@@ -84,10 +110,11 @@ int main()
 #pragma endregion
 
 #pragma region Render
-        DrawBlockBasedOnInput(Input::Input::GetKeyDownThisCycle(Input::KeyCode::Up), blockN, '^');
-        DrawBlockBasedOnInput(Input::Input::GetKeyUpThisCycle(Input::KeyCode::Left), blockW, '<');
-        DrawBlockBasedOnInput(Input::Input::GetKeyDown(Input::KeyCode::Down), blockS, 'v');
-        DrawBlockBasedOnInput(Input::Input::GetKeyDown(Input::KeyCode::Right), blockE, '>');
+        Block playerBlock = CreateBlockFromEntity(*player);
+        std::cout << "playerBlock: " << std::endl
+            << "x: " << playerBlock.x << ", y: " << playerBlock.y << std::endl
+            << "width: " << playerBlock.width << ", height: " << playerBlock.height << std::endl;
+        DrawBlock(playerBlock, 'P');
 #pragma endregion 
     }
 
