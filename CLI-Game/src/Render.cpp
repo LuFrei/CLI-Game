@@ -1,8 +1,9 @@
 #include <iostream>
+#include <vector>
 #include "Render.h"
 
 namespace Render {
-	static std::vector<Rect> rectangles;
+	std::vector<Rect> Renderer::rectangles;
 
 	/// <summary>
 	/// Counter to assign new Rets unique Ids.
@@ -30,7 +31,7 @@ namespace Render {
 		std::cout << "Deleting Renderer with rect id: " << rect.id << std::endl;
 
 		// find the index of the correct Rect within the vector
-		unsigned int idx = rectangles.size()/2;
+		unsigned int idx = (unsigned int)rectangles.size()/2;
 
 		if (rectangles[idx].id == rect.id) {
 			std::cout << "Rect found, deleting ";

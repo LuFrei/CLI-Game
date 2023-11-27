@@ -127,14 +127,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Render.cpp" />
+    <ClCompile Include="src\Character.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Render.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Render.h" />
+    <ClInclude Include="src\Character.h" />
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\Input.h" />
     <ClInclude Include="src\Render.h" />

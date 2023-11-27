@@ -8,6 +8,7 @@ class Entity {
 public:
 	int x, y;
 	unsigned int width, height;
+	Entity();
 	Entity(int x, int y, unsigned int width, unsigned int height);
 	void Move(int x, int y);
 };
