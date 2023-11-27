@@ -8,10 +8,10 @@
 	- ReleasedThisCycle
 
 ## Quick Start
-#include "Input.h"
-Use `Input::InitActiveKeys()` to initialize Input system with keys you want to keep track of during the life time of your application./ 
-Sync key states with `Input::UpdateActiveKeys()` the updater to sync all cached keys.
-Use `Input::GetKeyDown()`, `Input::GetKeyDown()`, and `Input::GetKeyDown()` to get key states
+1. #include "Input.h"\
+2. Use `Input::InitActiveKeys()` to initialize Input system with keys you want to keep track of during the life time of your application.\
+3. Sync key states with `Input::UpdateActiveKeys()` the updater to sync all cached keys.\
+4. Use `Input::GetKeyDown()`, `Input::GetKeyDown()`, and `Input::GetKeyDown()` to get key states
 
 ```
 #include "Input.h"
@@ -48,17 +48,19 @@ main {
 
 ## Basic API
 
-enum class KeyCode
+#### `enum class KeyCode`
+Key representation where enum value corresponds to their ASCII values.\
+Includes all alpha-numeric keys as well as Space, and Arrow Keys
 
-static void Input:\:InitActiveKeys(std::vector<KeyCode> keys);
+#### `static void Input::InitActiveKeys(std::vector<KeyCode> keys)`
 
-static void Input::UpdateActiveKeys();
+#### `static void Input::UpdateActiveKeys()`
 
-static bool Input::GetKeyDown(KeyCode key);
+#### `static bool Input::GetKeyDown(KeyCode key)`
 
-static bool Input::GetKeyDownThisCycle(KeyCode key);
+#### `static bool Input::GetKeyDownThisCycle(KeyCode key)`
 
-static bool Input::GetKeyUpThisCycle(KeyCode key);
+#### `static bool Input::GetKeyUpThisCycle(KeyCode key)`
 
 ## Methodology
 
