@@ -5,7 +5,6 @@
 void Entity::Move(int x, int y) {
 	this->x += x;
 	this->y += y;
-	std::cout << "Player moved to position: " << this->x << ", " << this->y << std::endl;
 }
 
 Entity::Entity() {
