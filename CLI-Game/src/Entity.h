@@ -10,5 +10,5 @@ public:
 	unsigned int width, height;
 	Entity();
 	Entity(int x, int y, unsigned int width, unsigned int height);
-	void Move(int x, int y);
+	virtual void Move(int x, int y);
 };
