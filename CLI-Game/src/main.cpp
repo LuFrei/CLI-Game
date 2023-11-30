@@ -49,19 +49,15 @@ int main()
         
 
         if (Input::Input::GetKeyDownThisCycle(Input::KeyCode::Up)) {
-            std::cout << "Moving player Up" << std::endl;
             player->Move(0, -1);
         }
         if (Input::Input::GetKeyDownThisCycle(Input::KeyCode::Down)) {
-            std::cout << "Moving player Down" << std::endl;
             player->Move(0, 1);
         }
         if (Input::Input::GetKeyDownThisCycle(Input::KeyCode::Left)) {
-            std::cout << "Moving player Left" << std::endl;
             player->Move(-2, 0);
         }
         if (Input::Input::GetKeyDownThisCycle(Input::KeyCode::Right)) {
-            std::cout << "Moving player Right" << std::endl;
             player->Move(2, 0);
         }
 
@@ -76,11 +72,11 @@ int main()
 #pragma endregion
 
 #pragma region Render
-        Render::Block playerBlock = CreateBlockFromEntity(*player);
-        std::cout << "playerBlock: " << std::endl
-            << "x: " << playerBlock.x << ", y: " << playerBlock.y << std::endl
-            << "width: " << playerBlock.width << ", height: " << playerBlock.height << std::endl;
-        DrawBlock(playerBlock, 'P');
+        //std::cout << "playerBlock: " << std::endl
+        //    << "x: " << player->rend->block.x << ", y: " << player->rend->block.y << std::endl
+        //    << "width: " << player->rend->block.width << ", height: " << player->rend->block.height << std::endl
+        //    << "material: " << player->rend->block.material << std::endl;
+        Render::Renderer::DrawBlocks();
 #pragma endregion 
     }
 
