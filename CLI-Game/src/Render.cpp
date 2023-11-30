@@ -1,47 +1,89 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include <Windows.h>
+
 #include "Render.h"
 
 namespace Render {
-	std::vector<Rect> Renderer::rectangles;
+	std::vector<Block> Renderer::blocks;
 
 	/// <summary>
 	/// Counter to assign new Rets unique Ids.
 	/// </summary>
-	unsigned int rectIdCounter = 0;
+	unsigned int blockIdCounter = 0;
 
-	Renderer::Renderer(int x, int y, int width, int height) {
-		rect.id = rectIdCounter;
-		rectIdCounter++;
+	Renderer::Renderer(int x, int y, int width, int height, char material) {
+		block.id = blockIdCounter;
+		blockIdCounter++;
 
-		rect.x = x;
-		rect.y = y;
-		rect.width = width;
-		rect.height = height;
+		block.x = x;
+		block.y = y;
+		block.width = width;
+		block.height = height;
+		block.material = material;
 
-		std::cout << "Created Renderer with Rect id: " << rect.id << std::endl;
+		std::cout << "Created Renderer with Block id: " << block.id << std::endl;
 
-		rectangles.push_back(rect);
+		blocks.push_back(block);
 	}
-
+	 
 	Renderer::~Renderer() {
 		// Delete the Rects
 		// Remove it from Rectangles list
 
-		std::cout << "Deleting Renderer with rect id: " << rect.id << std::endl;
+		std::cout << "Deleting Renderer with Block id: " << block.id << std::endl;
 
-		// find the index of the correct Rect within the vector
-		unsigned int idx = (unsigned int)rectangles.size()/2;
+		// find the index of the correct Block within the vector
+		auto it = std::find(blocks.begin(), blocks.end(), block);
 
-		if (rectangles[idx].id == rect.id) {
-			std::cout << "Rect found, deleting ";
+		std::cout << "*it is the same as this->block? " << ((*it).id == block.id) << std::endl;
+
+		if ((*it).id != block.id) {
+			std::cout << "ERROR: Wrong block was deleted." << std::endl;
 		}
 
-
-
 	}
 
-	void Renderer::UpdateRects() {
-
+	void Renderer::updateBlock(int newX, int newY) {
+		block.x = newX;
+		block.y = newY;
 	}
+	void Renderer::updateBlock(unsigned int newWidth, unsigned int newHeight) {
+		block.width = newWidth;
+		block.height = newHeight;
+	}
+	void Renderer::updateBlock(int newX, int newY, int newWidth, int newHeight) {
+		updateBlock(newX, newY);
+		updateBlock(newWidth, newHeight);
+	}
+
+	void Renderer::DrawBlocks() {
+		for (Block block : blocks) {
+			for (short i = 0; i < block.height; i++) {
+				SetConsoleCursorPosition(
+					GetStdHandle(STD_OUTPUT_HANDLE),
+					{ (short)block.x, (short)(block.y + i) }
+				);
+				for (int j = 0; j < block.width; j++) {
+					std::cout << block.material;
+				}
+			}
+		}
+	}
+
+	void Renderer::EraseBlocks() {
+		for (Block block : blocks) {
+			for (short i = 0; i < block.height; i++) {
+				SetConsoleCursorPosition(
+					GetStdHandle(STD_OUTPUT_HANDLE),
+					{ (short)block.x, (short)(block.y + i) }
+				);
+				for (int j = 0; j < block.width; j++) {
+					std::cout << " ";
+				}
+			}
+		}
+	}
+
 }

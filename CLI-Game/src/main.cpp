@@ -3,41 +3,7 @@
 #include <bitset>
 #include "Input.h"
 #include "Character.h"
-
-struct Block {
-    int x, y;
-    int width, height;
-};
-
-Block CreateBlockFromEntity(Entity& e) {
-    Block block;
-    block.x = e.x;
-    block.y = e.y;
-    block.width = e.width;
-    block.height = e.height;
-
-    return block;
-}
-
-void DrawBlock(Block block, char character) {
-
-    for (short i = 0; i < block.height; i++) {
-        SetConsoleCursorPosition(
-            GetStdHandle(STD_OUTPUT_HANDLE),
-            { (short)block.x, (short)(block.y + i) }
-        );
-        for (int j = 0; j < block.width; j++) {
-            std::cout << character;
-        }
-    }
-}
-
-void DrawBlockBasedOnInput(bool keyState, Block block, char texture) {
-    DrawBlock(
-        block,
-        keyState ? texture : ' '
-    );
-}
+#include "Render.h"
 
 int main()
 {
@@ -110,7 +76,7 @@ int main()
 #pragma endregion
 
 #pragma region Render
-        Block playerBlock = CreateBlockFromEntity(*player);
+        Render::Block playerBlock = CreateBlockFromEntity(*player);
         std::cout << "playerBlock: " << std::endl
             << "x: " << playerBlock.x << ", y: " << playerBlock.y << std::endl
             << "width: " << playerBlock.width << ", height: " << playerBlock.height << std::endl;
