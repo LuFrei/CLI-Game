@@ -9,6 +9,7 @@ namespace Render {
 		int x, y;
 		unsigned int width, height, 
 			id;
+		char material;
 	};
 
 	class Renderer{
@@ -16,7 +17,7 @@ namespace Render {
 		static std::vector<Block> blocks;
 	public:
 		Block block;
-		Renderer(int x, int y, int width, int height);
+		Renderer(int x, int y, int width, int height, char material);
 		~Renderer();
 
 		/// <summary>
