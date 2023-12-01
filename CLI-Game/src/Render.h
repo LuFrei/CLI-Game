@@ -14,7 +14,7 @@ namespace Render {
 
 	class Renderer{
 	private:
-		static std::vector<Block> blocks;
+		static std::vector<Block*> blocks;
 	public:
 		Block block;
 		Renderer(int x, int y, int width, int height, char material);
