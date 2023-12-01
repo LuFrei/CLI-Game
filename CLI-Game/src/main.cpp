@@ -27,6 +27,9 @@ int main()
 
 #pragma endregion
 
+        // Erase last cycle's visual data
+        Render::Renderer::EraseBlocks();
+
 #pragma region Logic
 
 #pragma region Input

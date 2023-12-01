@@ -69,9 +69,8 @@ namespace Render {
 	}
 
 	void Renderer::DrawBlocks() {
-		//std::cout << "Drawing blocks" << std::endl;
 		for (Block* block : blocks) {
-			std::cout << "Drawing block " << block->id << "." << std::endl;
+			//std::cout << "Drawing block " << block->id << "." << std::endl;
 			for (unsigned short i = 0; i < block->height; i++) {
 				SetConsoleCursorPosition(
 					GetStdHandle(STD_OUTPUT_HANDLE),
