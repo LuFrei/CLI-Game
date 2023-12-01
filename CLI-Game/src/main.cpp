@@ -1,29 +1,42 @@
 #include <iostream>
 #include <Windows.h>
-#include <bitset>
+#include <chrono>
 #include "Input.h"
 #include "Character.h"
 #include "Render.h"
 
 int main()
 {
-    std::cout << "Hello and Welcome!\n";
     bool running = true;
     int count = 0;
-
+    int countsThisSec = 0;
+    int countsPerSec = 0;
+    
     Character* player = new Character();
+    time_t now = time(0);
+
 
     while (running) {
 #pragma region Debug Info
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { 0, 0 });
 
+        if (time(0) != now) {
+            // 1 second elapsed
+            now = time(0);
+            countsPerSec = countsThisSec;
+            countsThisSec = 0;
+        }
+
         // Display cycle
         count++;
+        countsThisSec++;
         std::cout << "Running... Cycle: " << count << std::endl;
+        std::cout << "Time: " << now << std::endl;
+
+        std::cout << "Frames This Second: " << countsThisSec << std::endl;
+        std::cout << "Frames Per Second: " << countsPerSec << std::endl;
 
 
-        SHORT aKS = GetKeyState(0x41);
-        std::bitset<8> aBin(aKS);
 
 #pragma endregion
 
