@@ -5,13 +5,32 @@
 
 #include "Render.h"
 
-namespace Render {
+namespace Graphics {
 	std::vector<Block*> Renderer::blocks;
 
 	/// <summary>
 	/// Counter to assign new Rets unique Ids.
 	/// </summary>
 	unsigned int blockIdCounter = 0;
+
+	const int screenWidth = 120;
+	const int screenHeight = 60;
+	wchar_t* screen = new wchar_t[screenWidth * screenHeight];
+
+	DWORD charsWritten = 0;
+
+	HANDLE cScreenHandle = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
+
+	void InitGraphics() {
+		CONSOLE_CURSOR_INFO cursorInfo;
+
+		GetConsoleCursorInfo(cScreenHandle, &cursorInfo);
+		cursorInfo.bVisible = 0;
+		SetConsoleCursorInfo(cScreenHandle, &cursorInfo);
+
+		SetConsoleActiveScreenBuffer(cScreenHandle);
+	}
+	
 
 	Renderer::Renderer(int x, int y, int width, int height, char material) {
 		block.id = blockIdCounter;
@@ -23,8 +42,6 @@ namespace Render {
 		block.height = height;
 		block.material = material;
 
-		//std::cout << "Created Renderer with Block id: " << block.id << std::endl;
-
 		blocks.push_back(&block);
 	}
 	 
@@ -35,7 +52,6 @@ namespace Render {
 		std::cout << "Deleting Renderer with Block id: " << block.id << std::endl;
 
 		// find the index of the correct Block within the vector
-		
 		// Solution from: https://stackoverflow.com/questions/589985/vectors-structs-and-stdfind
 		struct find_id  {
 			unsigned int id;
@@ -55,45 +71,34 @@ namespace Render {
 
 	}
 
-	void Renderer::updateBlock(int newX, int newY) {
+	void Renderer::updateBlockPosition(int newX, int newY) {
 		block.x = newX;
 		block.y = newY;
 	}
-	void Renderer::updateBlock(unsigned int newWidth, unsigned int newHeight) {
+	void Renderer::updateBlockSize(unsigned int newWidth, unsigned int newHeight) {
 		block.width = newWidth;
 		block.height = newHeight;
 	}
 	void Renderer::updateBlock(int newX, int newY, int newWidth, int newHeight) {
-		updateBlock(newX, newY);
-		updateBlock(newWidth, newHeight);
+		updateBlockPosition(newX, newY);
+		updateBlockPosition(newWidth, newHeight);
 	}
 
 	void Renderer::DrawBlocks() {
-		for (Block* block : blocks) {
-			//std::cout << "Drawing block " << block->id << "." << std::endl;
-			for (unsigned short i = 0; i < block->height; i++) {
-				SetConsoleCursorPosition(
-					GetStdHandle(STD_OUTPUT_HANDLE),
-					{ (short)block->x, (short)(block->y + i) }
-				);
-				for (unsigned int j = 0; j < block->width; j++) {
-					std::cout << block->material;
-				}
-			}
-		}
-	}
 
-	void Renderer::EraseBlocks() {
+
+			for (int i = 0; i < screenWidth * screenHeight; i++)
+				screen[i] = ' ';
+
+
+
 		for (Block* block : blocks) {
-			for (unsigned short i = 0; i < block->height; i++) {
-				SetConsoleCursorPosition(
-					GetStdHandle(STD_OUTPUT_HANDLE),
-					{ (short)block->x, (short)(block->y + i) }
-				);
-				for (unsigned int j = 0; j < block->width; j++) {
-					std::cout << " ";
+			for (int w = 0; w < block->width; w++) {
+				for (int h = 0; h < block->height; h++) {
+					screen[screenWidth * (block->y + h) + (block->x + w)] = block->material;
 				}
 			}
 		}
+			WriteConsoleOutputCharacter(cScreenHandle, screen, screenWidth * screenHeight, { 0, 0 }, &charsWritten);
 	}
 }

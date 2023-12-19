@@ -5,6 +5,11 @@
 #include "Character.h"
 #include "Render.h"
 
+const int screenWidth = 120;
+const int screenHeight = 60;
+wchar_t* screenData = new wchar_t[screenWidth * screenHeight];
+DWORD charsWritten = 0; // This is needed for WriteConhsoleOutputCharacter()
+
 int main()
 {
     std::cout << "Hello and Welcome!\n";
@@ -12,6 +17,8 @@ int main()
     int count = 0;
 
     Character* player = new Character();
+
+    Graphics::InitGraphics();
 
     while (running) {
 #pragma region Debug Info
@@ -21,14 +28,7 @@ int main()
         count++;
         std::cout << "Running... Cycle: " << count << std::endl;
 
-
-        SHORT aKS = GetKeyState(0x41);
-        std::bitset<8> aBin(aKS);
-
 #pragma endregion
-
-        // Erase last cycle's visual data
-        Render::Renderer::EraseBlocks();
 
 #pragma region Logic
 
@@ -74,12 +74,8 @@ int main()
         }
 #pragma endregion
 
-#pragma region Render
-        //std::cout << "playerBlock: " << std::endl
-        //    << "x: " << player->rend->block.x << ", y: " << player->rend->block.y << std::endl
-        //    << "width: " << player->rend->block.width << ", height: " << player->rend->block.height << std::endl
-        //    << "material: " << player->rend->block.material << std::endl;
-        Render::Renderer::DrawBlocks();
+#pragma region Graphics
+        Graphics::Renderer::DrawBlocks();
 #pragma endregion 
     }
 

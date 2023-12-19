@@ -3,14 +3,19 @@
 #include <vector>
 
 // We can store all created instances to update every cycle
-namespace Render {
+namespace Graphics {
 
+	/// <summary>
+	/// 
+	/// </summary>
 	struct Block {
-		int x, y;
+		int x, y, z;
 		unsigned int width, height, 
 			id;
-		char material;
+		wchar_t material;
 	};
+
+	void InitGraphics();
 
 	class Renderer{
 	private:
@@ -21,22 +26,22 @@ namespace Render {
 		~Renderer();
 
 		/// <summary>
-		/// Up date data to be displayed for this block.
-		/// </summary>
-		void updateBlock(int newX, int newY);
-		void updateBlock(unsigned int newWidth, unsigned int newHeight);
-		void updateBlock(int newX, int newY, int newWidth, int newHeight);
-
-		/// <summary>
 		/// Visually display all active Blocks based on their position and dimensions.
 		/// </summary>
 		static void DrawBlocks();
 
-		/// <summary>
-		/// Erase all active Blocks.
-		/// </summary>
-		static void EraseBlocks();
 
-		// TODO: possibly seletively draw or erase a block?
+		static std::vector<Block*> GetBlocks() {
+			return blocks;
+		}
+		/// <summary>
+		/// Up date data to be displayed for this block.
+		/// </summary>
+		void updateBlockPosition(int newX, int newY);
+		void updateBlockSize(unsigned int newWidth, unsigned int newHeight);
+		void updateBlock(int newX, int newY, int newWidth, int newHeight);
+
+		 
+		
 	};
 }

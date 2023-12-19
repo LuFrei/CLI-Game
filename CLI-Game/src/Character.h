@@ -4,7 +4,7 @@
 
 class Character : public Entity {
 public:
-	Render::Renderer* rend;
+	Graphics::Renderer* rend;
 	Character();
 	void Move(int x, int y);
 };
