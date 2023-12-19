@@ -21,6 +21,8 @@ namespace Graphics {
 
 	HANDLE cScreenHandle = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
 
+
+
 	void InitGraphics() {
 		CONSOLE_CURSOR_INFO cursorInfo;
 
@@ -87,14 +89,44 @@ namespace Graphics {
 	void Renderer::DrawBlocks() {
 
 
-			for (int i = 0; i < screenWidth * screenHeight; i++)
-				screen[i] = ' ';
+		for (int i = 0; i < screenWidth * screenHeight; i++) {
+			wchar_t texture = ' ';
+			if (i < screenWidth) {
+				texture = 'v';
+			}
+			if (i % screenWidth == 0) {
+				texture = '>';
+			}
+			if (i % screenWidth == (screenWidth - 1)) {
+				texture = '<';
+			}
+			screen[i] = texture;
+		}
 
+		// Paint the border
 
 
 		for (Block* block : blocks) {
+			// is this block going to show up in the screen?
+			if (block->x >= screenWidth
+				|| block->y >= screenHeight
+				|| block->x + block->width < 0
+				|| block->y + block->height < 0)
+			{ continue; }
+
+
 			for (int w = 0; w < block->width; w++) {
 				for (int h = 0; h < block->height; h++) {
+					int cellX = block->x + w;
+					int cellY = block->y + h;
+
+					// is this part of the block within screen's bounds?
+					if(cellX < 0 
+					   || cellX >= screenWidth
+					   || cellY < 0
+					   || cellY >= screenHeight)
+					{ continue; }
+
 					screen[screenWidth * (block->y + h) + (block->x + w)] = block->material;
 				}
 			}
