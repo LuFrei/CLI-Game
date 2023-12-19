@@ -3,41 +3,12 @@
 #include <bitset>
 #include "Input.h"
 #include "Character.h"
+#include "Render.h"
 
-struct Block {
-    int x, y;
-    int width, height;
-};
-
-Block CreateBlockFromEntity(Entity& e) {
-    Block block;
-    block.x = e.x;
-    block.y = e.y;
-    block.width = e.width;
-    block.height = e.height;
-
-    return block;
-}
-
-void DrawBlock(Block block, char character) {
-
-    for (short i = 0; i < block.height; i++) {
-        SetConsoleCursorPosition(
-            GetStdHandle(STD_OUTPUT_HANDLE),
-            { (short)block.x, (short)(block.y + i) }
-        );
-        for (int j = 0; j < block.width; j++) {
-            std::cout << character;
-        }
-    }
-}
-
-void DrawBlockBasedOnInput(bool keyState, Block block, char texture) {
-    DrawBlock(
-        block,
-        keyState ? texture : ' '
-    );
-}
+const int screenWidth = 120;
+const int screenHeight = 60;
+wchar_t* screenData = new wchar_t[screenWidth * screenHeight];
+DWORD charsWritten = 0; // This is needed for WriteConhsoleOutputCharacter()
 
 int main()
 {
@@ -47,6 +18,8 @@ int main()
 
     Character* player = new Character();
 
+    Graphics::InitGraphics();
+
     while (running) {
 #pragma region Debug Info
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { 0, 0 });
@@ -54,10 +27,6 @@ int main()
         // Display cycle
         count++;
         std::cout << "Running... Cycle: " << count << std::endl;
-
-
-        SHORT aKS = GetKeyState(0x41);
-        std::bitset<8> aBin(aKS);
 
 #pragma endregion
 
@@ -83,19 +52,15 @@ int main()
         
 
         if (Input::Input::GetKeyDownThisCycle(Input::KeyCode::Up)) {
-            std::cout << "Moving player Up" << std::endl;
             player->Move(0, -1);
         }
         if (Input::Input::GetKeyDownThisCycle(Input::KeyCode::Down)) {
-            std::cout << "Moving player Down" << std::endl;
             player->Move(0, 1);
         }
         if (Input::Input::GetKeyDownThisCycle(Input::KeyCode::Left)) {
-            std::cout << "Moving player Left" << std::endl;
             player->Move(-2, 0);
         }
         if (Input::Input::GetKeyDownThisCycle(Input::KeyCode::Right)) {
-            std::cout << "Moving player Right" << std::endl;
             player->Move(2, 0);
         }
 
@@ -109,12 +74,8 @@ int main()
         }
 #pragma endregion
 
-#pragma region Render
-        Block playerBlock = CreateBlockFromEntity(*player);
-        std::cout << "playerBlock: " << std::endl
-            << "x: " << playerBlock.x << ", y: " << playerBlock.y << std::endl
-            << "width: " << playerBlock.width << ", height: " << playerBlock.height << std::endl;
-        DrawBlock(playerBlock, 'P');
+#pragma region Graphics
+        Graphics::Renderer::DrawBlocks();
 #pragma endregion 
     }
 
