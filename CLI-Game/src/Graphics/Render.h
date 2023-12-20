@@ -6,13 +6,14 @@
 namespace Graphics {
 
 	/// <summary>
-	/// 
+	/// Data that define how something will be rendered on screen. 
+	/// Position, Dimension, Material.
 	/// </summary>
 	struct Block {
 		int x, y, z;
 		unsigned int width, height, 
 			id;
-		wchar_t material;
+		char material;
 	};
 
 	void InitGraphics();

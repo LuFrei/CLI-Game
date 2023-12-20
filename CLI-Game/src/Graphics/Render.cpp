@@ -4,6 +4,7 @@
 #include <Windows.h>
 
 #include "Render.h"
+#include "ASCII.h"
 
 namespace Graphics {
 	std::vector<Block*> Renderer::blocks;
@@ -15,7 +16,7 @@ namespace Graphics {
 
 	const int screenWidth = 120;
 	const int screenHeight = 60;
-	wchar_t* screen = new wchar_t[screenWidth * screenHeight];
+	char* screen = new char[screenWidth * screenHeight];
 
 	DWORD charsWritten = 0;
 
@@ -89,25 +90,23 @@ namespace Graphics {
 	void Renderer::DrawBlocks() {
 
 
+		// Paint the border
 		for (int i = 0; i < screenWidth * screenHeight; i++) {
-			wchar_t texture = ' ';
-			if (i < screenWidth) {
-				texture = 'v';
+			short texture = ' ';
+			if (i < screenWidth 
+			|| i >= screenWidth * (screenHeight - 1)){
+				texture = ASCII_HORIZONTAL_BAR;
 			}
-			if (i % screenWidth == 0) {
-				texture = '>';
-			}
-			if (i % screenWidth == (screenWidth - 1)) {
-				texture = '<';
+			if (i % screenWidth == 0 
+			|| (i % screenWidth == (screenWidth - 1))) {
+				texture = ASCII_VERTICAL_BAR;
 			}
 			screen[i] = texture;
 		}
 
-		// Paint the border
-
 
 		for (Block* block : blocks) {
-			// is this block going to show up in the screen?
+			// is this block ever going going to show up in the screen?
 			if (block->x >= screenWidth
 				|| block->y >= screenHeight
 				|| block->x + block->width < 0
@@ -120,7 +119,7 @@ namespace Graphics {
 					int cellX = block->x + w;
 					int cellY = block->y + h;
 
-					// is this part of the block within screen's bounds?
+					// is this PART of the block within screen's bounds?
 					if(cellX < 0 
 					   || cellX >= screenWidth
 					   || cellY < 0
@@ -131,6 +130,6 @@ namespace Graphics {
 				}
 			}
 		}
-			WriteConsoleOutputCharacter(cScreenHandle, screen, screenWidth * screenHeight, { 0, 0 }, &charsWritten);
+		WriteConsoleOutputCharacterA(cScreenHandle, screen, screenWidth * screenHeight, { 0, 0 }, &charsWritten);				
 	}
 }

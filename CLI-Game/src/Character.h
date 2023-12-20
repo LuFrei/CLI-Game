@@ -1,6 +1,6 @@
 #pragma once
 #include "Entity.h"
-#include "Render.h"
+#include "Graphics/Render.h"
 
 class Character : public Entity {
 public:

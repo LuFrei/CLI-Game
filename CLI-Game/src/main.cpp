@@ -3,7 +3,7 @@
 #include <bitset>
 #include "Input.h"
 #include "Character.h"
-#include "Render.h"
+#include "Graphics/Render.h"
 
 const int screenWidth = 120;
 const int screenHeight = 60;

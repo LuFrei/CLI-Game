@@ -131,13 +131,14 @@
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Render.cpp" />
+    <ClCompile Include="src\Graphics\Render.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Character.h" />
     <ClInclude Include="src\Entity.h" />
+    <ClInclude Include="src\Graphics\ASCII.h" />
     <ClInclude Include="src\Input.h" />
-    <ClInclude Include="src\Render.h" />
+    <ClInclude Include="src\Graphics\Render.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="docs\Input.md" />
