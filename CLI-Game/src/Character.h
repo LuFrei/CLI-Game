@@ -8,4 +8,3 @@ public:
 	Character();
 	void Move(int x, int y);
 };
-
