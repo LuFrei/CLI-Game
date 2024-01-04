@@ -8,7 +8,7 @@
 const int screenWidth = 120;
 const int screenHeight = 60;
 wchar_t* screenData = new wchar_t[screenWidth * screenHeight];
-DWORD charsWritten = 0; // This is needed for WriteConhsoleOutputCharacter()
+DWORD screenBounds = 0; // This is needed for WriteConhsoleOutputCharacter()
 
 int main()
 {
@@ -16,9 +16,10 @@ int main()
     bool running = true;
     int count = 0;
 
+    Graphics::InitGraphics();
+
     Character* player = new Character();
 
-    Graphics::InitGraphics();
 
     while (running) {
 #pragma region Debug Info
