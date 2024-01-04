@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <Windows.h>
+#include <wincon.h>
 
 #include "Render.h"
 #include "ASCII.h"
@@ -16,26 +17,32 @@ namespace Graphics {
 
 	const int screenWidth = 120;
 	const int screenHeight = 60;
-	char* screen = new char[screenWidth * screenHeight];
+	CHAR_INFO* screen = new CHAR_INFO[screenWidth * screenHeight];
 
-	DWORD charsWritten = 0;
+	SMALL_RECT screenBounds = { 0, 0, screenWidth, screenHeight};
 
-	HANDLE cScreenHandle = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
-
-
-
+	HANDLE cScreenHandle = CreateConsoleScreenBuffer(
+		GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL
+	);
+	
 	void InitGraphics() {
 		CONSOLE_CURSOR_INFO cursorInfo;
-
 		GetConsoleCursorInfo(cScreenHandle, &cursorInfo);
 		cursorInfo.bVisible = 0;
 		SetConsoleCursorInfo(cScreenHandle, &cursorInfo);
 
+		CONSOLE_FONT_INFOEX fontInfo;
+		GetCurrentConsoleFontEx(cScreenHandle, 0, &fontInfo);
+		/*fontInfo.dwFontSize = { 4, 4 };*/
+		SetCurrentConsoleFontEx(cScreenHandle, 0, &fontInfo);
+
 		SetConsoleActiveScreenBuffer(cScreenHandle);
+
+		std::cout << "Testing new font info" << std::endl;
 	}
 	
 
-	Renderer::Renderer(int x, int y, int width, int height, char material) {
+	Renderer::Renderer(int x, int y, int width, int height, CHAR_INFO& material) {
 		block.id = blockIdCounter;
 		blockIdCounter++;
 
@@ -92,15 +99,21 @@ namespace Graphics {
 
 		// Paint the border
 		for (int i = 0; i < screenWidth * screenHeight; i++) {
-			short texture = ' ';
+			unsigned char asciiSymbol = ' ';
+			unsigned short backgroundColor = 0;
+			unsigned short foreGroundColor = FOREGROUND_RED;
 			if (i < screenWidth 
 			|| i >= screenWidth * (screenHeight - 1)){
-				texture = ASCII_HORIZONTAL_BAR;
+				asciiSymbol = ASCII_HORIZONTAL_BAR;
 			}
 			if (i % screenWidth == 0 
 			|| (i % screenWidth == (screenWidth - 1))) {
-				texture = ASCII_VERTICAL_BAR;
+				asciiSymbol = ASCII_VERTICAL_BAR;
 			}
+			CHAR_INFO texture;
+			texture.Char.AsciiChar = asciiSymbol;
+			texture.Attributes = 0 | FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY;
+
 			screen[i] = texture;
 		}
 
@@ -114,8 +127,8 @@ namespace Graphics {
 			{ continue; }
 
 
-			for (int w = 0; w < block->width; w++) {
-				for (int h = 0; h < block->height; h++) {
+			for (unsigned int w = 0; w < block->width; w++) {
+				for (unsigned int h = 0; h < block->height; h++) {
 					int cellX = block->x + w;
 					int cellY = block->y + h;
 
@@ -126,10 +139,26 @@ namespace Graphics {
 					   || cellY >= screenHeight)
 					{ continue; }
 
+
+					switch(w % 4) {
+					case(0):
+						block->material.Char.AsciiChar = ASCII_SHADE1;
+						break;
+					case(1):
+						block->material.Char.AsciiChar = ASCII_SHADE2;
+						break;
+					case(2):
+						block->material.Char.AsciiChar = ASCII_SHADE3;
+						break;
+					case(3):
+						block->material.Char.AsciiChar = ASCII_SHADE4;
+						break;
+					}
+
 					screen[screenWidth * (block->y + h) + (block->x + w)] = block->material;
 				}
 			}
 		}
-		WriteConsoleOutputCharacterA(cScreenHandle, screen, screenWidth * screenHeight, { 0, 0 }, &charsWritten);				
+		WriteConsoleOutputA(cScreenHandle, screen, { screenWidth , screenHeight }, { 0, 0 }, &screenBounds);
 	}
 }

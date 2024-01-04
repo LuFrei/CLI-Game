@@ -1,5 +1,6 @@
 
 #include "Character.h"
+#include "Graphics/ASCII.h"
 
 Character::Character() {
 	x = 0;
@@ -7,9 +8,11 @@ Character::Character() {
 	width = 1;
 	height = 1;
 
-	CHAR_INFO defaultMaterial;
-	defaultMaterial.Char.AsciiChar = 178;
-	defaultMaterial.Attributes = BACKGROUND_BLUE | FOREGROUND_GREEN;
+	CHAR_INFO defaultMaterial = {
+		ASCII_SHADE1,
+		BACKGROUND_BLUE | BACKGROUND_RED | BACKGROUND_GREEN | FOREGROUND_BLUE
+	};
+
 
 	rend = new Graphics::Renderer(0, 0, 8, 4, defaultMaterial);
 }

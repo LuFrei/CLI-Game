@@ -17,7 +17,7 @@ int main()
     int count = 0;
 
     Graphics::InitGraphics();
-
+    std::cout << "Hello and Welcome!\n";
     Character* player = new Character();
 
 

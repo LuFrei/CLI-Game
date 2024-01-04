@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <Windows.h>
 
 // We can store all created instances to update every cycle
 namespace Graphics {
@@ -13,7 +14,7 @@ namespace Graphics {
 		int x, y, z;
 		unsigned int width, height, 
 			id;
-		char material;
+		CHAR_INFO material;
 	};
 
 	void InitGraphics();
@@ -23,7 +24,7 @@ namespace Graphics {
 		static std::vector<Block*> blocks;
 	public:
 		Block block;
-		Renderer(int x, int y, int width, int height, char material);
+		Renderer(int x, int y, int width, int height, CHAR_INFO& material);
 		~Renderer();
 
 		/// <summary>
