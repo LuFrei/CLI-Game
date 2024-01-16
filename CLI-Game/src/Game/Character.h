@@ -1,6 +1,8 @@
 #pragma once
-#include "Entity.h"
-#include "Graphics/Render.h"
+#include "../CLGEngine/Entity.h"
+#include "../CLGEngine/Graphics/Render.h"
+
+using namespace CLGEngine;
 
 class Character : public Entity {
 public:

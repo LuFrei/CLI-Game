@@ -1,33 +1,24 @@
 #include <iostream>
 #include <Windows.h>
 #include <bitset>
-#include "Input.h"
-#include "Character.h"
-#include "Graphics/Render.h"
+#include "Game/Character.h"
+#include "CLGEngine/Input.h"
+#include "CLGEngine/Graphics/Render.h"
+#include "CLGEngine/Graphics/Screen.h"
 
-const int screenWidth = 120;
-const int screenHeight = 60;
-wchar_t* screenData = new wchar_t[screenWidth * screenHeight];
-DWORD screenBounds = 0; // This is needed for WriteConhsoleOutputCharacter()
+
 
 int main()
 {
-    std::cout << "Hello and Welcome!\n";
     bool running = true;
-    int count = 0;
 
-    Graphics::InitGraphics();
-    std::cout << "Hello and Welcome!\n";
+    CLGEngine::Screen screen = CLGEngine::Screen(120, 30);
     Character* player = new Character();
 
 
     while (running) {
 #pragma region Debug Info
-        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { 0, 0 });
-
-        // Display cycle
-        count++;
-        std::cout << "Running... Cycle: " << count << std::endl;
+        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { 0, 0 });;
 
 #pragma endregion
 
@@ -66,7 +57,6 @@ int main()
         }
 
 #pragma endregion
-
         // Exit condition
         if (Input::Input::GetKeyDownThisCycle(Input::KeyCode::Space)) {
             system("cls");
@@ -76,7 +66,7 @@ int main()
 #pragma endregion
 
 #pragma region Graphics
-        Graphics::Renderer::DrawBlocks();
+        screen.Draw();
 #pragma endregion 
     }
 
@@ -84,9 +74,4 @@ int main()
         GetStdHandle(STD_OUTPUT_HANDLE),
         { 0, 0 }
     );
-
-    std::cout << "Press Enter to exit..." << std::endl;
-
-    std::cin.get();
-
 }
