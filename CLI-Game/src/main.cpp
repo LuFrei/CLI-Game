@@ -1,23 +1,40 @@
 #include <iostream>
 #include <Windows.h>
+<<<<<<< HEAD
 #include <chrono>
 #include "Input.h"
 #include "Character.h"
 #include "Render.h"
+=======
+#include <bitset>
+#include "Game/Character.h"
+#include "CLGEngine/Input.h"
+#include "CLGEngine/Graphics/Render.h"
+#include "CLGEngine/Graphics/Screen.h"
+
+
+>>>>>>> f2e691b9b861c164de7ad20f97aa42d6f4f89a3d
 
 int main()
 {
     bool running = true;
+<<<<<<< HEAD
     int count = 0;
     int countsThisSec = 0;
     int countsPerSec = 0;
     
+=======
+
+    CLGEngine::Screen screen = CLGEngine::Screen(120, 30);
+>>>>>>> f2e691b9b861c164de7ad20f97aa42d6f4f89a3d
     Character* player = new Character();
     time_t now = time(0);
 
 
+
     while (running) {
 #pragma region Debug Info
+<<<<<<< HEAD
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { 0, 0 });
 
         if (time(0) != now) {
@@ -37,11 +54,11 @@ int main()
         std::cout << "Frames Per Second: " << countsPerSec << std::endl;
 
 
+=======
+        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { 0, 0 });;
+>>>>>>> f2e691b9b861c164de7ad20f97aa42d6f4f89a3d
 
 #pragma endregion
-
-        // Erase last cycle's visual data
-        Render::Renderer::EraseBlocks();
 
 #pragma region Logic
 
@@ -78,7 +95,6 @@ int main()
         }
 
 #pragma endregion
-
         // Exit condition
         if (Input::Input::GetKeyDownThisCycle(Input::KeyCode::Space)) {
             system("cls");
@@ -87,12 +103,8 @@ int main()
         }
 #pragma endregion
 
-#pragma region Render
-        //std::cout << "playerBlock: " << std::endl
-        //    << "x: " << player->rend->block.x << ", y: " << player->rend->block.y << std::endl
-        //    << "width: " << player->rend->block.width << ", height: " << player->rend->block.height << std::endl
-        //    << "material: " << player->rend->block.material << std::endl;
-        Render::Renderer::DrawBlocks();
+#pragma region Graphics
+        screen.Draw();
 #pragma endregion 
     }
 
@@ -100,9 +112,4 @@ int main()
         GetStdHandle(STD_OUTPUT_HANDLE),
         { 0, 0 }
     );
-
-    std::cout << "Press Enter to exit..." << std::endl;
-
-    std::cin.get();
-
 }

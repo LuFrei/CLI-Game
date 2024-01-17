@@ -2,18 +2,21 @@
 #include <vector>
 #include <algorithm>
 #include <Windows.h>
+#include <wincon.h>
 
 #include "Render.h"
+#include "ASCII.h"
 
-namespace Render {
+namespace Graphics {
 	std::vector<Block*> Renderer::blocks;
 
 	/// <summary>
-	/// Counter to assign new Rets unique Ids.
+	/// Counter to assign new Rects unique Ids.
 	/// </summary>
 	unsigned int blockIdCounter = 0;
+	
 
-	Renderer::Renderer(int x, int y, int width, int height, char material) {
+	Renderer::Renderer(int x, int y, int width, int height, CHAR_INFO& material) {
 		block.id = blockIdCounter;
 		blockIdCounter++;
 
@@ -22,8 +25,6 @@ namespace Render {
 		block.width = width;
 		block.height = height;
 		block.material = material;
-
-		//std::cout << "Created Renderer with Block id: " << block.id << std::endl;
 
 		blocks.push_back(&block);
 	}
@@ -35,7 +36,6 @@ namespace Render {
 		std::cout << "Deleting Renderer with Block id: " << block.id << std::endl;
 
 		// find the index of the correct Block within the vector
-		
 		// Solution from: https://stackoverflow.com/questions/589985/vectors-structs-and-stdfind
 		struct find_id  {
 			unsigned int id;
@@ -55,45 +55,17 @@ namespace Render {
 
 	}
 
-	void Renderer::updateBlock(int newX, int newY) {
+	void Renderer::updateBlockPosition(int newX, int newY) {
 		block.x = newX;
 		block.y = newY;
 	}
-	void Renderer::updateBlock(unsigned int newWidth, unsigned int newHeight) {
+	void Renderer::updateBlockSize(unsigned int newWidth, unsigned int newHeight) {
 		block.width = newWidth;
 		block.height = newHeight;
 	}
 	void Renderer::updateBlock(int newX, int newY, int newWidth, int newHeight) {
-		updateBlock(newX, newY);
-		updateBlock(newWidth, newHeight);
+		updateBlockPosition(newX, newY);
+		updateBlockPosition(newWidth, newHeight);
 	}
 
-	void Renderer::DrawBlocks() {
-		for (Block* block : blocks) {
-			//std::cout << "Drawing block " << block->id << "." << std::endl;
-			for (unsigned short i = 0; i < block->height; i++) {
-				SetConsoleCursorPosition(
-					GetStdHandle(STD_OUTPUT_HANDLE),
-					{ (short)block->x, (short)(block->y + i) }
-				);
-				for (unsigned int j = 0; j < block->width; j++) {
-					std::cout << block->material;
-				}
-			}
-		}
-	}
-
-	void Renderer::EraseBlocks() {
-		for (Block* block : blocks) {
-			for (unsigned short i = 0; i < block->height; i++) {
-				SetConsoleCursorPosition(
-					GetStdHandle(STD_OUTPUT_HANDLE),
-					{ (short)block->x, (short)(block->y + i) }
-				);
-				for (unsigned int j = 0; j < block->width; j++) {
-					std::cout << " ";
-				}
-			}
-		}
-	}
 }
