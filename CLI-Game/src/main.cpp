@@ -1,38 +1,27 @@
 #include <iostream>
 #include <Windows.h>
+#include <chrono>
 #include <bitset>
-#include "Input.h"
-#include "Character.h"
-#include "Render.h"
+#include "Game/Character.h"
+#include "CLGEngine/Input.h"
+#include "CLGEngine/Graphics/Render.h"
+#include "CLGEngine/Graphics/Screen.h"
+#include "CLGEngine/Time.h"
 
-const int screenWidth = 120;
-const int screenHeight = 60;
-wchar_t* screenData = new wchar_t[screenWidth * screenHeight];
-DWORD charsWritten = 0; // This is needed for WriteConhsoleOutputCharacter()
 
 int main()
 {
-    std::cout << "Hello and Welcome!\n";
     bool running = true;
-    int count = 0;
-
-    Character* player = new Character();
-
-    Graphics::InitGraphics();
+    CLGEngine::Screen screen = CLGEngine::Screen(120, 30);
+    Character* player = new Character(2);
 
     while (running) {
-#pragma region Debug Info
+        CLGEngine::Time::CalculateDeltaTime();
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { 0, 0 });
-
-        // Display cycle
-        count++;
-        std::cout << "Running... Cycle: " << count << std::endl;
-
-#pragma endregion
 
 #pragma region Logic
 
-#pragma region Input
+    #pragma region Input
         // Init inputs
         Input::Input::InitActiveKeys(
             {
@@ -45,27 +34,26 @@ int main()
         );
 
         Input::Input::UpdateActiveKeys();
-#pragma endregion
+    #pragma endregion
 
 #pragma region Gameplay
 
         
 
-        if (Input::Input::GetKeyDownThisCycle(Input::KeyCode::Up)) {
+        if (Input::Input::GetKeyDown(Input::KeyCode::Up)) {
             player->Move(0, -1);
         }
-        if (Input::Input::GetKeyDownThisCycle(Input::KeyCode::Down)) {
+        if (Input::Input::GetKeyDown(Input::KeyCode::Down)) {
             player->Move(0, 1);
         }
-        if (Input::Input::GetKeyDownThisCycle(Input::KeyCode::Left)) {
+        if (Input::Input::GetKeyDown(Input::KeyCode::Left)) {
             player->Move(-2, 0);
         }
-        if (Input::Input::GetKeyDownThisCycle(Input::KeyCode::Right)) {
+        if (Input::Input::GetKeyDown(Input::KeyCode::Right)) {
             player->Move(2, 0);
         }
 
 #pragma endregion
-
         // Exit condition
         if (Input::Input::GetKeyDownThisCycle(Input::KeyCode::Space)) {
             system("cls");
@@ -75,7 +63,7 @@ int main()
 #pragma endregion
 
 #pragma region Graphics
-        Graphics::Renderer::DrawBlocks();
+        screen.Draw();
 #pragma endregion 
     }
 
@@ -83,9 +71,4 @@ int main()
         GetStdHandle(STD_OUTPUT_HANDLE),
         { 0, 0 }
     );
-
-    std::cout << "Press Enter to exit..." << std::endl;
-
-    std::cin.get();
-
 }

@@ -1,36 +1,34 @@
 #pragma once
 
 #include <vector>
+#include <Windows.h>
+#include "Screen.h"
 
 // We can store all created instances to update every cycle
 namespace Graphics {
 
 	/// <summary>
-	/// 
+	/// Data that define how something will be rendered on screen. 
+	/// Position, Dimension, Material.
 	/// </summary>
 	struct Block {
 		int x, y, z;
 		unsigned int width, height, 
 			id;
-		wchar_t material;
+		CHAR_INFO material;
 	};
-
-	void InitGraphics();
 
 	class Renderer{
 	private:
 		static std::vector<Block*> blocks;
 	public:
 		Block block;
-		Renderer(int x, int y, int width, int height, char material);
+		Renderer(int x, int y, int width, int height, CHAR_INFO& material);
 		~Renderer();
 
-		/// <summary>
-		/// Visually display all active Blocks based on their position and dimensions.
-		/// </summary>
-		static void DrawBlocks();
-
-
+		// ! Do we want to create a new new Vector to pass on?
+		//   Do we want to give access to the OG Vector that may be modifiable?
+		//   Maybe we will have a middle-
 		static std::vector<Block*> GetBlocks() {
 			return blocks;
 		}
@@ -40,8 +38,5 @@ namespace Graphics {
 		void updateBlockPosition(int newX, int newY);
 		void updateBlockSize(unsigned int newWidth, unsigned int newHeight);
 		void updateBlock(int newX, int newY, int newWidth, int newHeight);
-
-		 
-		
 	};
 }

@@ -127,22 +127,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Character.cpp" />
-    <ClCompile Include="src\Entity.cpp" />
-    <ClCompile Include="src\Input.cpp" />
+    <ClCompile Include="src\CLGEngine\Graphics\Screen.cpp" />
+    <ClCompile Include="src\Game\Character.cpp" />
+    <ClCompile Include="src\CLGEngine\Entity.cpp" />
+    <ClCompile Include="src\CLGEngine\Input.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Render.cpp" />
+    <ClCompile Include="src\CLGEngine\Graphics\Render.cpp" />
+    <ClCompile Include="src\CLGEngine\Time.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Character.h" />
-    <ClInclude Include="src\Entity.h" />
-    <ClInclude Include="src\Input.h" />
-    <ClInclude Include="src\Render.h" />
+    <ClInclude Include="src\CLGEngine\Graphics\Screen.h" />
+    <ClInclude Include="src\Game\Character.h" />
+    <ClInclude Include="src\CLGEngine\Entity.h" />
+    <ClInclude Include="src\CLGEngine\Graphics\ASCII.h" />
+    <ClInclude Include="src\CLGEngine\Input.h" />
+    <ClInclude Include="src\CLGEngine\Graphics\Render.h" />
+    <ClInclude Include="src\CLGEngine\Time.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="docs\Input.md" />
     <None Include="docs\Render.md" />
     <None Include="docs\Template.md" />
+    <None Include="docs\Entity.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
