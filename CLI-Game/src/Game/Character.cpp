@@ -1,12 +1,12 @@
 
 #include "Character.h"
-#include "../CLGEngine/Graphics/ASCII.h"
 
-Character::Character() {
-	x = 0;
-	y = 0;
-	width = 1;
-	height = 1;
+#include <cmath>
+#include "../CLGEngine/Graphics/ASCII.h"
+#include "../CLGEngine/Time.h"
+
+Character::Character(float speed) {
+	this->speed = speed;
 
 	CHAR_INFO defaultMaterial = {
 		ASCII_SHADE1,
@@ -17,7 +17,10 @@ Character::Character() {
 }
 
 // We may want to do an event for Entity's move that ties with the Renderer
-void Character::Move(int x, int y) {
-	Entity::Move(x, y);
-	rend->updateBlockPosition(this->x, this->y);
+void Character::Move(float x, float y) {
+	Entity::Move((x * speed) * CLGEngine::Time::deltaTime, (y * speed) * CLGEngine::Time::deltaTime);
+	rend->updateBlockPosition(
+		(int)floor(this->x), 
+		(int)floor(this->y)
+	);
 }

@@ -5,8 +5,10 @@
 using namespace CLGEngine;
 
 class Character : public Entity {
+private:
+	float speed;
 public:
 	Graphics::Renderer* rend;
-	Character();
-	void Move(int x, int y);
+	Character(float speed);
+	void Move(float x, float y);
 };
