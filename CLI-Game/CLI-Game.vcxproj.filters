@@ -33,6 +33,9 @@
     <ClCompile Include="src\CLGEngine\Graphics\Screen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\CLGEngine\Time.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CLGEngine\Input.h">
@@ -53,10 +56,14 @@
     <ClInclude Include="src\CLGEngine\Graphics\Screen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\CLGEngine\Time.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="docs\Input.md" />
     <None Include="docs\Render.md" />
     <None Include="docs\Template.md" />
+    <None Include="docs\Entity.md" />
   </ItemGroup>
 </Project>
