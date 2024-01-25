@@ -6,10 +6,10 @@ namespace CLGEngine {
 	/// </summary>
 	class Entity {
 	public:
-		int x, y;
-		unsigned int width, height;
+		float x, y;
+		int width, height;
 		Entity();
-		Entity(int x, int y, unsigned int width, unsigned int height);
-		virtual void Move(int x, int y);
+		Entity(float x, float y, int width, int height);
+		virtual void Move(float x, float y);
 	};
 }

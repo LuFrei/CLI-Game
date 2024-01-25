@@ -3,7 +3,7 @@
 
 namespace CLGEngine {
 
-	void Entity::Move(int x, int y) {
+	void Entity::Move(float x, float y) {
 		this->x += x;
 		this->y += y;
 	}
@@ -15,7 +15,7 @@ namespace CLGEngine {
 		height = 1;
 	}
 
-	Entity::Entity(int x, int y, unsigned int width, unsigned int height) {
+	Entity::Entity(float x, float y, int width, int height) {
 		this->x = x;
 		this->y = y;
 		this->width = width;
