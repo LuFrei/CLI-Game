@@ -13,7 +13,8 @@ int main()
 {
     bool running = true;
     CLGEngine::Screen screen = CLGEngine::Screen(120, 30);
-    Character* player = new Character(2);
+    screen.SetSquareCells(true);
+    Character* player = new Character(4);
 
     while (running) {
         CLGEngine::Time::CalculateDeltaTime();
@@ -47,10 +48,10 @@ int main()
             player->Move(0, 1);
         }
         if (Input::Input::GetKeyDown(Input::KeyCode::Left)) {
-            player->Move(-2, 0);
+            player->Move(-1, 0);
         }
         if (Input::Input::GetKeyDown(Input::KeyCode::Right)) {
-            player->Move(2, 0);
+            player->Move(1, 0);
         }
 
 #pragma endregion

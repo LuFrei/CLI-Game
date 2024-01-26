@@ -149,6 +149,7 @@
     <None Include="docs\Render.md" />
     <None Include="docs\Template.md" />
     <None Include="docs\Entity.md" />
+    <None Include="docs\Screen.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

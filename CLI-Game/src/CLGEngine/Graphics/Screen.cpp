@@ -8,6 +8,8 @@ namespace CLGEngine {
   	SMALL_RECT bounds;
 	HANDLE cOutBuffer;
 
+	// TODO: This should be the same save as the window.
+	//		There's a bug right now that locks the maximum size to the default window size no matter what 
 	Screen::Screen(int width, int height) {
 		this->width = width;
 		this->height = height;
@@ -28,16 +30,6 @@ namespace CLGEngine {
 		GetConsoleCursorInfo(cOutBuffer, &cursorInfo);
 		cursorInfo.bVisible = 0;
 		SetConsoleCursorInfo(cOutBuffer, &cursorInfo);
-
-
-		//CONSOLE_FONT_INFOEX fontInfo;
-		//fontInfo.cbSize = sizeof(fontInfo);
-		//fontInfo.nFont = 0;
-		//fontInfo.dwFontSize = { 32, 32 };
-		//fontInfo.FontFamily = FF_DONTCARE;
-		//fontInfo.FontWeight = FW_NORMAL;
-		//wcscpy_s(fontInfo.FaceName, L"Consolas");
-		//SetCurrentConsoleFontEx(cScreenHandle, 0, &fontInfo);
 	}
 
 	void Screen::ClearScreenData() {
@@ -85,6 +77,7 @@ namespace CLGEngine {
 
 		ClearScreenData();
 
+
 		for (Graphics::Block* block : blocks) {
 			// is this block ever going going to show up in the screen?
 			if (block->x >= width
@@ -93,12 +86,12 @@ namespace CLGEngine {
 				|| block->y + block->height < 0)
 			{ continue; }
 
-			for (unsigned int w = 0; w < block->width; w++) {
-				for (unsigned int h = 0; h < block->height; h++) {
+			for (int h = 0; h < block->height; h++) {
+				for (int w = 0; w < block->width; w++) {
 					int cellX = block->x + w;
 					int cellY = block->y + h;
 
-					// is this PART of the block within screen's bounds?
+					// Find if this PART of the block is within screen's bounds.
 					if (cellX < 0
 						|| cellX >= width
 						|| cellY < 0
@@ -107,7 +100,9 @@ namespace CLGEngine {
 						continue;
 					}
 
-
+					// TODO: Move this out of here and into Character; May need to add renderer definition for shaders.
+					// ... As part of the renderer, we may be able to have a shader property we can add algos into to 
+					// make effects like this one below, or the screen border one...
 					switch (w % 4) {
 					case(0):
 						block->material.Char.AsciiChar = ASCII_SHADE1;
@@ -123,11 +118,20 @@ namespace CLGEngine {
 						break;
 					}
 
-
-					data[width * (block->y + h) + (block->x + w)] = block->material;
+					if (this->squareCells) {
+						int wCell = (block->x + w) * 2;
+						data[width * (block->y + h) + wCell] = block->material;
+						data[width * (block->y + h) + wCell+1] = block->material;
+					} else {
+						data[width * (block->y + h) + (block->x + w)] = block->material;
+					}
 				}
 			}
 		}
 		WriteConsoleOutputA(cOutBuffer, data, { (short)width , (short)height }, { 0, 0 }, &bounds);
+	}
+
+	void Screen::SetSquareCells(bool isSquare) {
+		this->squareCells = isSquare;
 	}
 }
