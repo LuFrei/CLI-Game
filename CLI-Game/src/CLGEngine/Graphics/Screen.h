@@ -21,7 +21,11 @@ namespace CLGEngine {
 
 		Screen(int width, int height);
 
-		// TODO: Implement this. A "cell" in this case should consist of two cells next to each other.
+		/// <summary>
+		/// Whether the renderer should display a cell as a square of standard rectangle?
+		/// Effectively doubles the width of the rendered game-world objects, more accuratly displying a 2x2 block to look like a square.
+		/// </summary>
+		/// <param name="isSquare">Should objects be </param>
 		void SetSquareCells(bool isSquare);
 		/// <summary>
 		/// Visually display all active Blocks based on their position and dimensions.

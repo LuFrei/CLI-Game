@@ -118,12 +118,14 @@ namespace CLGEngine {
 						break;
 					}
 
+
+
 					if (this->squareCells) {
-						int wCell = (block->x + w) * 2;
-						data[width * (block->y + h) + wCell] = block->material;
-						data[width * (block->y + h) + wCell+1] = block->material;
+						cellX *= 2;
+						data[width * cellY + cellX] = block->material;
+						data[width * cellY + cellX +1] = block->material;
 					} else {
-						data[width * (block->y + h) + (block->x + w)] = block->material;
+						data[width * cellY + cellX] = block->material;
 					}
 				}
 			}

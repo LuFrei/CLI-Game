@@ -12,8 +12,10 @@
 int main()
 {
     bool running = true;
+    
     CLGEngine::Screen screen = CLGEngine::Screen(120, 30);
     screen.SetSquareCells(true);
+    
     Character* player = new Character(4);
 
     while (running) {
@@ -23,7 +25,6 @@ int main()
 #pragma region Logic
 
     #pragma region Input
-        // Init inputs
         Input::Input::InitActiveKeys(
             {
             Input::KeyCode::Left,
