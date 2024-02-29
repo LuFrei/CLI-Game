@@ -20,7 +20,7 @@ Character::Character(float speed) {
 void Character::Move(float x, float y) {
 	Entity::Move((x * speed) * CLGEngine::Time::deltaTime, (y * speed) * CLGEngine::Time::deltaTime);
 	rend->updateBlockPosition(
-		(int)floor(this->x), 
-		(int)floor(this->y)
+		(int)floor(this->position.x), 
+		(int)floor(this->position.y)
 	);
 }

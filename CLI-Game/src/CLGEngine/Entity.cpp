@@ -4,21 +4,21 @@
 namespace CLGEngine {
 
 	void Entity::Move(float x, float y) {
-		this->x += x;
-		this->y += y;
+		this->position.x += x;
+		this->position.y += y;
 	}
 
 	Entity::Entity() {
-		x = 0;
-		y = 0;
-		width = 1;
-		height = 1;
+		position.x = 0;
+		position.y = 0;
+		size.x = 1;
+		size.y = 1;
 	}
 
 	Entity::Entity(float x, float y, int width, int height) {
-		this->x = x;
-		this->y = y;
-		this->width = width;
-		this->height = height;
+		this->position.x = x;
+		this->position.y = y;
+		this->size.x = width;
+		this->size.y = height;
 	}
 }
