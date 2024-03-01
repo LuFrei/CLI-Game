@@ -32,6 +32,13 @@ int main()
             Input::KeyCode::Up,
             Input::KeyCode::Down,
             Input::KeyCode::Space,
+            // For Debugging
+            Input::KeyCode::F4,
+            // For window resizing tests.
+            Input::KeyCode::I,
+            Input::KeyCode::J,
+            Input::KeyCode::K,
+            Input::KeyCode::L
             }
         );
 
@@ -54,6 +61,37 @@ int main()
         if (Input::Input::GetKeyDown(Input::KeyCode::Right)) {
             player->Move(1, 0);
         }
+        
+        // -- Begin window resizing tests
+
+        
+
+        HWND h_window = GetForegroundWindow();
+        RECT windowRect;
+        GetWindowRect(h_window, &windowRect);
+
+        int width = windowRect.right - windowRect.left;
+        int height = windowRect.bottom - windowRect.top;
+
+        if (Input::Input::GetKeyDown(Input::KeyCode::J)) {
+            width -= 100;
+            HDWP h_windowPosition = BeginDeferWindowPos(1); 
+            DeferWindowPos(
+                h_windowPosition,
+                h_window,
+                NULL,
+                windowRect.left,
+                windowRect.top,
+                width,
+                height,
+                SWP_SHOWWINDOW
+            );
+            EndDeferWindowPos(h_windowPosition);
+        }
+
+        // -- end Window Resizing tests
+
+
 
 #pragma endregion
         // Exit condition

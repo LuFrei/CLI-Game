@@ -39,9 +39,6 @@
     <ClCompile Include="src\CLGEngine\CORE\Utility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\Slash.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CLGEngine\Input.h">
@@ -66,9 +63,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\CLGEngine\CORE\Utility.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\Slash.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

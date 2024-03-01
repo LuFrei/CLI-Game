@@ -13,6 +13,7 @@ namespace CLGEngine {
 	Screen::Screen(int width, int height) {
 		this->width = width;
 		this->height = height;
+		this->squareCells = false;
 
 		data = new CHAR_INFO[width * height];
 		bounds = { 0, 0, (short)width, (short)height };
@@ -117,8 +118,6 @@ namespace CLGEngine {
 						block->material.Char.AsciiChar = ASCII_SHADE4;
 						break;
 					}
-
-
 
 					if (this->squareCells) {
 						cellX *= 2;
