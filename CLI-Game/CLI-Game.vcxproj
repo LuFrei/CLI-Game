@@ -135,6 +135,7 @@
     <ClCompile Include="src\CLGEngine\Graphics\Render.cpp" />
     <ClCompile Include="src\CLGEngine\Time.cpp" />
     <ClCompile Include="src\CLGEngine\CORE\Utility.cpp" />
+    <ClCompile Include="src\CLGEngine\CORE\MainWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CLGEngine\Graphics\Screen.h" />
@@ -145,6 +146,7 @@
     <ClInclude Include="src\CLGEngine\Graphics\Render.h" />
     <ClInclude Include="src\CLGEngine\Time.h" />
     <ClInclude Include="src\CLGEngine\CORE\Utility.h" />
+    <ClInclude Include="src\CLGEngine\CORE\MainWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="docs\Input.md" />
