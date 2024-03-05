@@ -39,7 +39,7 @@
     <ClCompile Include="src\CLGEngine\CORE\Utility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\Slash.cpp">
+    <ClCompile Include="src\CLGEngine\CORE\MainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,7 +68,7 @@
     <ClInclude Include="src\CLGEngine\CORE\Utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\Slash.h">
+    <ClInclude Include="src\CLGEngine\CORE\MainWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
