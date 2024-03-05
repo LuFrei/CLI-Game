@@ -2,8 +2,9 @@
 
 namespace CLGEngine {
 	namespace CORE {
+		template<typename T>
 		struct Vector2 {
-			float x, y;
+			T x, y;
 		};
 	}
 }
