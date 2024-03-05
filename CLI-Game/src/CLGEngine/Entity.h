@@ -8,8 +8,8 @@ namespace CLGEngine {
 	/// </summary>	
 	class Entity {
 	public:
-		CORE::Vector2 position;
-		CORE::Vector2 size;
+		CORE::Vector2<float> position;
+		CORE::Vector2<float> size;
 		Entity();
 		Entity(float x, float y, int width, int height);
 		virtual void Move(float x, float y);
