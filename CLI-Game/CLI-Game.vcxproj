@@ -134,7 +134,6 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\CLGEngine\Graphics\Render.cpp" />
     <ClCompile Include="src\CLGEngine\Time.cpp" />
-    <ClCompile Include="src\CLGEngine\CORE\Utility.cpp" />
     <ClCompile Include="src\CLGEngine\CORE\MainWindow.cpp" />
   </ItemGroup>
   <ItemGroup>

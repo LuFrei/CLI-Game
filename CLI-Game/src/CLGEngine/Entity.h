@@ -11,7 +11,7 @@ namespace CLGEngine {
 		CORE::Vector2<float> position;
 		CORE::Vector2<float> size;
 		Entity();
-		Entity(float x, float y, int width, int height);
+		Entity(float x, float y, float width, float height);
 		virtual void Move(float x, float y);
 	};
 }
