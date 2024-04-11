@@ -73,7 +73,7 @@ int main()
         
         // -- Begin window resizing tests
 
-        int windowSpeed = 10;
+        int windowSpeed = 1;
 
         // Grow Window
         if (Input::Input::GetKeyDown(Input::KeyCode::J)) {

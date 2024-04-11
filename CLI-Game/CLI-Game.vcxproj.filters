@@ -36,9 +36,6 @@
     <ClCompile Include="src\CLGEngine\Time.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CLGEngine\CORE\Utility.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\CLGEngine\CORE\MainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

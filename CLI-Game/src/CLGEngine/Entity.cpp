@@ -15,7 +15,7 @@ namespace CLGEngine {
 		size.y = 1;
 	}
 
-	Entity::Entity(float x, float y, int width, int height) {
+	Entity::Entity(float x, float y, float width, float height) {
 		this->position.x = x;
 		this->position.y = y;
 		this->size.x = width;
