@@ -22,6 +22,21 @@ namespace CLGEngine {
 		cOutBuffer = CreateConsoleScreenBuffer(
 			GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL
 		);
+		
+		CONSOLE_SCREEN_BUFFER_INFO screenBufferInfo;
+		//GetConsoleScreenBufferInfo(cOutBuffer, &screenBufferInfo);
+
+		SetConsoleScreenBufferSize(cOutBuffer, { (SHORT)width, (SHORT)height });
+		
+		GetConsoleScreenBufferInfo(cOutBuffer, &screenBufferInfo);
+
+		DWORD cMode;
+		GetConsoleMode(cOutBuffer, &cMode);
+
+		// Toggle off Text wrapping & disable auto return
+		cMode ^= (0x0002 | 0x0008);
+
+		SetConsoleMode(cOutBuffer, cMode);
 
 		SetConsoleActiveScreenBuffer(cOutBuffer);
 
@@ -92,7 +107,11 @@ namespace CLGEngine {
 					int cellX = block->x + w;
 					int cellY = block->y + h;
 
-					// Find if this PART of the block is within screen's bounds.
+					if (this->squareCells) {
+						cellX *= 2;
+					}
+
+					// Skip if this PART of the block is outside screen's bounds.
 					if (cellX < 0
 						|| cellX >= width
 						|| cellY < 0
@@ -120,7 +139,6 @@ namespace CLGEngine {
 					}
 
 					if (this->squareCells) {
-						cellX *= 2;
 						data[width * cellY + cellX] = block->material;
 						data[width * cellY + cellX +1] = block->material;
 					} else {
