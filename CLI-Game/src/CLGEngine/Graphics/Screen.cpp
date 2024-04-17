@@ -22,21 +22,6 @@ namespace CLGEngine {
 		cOutBuffer = CreateConsoleScreenBuffer(
 			GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL
 		);
-		
-		CONSOLE_SCREEN_BUFFER_INFO screenBufferInfo;
-		//GetConsoleScreenBufferInfo(cOutBuffer, &screenBufferInfo);
-
-		SetConsoleScreenBufferSize(cOutBuffer, { (SHORT)width, (SHORT)height });
-		
-		GetConsoleScreenBufferInfo(cOutBuffer, &screenBufferInfo);
-
-		DWORD cMode;
-		GetConsoleMode(cOutBuffer, &cMode);
-
-		// Toggle off Text wrapping & disable auto return
-		cMode ^= (0x0002 | 0x0008);
-
-		SetConsoleMode(cOutBuffer, cMode);
 
 		SetConsoleActiveScreenBuffer(cOutBuffer);
 
