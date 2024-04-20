@@ -92,7 +92,11 @@ namespace CLGEngine {
 					int cellX = block->x + w;
 					int cellY = block->y + h;
 
-					// Find if this PART of the block is within screen's bounds.
+					if (this->squareCells) {
+						cellX *= 2;
+					}
+
+					// Skip if this PART of the block is outside screen's bounds.
 					if (cellX < 0
 						|| cellX >= width
 						|| cellY < 0
@@ -120,7 +124,6 @@ namespace CLGEngine {
 					}
 
 					if (this->squareCells) {
-						cellX *= 2;
 						data[width * cellY + cellX] = block->material;
 						data[width * cellY + cellX +1] = block->material;
 					} else {
