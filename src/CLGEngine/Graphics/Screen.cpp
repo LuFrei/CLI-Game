@@ -4,7 +4,7 @@
 #include "ASCII.h" 
 #include "Render.h"
 
-namespace CLGEngine {
+namespace Graphics {
   	SMALL_RECT bounds;
 	HANDLE cOutBuffer;
 
