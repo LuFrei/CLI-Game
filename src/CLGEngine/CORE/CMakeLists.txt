@@ -1,0 +1,1 @@
+add_library(CORE MainWindow.cpp Utility.h)

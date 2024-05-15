@@ -1,4 +1,0 @@
-# CGLEngine CORE
-
-CGLEngine Core is the heart of the Engine.
-Vectors, Entities, and everything needed for the engine to work.
