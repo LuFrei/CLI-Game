@@ -1,24 +1,33 @@
 #include <iostream>
+#include <vector>
 #include "Entity.h"
+#include "EntityManager.h"
 
 namespace CLGEngine {
 
-	void Entity::Move(float x, float y) {
+	Entity::Entity() {
+		position = {0, 0};
+		size = {0, 0};
+		EntityManager::AddEntity(this);
+	}
+
+	Entity::~Entity() {
+		EntityManager::RemoveEntity(this);
+	}
+
+	void Entity::Translate(float x, float y) {
 		this->position.x += x;
 		this->position.y += y;
 	}
 
-	Entity::Entity() {
-		position.x = 0;
-		position.y = 0;
-		size.x = 1;
-		size.y = 1;
+	void Entity::Scale(float x, float y) {
+		this->size.x += x;
+		this->size.y += y;
 	}
 
-	Entity::Entity(float x, float y, float width, float height) {
-		this->position.x = x;
-		this->position.y = y;
-		this->size.x = width;
-		this->size.y = height;
+	void Entity::Update() {
+		// TODO: Throw an error here. 
+		//		Update() should only ever be called from derived classes.
+		// 		Base impl is needed (Point 8): https://learn.microsoft.com/en-us/cpp/error-messages/tool-errors/linker-tools-error-lnk2001?view=msvc-170#coding-issues
 	}
 }
