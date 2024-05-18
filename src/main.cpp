@@ -9,6 +9,7 @@
 #include "CLGEngine/Time.h"
 #include "CLGEngine/CORE/Utility.h"
 #include "CLGEngine/CORE/MainWindow.h"
+#include "CLGEngine/EntityManager.h"
 
 using namespace CLGEngine;
 
@@ -35,18 +36,20 @@ int main()
 
 #pragma region Gameplay
 
-        if (Input::Input::GetKeyJustPressed(Input::KeyCode::Up)) {
-            player->Move(0, -10);
-        }
-        if (Input::Input::GetKeyJustPressed(Input::KeyCode::Down)) {
-            player->Move(0, 10);
-        }
-        if (Input::Input::GetKeyJustPressed(Input::KeyCode::Left)) {
-            player->Move(-10, 0);
-        }
-        if (Input::Input::GetKeyJustPressed(Input::KeyCode::Right)) {
-            player->Move(10, 0);
-        }
+    EntityManager::UpdateEntities();
+
+        // if (Input::Input::GetKeyPressed(Input::KeyCode::Up)) {
+        //     player->Move(0, -10);
+        // }
+        // if (Input::Input::GetKeyPressed(Input::KeyCode::Down)) {
+        //     player->Move(0, 10);
+        // }
+        // if (Input::Input::GetKeyPressed(Input::KeyCode::Left)) {
+        //     player->Move(-10, 0);
+        // }
+        // if (Input::Input::GetKeyPressed(Input::KeyCode::Right)) {
+        //     player->Move(10, 0);
+        // }
 
 #pragma endregion
         // Exit condition
