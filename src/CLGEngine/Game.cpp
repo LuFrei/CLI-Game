@@ -1,14 +1,25 @@
 #include "Game.h"
 #include "Input.h"
+#include "Time.h"
 #include "EntityManager.h"
+
+
+Game::Game() : 
+    screen(120, 30),
+    mainWindow() 
+{
+    screen.SetSquareCells(true);
+}
 
 void Game::Play() {
     while(running){
-        // Get Player Input 
+        CLGEngine::Time::CalculateDeltaTime();
+
         Input::Input::UpdateAllInputState();
-        // Update Entities
+
         CLGEngine::EntityManager::UpdateEntities();
-        // Update Render
+
+        screen.Draw();
     }
 }
 
