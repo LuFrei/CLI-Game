@@ -8,6 +8,7 @@ class Wall : public Entity {
 private:
 public:
     Wall();
+    ~Wall();
 	Graphics::Renderer* rend;
     void Update();
 };
