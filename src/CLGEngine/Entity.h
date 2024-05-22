@@ -11,9 +11,9 @@ namespace CLGEngine {
 	public:
 		CORE::Vector2<float> position; // Due to float math inacurracy, should we make these int, and turn them into int??
 		CORE::Vector2<float> size;
-		Entity();
+		Entity(float x, float y, float width,float height);
 		~Entity();
-		virtual void Update();
+		virtual void Update() = 0;
 		virtual void Translate(float x, float y);
 		virtual void Scale(float x, float y);
 	};

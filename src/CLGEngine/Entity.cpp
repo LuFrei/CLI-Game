@@ -5,9 +5,9 @@
 
 namespace CLGEngine {
 
-	Entity::Entity() {
-		position = {0, 0};
-		size = {0, 0};
+	Entity::Entity(float x, float y, float width,float height) {
+		position = {x, y};
+		size = {width, height};
 		EntityManager::AddEntity(this);
 	}
 
@@ -21,13 +21,7 @@ namespace CLGEngine {
 	}
 
 	void Entity::Scale(float x, float y) {
-		this->size.x += x;
-		this->size.y += y;
-	}
-
-	void Entity::Update() {
-		// TODO: Throw an error here. 
-		//		Update() should only ever be called from derived classes.
-		// 		Base impl is needed (Point 8): https://learn.microsoft.com/en-us/cpp/error-messages/tool-errors/linker-tools-error-lnk2001?view=msvc-170#coding-issues
+		this->size.x *= x;
+		this->size.y *= y;
 	}
 }
