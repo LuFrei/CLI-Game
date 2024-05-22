@@ -10,6 +10,7 @@ private:
 public:
 	Graphics::Renderer* rend;
 	Character(float speed);
+	~Character();
 	void Move(float x, float y);
 	void Update();
 };

@@ -1,20 +1,15 @@
 #include "Character.h"
 
+#include <iostream>
 #include <cmath>
 #include "../CLGEngine/Graphics/ASCII.h"
 #include "../CLGEngine/Time.h"
 #include "../CLGEngine/Input.h"
 
-Character::Character(float speed) {
-	this->speed = speed;
-
-	CHAR_INFO defaultMaterial = {
-		ASCII_SHADE1,
-		BACKGROUND_BLUE | BACKGROUND_RED | BACKGROUND_GREEN | FOREGROUND_BLUE
-	};
-	position = {0 , 0};
-	size = {4 , 4};
-	rend = new Graphics::Renderer(position.x, position.x, size.x, size.y, defaultMaterial);
+Character::Character(float speed):
+	Entity(0, 0, 4, 4),
+	speed(speed) {
+		rend = new Graphics::Renderer(position.x, position.y, size.x, size.y);
 }
 
 void Character::Update(){
@@ -30,6 +25,10 @@ void Character::Update(){
         if (Input::Input::GetKeyPressed(Input::KeyCode::Right)) {
             Move(10, 0);
         }
+}
+
+Character::~Character(){
+	delete rend;
 }
 
 // We may want to do an event for Entity's move that ties with the Renderer
