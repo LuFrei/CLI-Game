@@ -15,6 +15,24 @@ namespace Graphics {
 	/// </summary>
 	unsigned int blockIdCounter = 0;
 	
+	
+	CHAR_INFO defaultMaterial = {
+		ASCII_SHADE1,
+		BACKGROUND_BLUE | BACKGROUND_RED | BACKGROUND_GREEN | FOREGROUND_BLUE
+	};
+
+	Renderer::Renderer(int x, int y, int width, int height) {
+		block.id = blockIdCounter;
+		blockIdCounter++;
+
+		block.x = x;
+		block.y = y;
+		block.width = width;
+		block.height = height;
+		block.material = defaultMaterial;
+
+		blocks.push_back(&block);
+	}
 
 	Renderer::Renderer(int x, int y, int width, int height, CHAR_INFO& material) {
 		block.id = blockIdCounter;
@@ -30,11 +48,6 @@ namespace Graphics {
 	}
 	 
 	Renderer::~Renderer() {
-		// Delete the Rects
-		// Remove it from Rectangles list
-
-		std::cout << "Deleting Renderer with Block id: " << block.id << std::endl;
-
 		// find the index of the correct Block within the vector
 		// Solution from: https://stackoverflow.com/questions/589985/vectors-structs-and-stdfind
 		struct find_id  {

@@ -12,8 +12,8 @@ namespace Graphics {
 	/// Position, Dimension, Material.
 	/// </summary>
 	struct Block {
-		int x, y, z;
-		unsigned int width, height, 
+		int x, y, z,
+			width, height, 
 			id;
 		CHAR_INFO material;
 	};
@@ -23,6 +23,8 @@ namespace Graphics {
 		static std::vector<Block*> blocks;
 	public:
 		Block block;
+		Renderer(){};
+		Renderer(int x, int y, int width, int height);
 		Renderer(int x, int y, int width, int height, CHAR_INFO& material);
 		~Renderer();
 
