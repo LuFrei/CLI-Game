@@ -37,8 +37,8 @@ namespace Graphics {
 		/// <summary>
 		/// Up date data to be displayed for this block.
 		/// </summary>
-		void updateBlockPosition(int newX, int newY);
-		void updateBlockSize(unsigned int newWidth, unsigned int newHeight);
-		void updateBlock(int newX, int newY, int newWidth, int newHeight);
+		void updateBlockPosition(float newX, float newY);
+		void updateBlockSize(float newWidth, float newHeight);
+		void updateBlock(float newX, float newY, float newWidth, float newHeight);
 	};
 }

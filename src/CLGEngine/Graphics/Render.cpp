@@ -68,15 +68,15 @@ namespace Graphics {
 
 	}
 
-	void Renderer::updateBlockPosition(int newX, int newY) {
+	void Renderer::updateBlockPosition(float newX, float newY) {
 		block.x = newX;
 		block.y = newY;
 	}
-	void Renderer::updateBlockSize(unsigned int newWidth, unsigned int newHeight) {
+	void Renderer::updateBlockSize(float newWidth, float newHeight) {
 		block.width = newWidth;
 		block.height = newHeight;
 	}
-	void Renderer::updateBlock(int newX, int newY, int newWidth, int newHeight) {
+	void Renderer::updateBlock(float newX, float newY, float newWidth, float newHeight) {
 		updateBlockPosition(newX, newY);
 		updateBlockPosition(newWidth, newHeight);
 	}
