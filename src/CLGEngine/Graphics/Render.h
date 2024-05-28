@@ -12,8 +12,8 @@ namespace Graphics {
 	/// Position, Dimension, Material.
 	/// </summary>
 	struct Block {
-		int x, y, z;
-		unsigned int width, height, 
+		int x, y, z,
+			width, height, 
 			id;
 		CHAR_INFO material;
 	};
@@ -23,6 +23,8 @@ namespace Graphics {
 		static std::vector<Block*> blocks;
 	public:
 		Block block;
+		Renderer(){};
+		Renderer(int x, int y, int width, int height);
 		Renderer(int x, int y, int width, int height, CHAR_INFO& material);
 		~Renderer();
 
@@ -35,8 +37,8 @@ namespace Graphics {
 		/// <summary>
 		/// Up date data to be displayed for this block.
 		/// </summary>
-		void updateBlockPosition(int newX, int newY);
-		void updateBlockSize(unsigned int newWidth, unsigned int newHeight);
-		void updateBlock(int newX, int newY, int newWidth, int newHeight);
+		void updateBlockPosition(float newX, float newY);
+		void updateBlockSize(float newWidth, float newHeight);
+		void updateBlock(float newX, float newY, float newWidth, float newHeight);
 	};
 }

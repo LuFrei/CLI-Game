@@ -5,14 +5,12 @@
 
 using namespace CLGEngine;
 
-class Character : public Entity {
+class Wall : public Entity {
 private:
-	float speed;
 public:
+    Wall();
+    ~Wall();
 	Graphics::Renderer* rend;
-	Collider* col;
-	Character(float speed);
-	~Character();
-	void Move(float x, float y);
-	void Update();
+    Collider* col;
+    void Update();
 };
