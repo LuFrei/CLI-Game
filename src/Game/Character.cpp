@@ -10,6 +10,7 @@ Character::Character(float speed):
 	Entity(0, 0, 4, 4),
 	speed(speed) {
 		rend = new Graphics::Renderer(position.x, position.y, size.x, size.y);
+		col = new CLGEngine::Collider(position.x, position.y, size.x, size.y);
 }
 
 void Character::Update(){
@@ -29,6 +30,7 @@ void Character::Update(){
 
 Character::~Character(){
 	delete rend;
+	delete col;
 }
 
 // We may want to do an event for Entity's move that ties with the Renderer
@@ -38,7 +40,11 @@ void Character::Move(float x, float y) {
 		(y * speed) * CLGEngine::Time::deltaTime
 	);
 	rend->updateBlockPosition(
-		(int)floor(this->position.x), 
-		(int)floor(this->position.y)
+		this->position.x, 
+		this->position.y
+	);
+	col->UpdateColliderPosition(
+		this->position.x, 
+		this->position.y
 	);
 }
