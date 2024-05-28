@@ -2,6 +2,7 @@
 #include "Input.h"
 #include "Time.h"
 #include "EntityManager.h"
+#include "Collider.h"
 
 
 Game::Game() : 
@@ -18,6 +19,8 @@ void Game::Play() {
         Input::Input::UpdateAllInputState();
 
         CLGEngine::EntityManager::UpdateEntities();
+
+        CLGEngine::Collider::CheckCollisions();
 
         screen.Draw();
     }
