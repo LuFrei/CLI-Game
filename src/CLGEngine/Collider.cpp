@@ -4,35 +4,9 @@
 
 namespace CLGEngine{
 
-struct ColliderUpdateMeta {
-    Collider* col;
-    CORE::Vector2<float> movementVec;
-};
-
-std::vector<Collider*> activeColliders;
-std::vector<Collider*> updateQueue;
+std::vector<Collider*> activeColliders; // TODO: Replace with Quad Tree.
 int counter = 0;
 
-Collider* GetCollision(Collider* movedCol){
-    Collider* hit = nullptr;
-    for(Collider* col : activeColliders){
-        if(movedCol->bounds.left > col->bounds.right
-          || movedCol->bounds.right < col->bounds.left
-          || movedCol->bounds.bottom < col->bounds.top
-          || movedCol->bounds.top > col->bounds.bottom
-          || col == movedCol)
-        {
-            continue;
-        }
-        hit = col;
-        break;
-    }
-    return hit;
-}
-
-/// @brief 
-/// @param id 
-/// @return -1 if not found.
 int FindColliderIdx(Collider* col){
     int min = 0;
     int max = activeColliders.size();
@@ -56,50 +30,60 @@ int FindColliderIdx(Collider* col){
     return -1;
 }
 
+void Collider::UpdateBounds(){
+    bounds = {position.x, position.y, position.x+size.x, position.y+size.y};
+}
 
 Collider::Collider(float x, float y, float width, float height):
     position({x, y}),
     size({width, height}),
     bounds({x, y, x+width, y+height}),
-    id(counter++)
+    solid(true)
 {
     activeColliders.push_back(this);
 }
 
 Collider::~Collider(){
-    int idx = FindColliderIdx(this);
+    int idx = FindColliderIdx(this); //TODO : Handle if idx = -1
     activeColliders.erase(activeColliders.begin() + idx);
 }
 
-void Collider::UpdateColliderPosition(float newX, float newY){
+void Collider::SetColliderPosition(float newX, float newY){
     position = {newX, newY};
-    bounds = {position.x, position.y, position.x+size.x, position.y+size.y};
-    updateQueue.push_back(this);
+    UpdateBounds();
 }
 
-void Collider::UpdateColliderSize(float newWidth, float newHeight){
+void Collider::SetColliderSize(float newWidth, float newHeight){
     size = {newWidth, newHeight};
-    bounds = {position.x, position.y, position.x+size.x, position.y+size.y};
-    updateQueue.push_back(this);
+    UpdateBounds();
 }
 
 void Collider::UpdateCollider(float newX, float newY, float newWidth, float newHeight){
     CORE::Vector2<float> deltaVec = {newX - position.x, newY - position.y};
     position = {newX, newY};
     size = {newWidth, newHeight};
-    bounds = {position.x, position.y, position.x+size.x, position.y+size.y};
-    updateQueue.push_back(this); // Should we put some meta data? Like what direction we moved?
+    UpdateBounds();
 }
 
-/// @brief 
-/// @return collided entity. Returns Nullptr if no collision.
-/// Note, order of checks are not fixed. When colliding with multiple, no guarentee one collider will be returned over the other
-void Collider::CheckCollisions(){
+bool Collider::CheckCollision(){
     Collider* hit = nullptr;
-    for(Collider* movedCol : updateQueue){
-        Collider* hit = GetCollision(movedCol);
+    return CheckCollision(&hit);
+}
+
+bool Collider::CheckCollision(Collider** hit){
+    for(Collider* col : activeColliders){
+        if(bounds.left >= col->bounds.right
+          || bounds.right <= col->bounds.left
+          || bounds.bottom <= col->bounds.top
+          || bounds.top >= col->bounds.bottom
+          || col == this)
+        {
+            continue;
+        }
+        *hit = col;
+        return true;
     }
-    updateQueue.erase(updateQueue.begin(), updateQueue.end());
+    return false;
 }
 
 

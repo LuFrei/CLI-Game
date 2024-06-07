@@ -17,13 +17,19 @@ private:
     CORE::Vector2<float> size;
 
     int id;
+    void UpdateBounds();
 public:
+    bool solid;
     Bounds bounds;
     Collider(float x, float y, float width, float height);
     ~Collider();
-    static void CheckCollisions();
-    void UpdateColliderPosition(float newX, float newY);
-    void UpdateColliderSize(float newWidth, float newHeight);
+    /// @brief 
+    /// @return collided entity. Returns Nullptr if no collision.
+    /// Note, order of checks are not fixed. When colliding with multiple, no guarentee one collider will be returned over the other
+    bool CheckCollision();
+    bool CheckCollision(Collider** hit);
+    void SetColliderPosition(float newX, float newY);
+    void SetColliderSize(float newWidth, float newHeight);
     void UpdateCollider(float newX, float newY, float newWidth, float newHeight); // Dejavu... Maybe we should reduce this somehow.
 };
 }
