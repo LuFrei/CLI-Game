@@ -21,7 +21,8 @@ namespace Graphics {
 		BACKGROUND_BLUE | BACKGROUND_RED | BACKGROUND_GREEN | FOREGROUND_BLUE
 	};
 
-	Renderer::Renderer(int x, int y, int width, int height) {
+	Renderer::Renderer(int x, int y, int width, int height) 
+		: Component (x, y) {
 		block.id = blockIdCounter;
 		blockIdCounter++;
 
@@ -34,7 +35,8 @@ namespace Graphics {
 		blocks.push_back(&block);
 	}
 
-	Renderer::Renderer(int x, int y, int width, int height, CHAR_INFO& material) {
+	Renderer::Renderer(int x, int y, int width, int height, CHAR_INFO& material)
+		: Component(x, y) {
 		block.id = blockIdCounter;
 		blockIdCounter++;
 
@@ -68,17 +70,17 @@ namespace Graphics {
 
 	}
 
-	void Renderer::updateBlockPosition(float newX, float newY) {
+	void Renderer::SetBlockPosition(float newX, float newY) {
 		block.x = newX;
 		block.y = newY;
 	}
-	void Renderer::updateBlockSize(float newWidth, float newHeight) {
+	void Renderer::SetBlockSize(float newWidth, float newHeight) {
 		block.width = newWidth;
 		block.height = newHeight;
 	}
-	void Renderer::updateBlock(float newX, float newY, float newWidth, float newHeight) {
-		updateBlockPosition(newX, newY);
-		updateBlockPosition(newWidth, newHeight);
+	void Renderer::UpdateBlock(float newX, float newY, float newWidth, float newHeight) {
+		SetBlockPosition(newX, newY);
+		SetBlockSize(newWidth, newHeight);
 	}
 
 }

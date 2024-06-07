@@ -10,7 +10,5 @@ private:
 public:
     Wall();
     ~Wall();
-	Graphics::Renderer* rend;
-    Collider* col;
     void Update();
 };
