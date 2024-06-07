@@ -1,1 +1,1 @@
-add_library(CORE MainWindow.cpp Utility.h)
+add_library(CORE MainWindow.cpp Utility.h Component.h)

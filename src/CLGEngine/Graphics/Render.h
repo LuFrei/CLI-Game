@@ -3,6 +3,7 @@
 #include <vector>
 #include <Windows.h>
 #include "Screen.h"
+#include "../CORE/Component.h"
 
 // We can store all created instances to update every cycle
 namespace Graphics {
@@ -18,12 +19,12 @@ namespace Graphics {
 		CHAR_INFO material;
 	};
 
-	class Renderer{
+	class Renderer : Component {
 	private:
 		static std::vector<Block*> blocks;
 	public:
 		Block block;
-		Renderer(){};
+		Renderer();
 		Renderer(int x, int y, int width, int height);
 		Renderer(int x, int y, int width, int height, CHAR_INFO& material);
 		~Renderer();
@@ -37,8 +38,8 @@ namespace Graphics {
 		/// <summary>
 		/// Up date data to be displayed for this block.
 		/// </summary>
-		void updateBlockPosition(float newX, float newY);
-		void updateBlockSize(float newWidth, float newHeight);
-		void updateBlock(float newX, float newY, float newWidth, float newHeight);
+		void SetBlockPosition(float newX, float newY);
+		void SetBlockSize(float newWidth, float newHeight);
+		void UpdateBlock(float newX, float newY, float newWidth, float newHeight);
 	};
 }
