@@ -7,12 +7,10 @@ using namespace CLGEngine;
 
 class Character : public Entity {
 private:
-	float speed;
+	int speed;
 public:
-	Graphics::Renderer* rend;
-	Collider* col;
-	Character(float speed);
+	Character(int speed);
 	~Character();
-	void Move(float x, float y);
+	void Move(int x, int y);
 	void Update();
 };

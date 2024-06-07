@@ -10,7 +10,7 @@ int main()
 {
     Game game = Game();
 
-    Character* player = new Character(4);
+    Character* player = new Character(10);
     Wall* wall = new Wall();
 
     game.Play();

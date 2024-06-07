@@ -20,8 +20,6 @@ void Game::Play() {
 
         CLGEngine::EntityManager::UpdateEntities();
 
-        CLGEngine::Collider::CheckCollisions();
-
         screen.Draw();
     }
 }
