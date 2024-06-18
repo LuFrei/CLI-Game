@@ -108,20 +108,20 @@ namespace Graphics {
 					// TODO: Move this out of here and into Character; May need to add renderer definition for shaders.
 					// ... As part of the renderer, we may be able to have a shader property we can add algos into to 
 					// make effects like this one below, or the screen border one...
-					switch (w % 4) {
-					case(0):
-						block->material.Char.AsciiChar = ASCII_SHADE1;
-						break;
-					case(1):
-						block->material.Char.AsciiChar = ASCII_SHADE2;
-						break;
-					case(2):
-						block->material.Char.AsciiChar = ASCII_SHADE3;
-						break;
-					case(3):
-						block->material.Char.AsciiChar = ASCII_SHADE4;
-						break;
-					}
+					// switch (w % 4) {
+					// case(0):
+					// 	block->material.Char.AsciiChar = ASCII_SHADE1;
+					// 	break;
+					// case(1):
+					// 	block->material.Char.AsciiChar = ASCII_SHADE2;
+					// 	break;
+					// case(2):
+					// 	block->material.Char.AsciiChar = ASCII_SHADE3;
+					// 	break;
+					// case(3):
+					// 	block->material.Char.AsciiChar = ASCII_SHADE4;
+					// 	break;
+					// }
 
 					if (this->squareCells) {
 						data[width * cellY + cellX] = block->material;

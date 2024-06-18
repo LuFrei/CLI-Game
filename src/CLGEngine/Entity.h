@@ -16,7 +16,7 @@ namespace CLGEngine {
 	private:
 		Entity* parent;
 		std::vector<Component*> components;
-		Graphics::Renderer* rend; 
+		Graphics::Renderer* rend;
 		Collider* col;
 	public:
 		CORE::Vector2<float> position;
@@ -26,7 +26,7 @@ namespace CLGEngine {
 		virtual void Update() = 0;
 		virtual void Translate(float x, float y);
 		virtual void Scale(float x, float y);
-		void AddRenderer();
+		void AddRenderer(CHAR_INFO material);
 		/// @brief Add Renderer with offset
 		void AddCollider();
 	};

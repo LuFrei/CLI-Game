@@ -6,10 +6,14 @@
 #include "../CLGEngine/Time.h"
 #include "../CLGEngine/Input.h"
 
+CHAR_INFO charMat = {
+    ' ', BACKGROUND_BLUE
+};
+
 Character::Character(int speed):
 	Entity(0, 0, 1, 1),
 	speed(speed) {
-		AddRenderer();
+		AddRenderer(charMat);
 		AddCollider();
 }
 
@@ -31,7 +35,6 @@ void Character::Update(){
 Character::~Character(){
 }
 
-// We may want to do an event for Entity's move that ties with the Renderer
 void Character::Move(int x, int y) {
 	Translate(
 		(x * speed) * CLGEngine::Time::deltaTime, 

@@ -9,6 +9,7 @@ class Wall : public Entity {
 private:
 public:
     Wall();
+    Wall(int x, int y);
     ~Wall();
     void Update();
 };
