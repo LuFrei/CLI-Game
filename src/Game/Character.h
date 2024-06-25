@@ -8,9 +8,10 @@ using namespace CLGEngine;
 class Character : public Entity {
 private:
 	int speed;
+	bool grounded;
 public:
 	Character(int speed);
 	~Character();
-	void Move(int x, int y);
+	void Move(CORE::Vector2<int>);
 	void Update();
 };
