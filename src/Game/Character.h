@@ -12,6 +12,7 @@ private:
 public:
 	Character(int speed);
 	~Character();
-	void Move(float);
+	void Move(float direction);
+	void Jump();
 	void Update();
 };

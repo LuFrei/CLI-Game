@@ -16,6 +16,12 @@ Wall::Wall(int x, int y)
         AddCollider();
 }
 
+Wall::Wall(int x, int y, int width, int height)
+    : Entity(x, y, width, height){
+        AddRenderer(wallMat);
+        AddCollider();
+}
+
 Wall::~Wall(){
 }
 
