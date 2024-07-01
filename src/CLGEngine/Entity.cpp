@@ -53,6 +53,10 @@ namespace CLGEngine {
 		position.y = newY;
 	}
 
+	void Entity::Translate(CORE::Vector2<float> direction) {
+		Translate(direction.x, direction.y);
+	}
+
 	void Entity::Scale(float x, float y) {
 		this->size.x *= x;
 		this->size.y *= y;

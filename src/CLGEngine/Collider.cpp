@@ -73,7 +73,7 @@ bool Collider::CheckCollision(){
 bool Collider::CheckCollision(Collider** hit){
     for(Collider* col : activeColliders){
         if(bounds.left >= col->bounds.right
-          || bounds.right <= col->bounds.left
+          || bounds.right <= col->bounds.left 
           || bounds.bottom <= col->bounds.top
           || bounds.top >= col->bounds.bottom
           || col == this)
@@ -85,6 +85,4 @@ bool Collider::CheckCollision(Collider** hit){
     }
     return false;
 }
-
-
 }

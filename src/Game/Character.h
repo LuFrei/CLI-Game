@@ -12,6 +12,6 @@ private:
 public:
 	Character(int speed);
 	~Character();
-	void Move(CORE::Vector2<int>);
+	void Move(float);
 	void Update();
 };

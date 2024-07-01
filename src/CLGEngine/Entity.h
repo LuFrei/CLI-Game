@@ -24,8 +24,9 @@ namespace CLGEngine {
 		Entity(float x, float y, float width,float height);
 		~Entity();
 		virtual void Update() = 0;
-		virtual void Translate(float x, float y);
-		virtual void Scale(float x, float y);
+		void Translate(float x, float y);
+		void Translate(CORE::Vector2<float> direction);
+		void Scale(float x, float y);
 		void AddRenderer(CHAR_INFO material);
 		/// @brief Add Renderer with offset
 		void AddCollider();
