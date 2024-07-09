@@ -74,7 +74,7 @@ void Character::Move(float momentum) {
 
 const int jumpHeight = 4;
 const int jumpSpeed = 10;
-// TODO: Remove the following consts - thesea re for testing purposes.
+// TODO: Remove the following consts - these are for testing purposes.
 const int groundHeight = 20;
 const int maxHeight = 16;
 int vertMomentum = 0;
@@ -85,6 +85,7 @@ void Character::Jump(){
 
     position.y += -vertMomentum * jumpSpeed * CLGEngine::Time::deltaTime;
 
+// TODO: CHANGE RENDERING SO IT ALWAYS UPDATES
     if(position.y <= maxHeight && vertMomentum == 1){
         position.y = maxHeight;
         vertMomentum = -1;

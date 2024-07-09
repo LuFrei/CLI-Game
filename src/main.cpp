@@ -14,8 +14,8 @@ int main()
     Wall* ground = new Wall(0, 21, 60, 3);
     Wall* wall1 = new Wall(10, 20, 1, 1);
     Wall* wall2 = new Wall(15, 19, 1, 2);
-    Wall* wall3 = new Wall(20, 18, 1, 3);
-    Wall* wall4 = new Wall(25, 17, 1, 4);
+    Wall* wall3 = new Wall(20, 18, 5, 3);
+    Wall* wall4 = new Wall(35, 17, 1, 4);
     
     
     game.Play();
