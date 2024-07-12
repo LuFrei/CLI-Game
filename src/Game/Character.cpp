@@ -89,12 +89,12 @@ void Character::Jump(){
 
 // TODO: CHANGE RENDERING SO IT ALWAYS UPDATES, even when position is directly changed.
     if(rect().position.y <= maxHeight && vertMomentum == 1){
-        SetPosition({0, maxHeight});
+        SetPosition({rect().position.x, maxHeight});
         vertMomentum = -1;
     }
 
     if(rect().position.y >= groundHeight && vertMomentum == -1){
-        SetPosition({0, groundHeight});
+        SetPosition({rect().position.x, groundHeight});
         vertMomentum = 1;
         jumping = 0;
     }
