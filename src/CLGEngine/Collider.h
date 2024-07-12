@@ -27,7 +27,7 @@ public:
     /// Note, order of checks are not fixed. When colliding with multiple, no guarentee one collider will be returned over the other
     bool CheckCollision();
     bool CheckCollision(Collider** hit);
-    void SetColliderPosition(float newX, float newY);
+    void SetColliderPosition(CORE::Vector2<float> newPosition);
     void SetColliderSize(float newWidth, float newHeight);
     void UpdateCollider(float newX, float newY, float newWidth, float newHeight); // Dejavu... Maybe we should reduce this somehow.
 };

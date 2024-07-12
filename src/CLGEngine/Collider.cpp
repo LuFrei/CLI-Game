@@ -74,8 +74,8 @@ void Collider::UpdateBounds(){
 
 // TODO(start): The following functions are using offset as a local rect, and updating it to match Entity's Rect.
 //            We'll have to change this later to directly use Entity's Rect
-void Collider::SetColliderPosition(float newX, float newY){
-    offset.position = {newX, newY};
+void Collider::SetColliderPosition(CORE::Vector2<float> newPosition){
+    offset.position = newPosition;
     UpdateBounds();
 }
 

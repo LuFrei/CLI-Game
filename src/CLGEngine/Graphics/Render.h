@@ -3,6 +3,7 @@
 #include <vector>
 #include <Windows.h>
 #include "../CORE/Component.h"
+#include "../CORE/Utility.h"
 
 // We can store all created instances to update every cycle
 namespace Graphics {
@@ -38,7 +39,7 @@ namespace Graphics {
 		/// <summary>
 		/// Up date data to be displayed for this block.
 		/// </summary>
-		void SetBlockPosition(float newX, float newY);
+		void SetBlockPosition(CLGEngine::CORE::Vector2<float> newPosition);
 		void SetBlockSize(float newWidth, float newHeight);
 		void UpdateBlock(float newX, float newY, float newWidth, float newHeight);
 

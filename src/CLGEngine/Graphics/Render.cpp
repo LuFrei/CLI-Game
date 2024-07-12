@@ -57,16 +57,16 @@ namespace Graphics {
 
 	}
 
-	void Renderer::SetBlockPosition(float newX, float newY) {
-		block.x = newX;
-		block.y = newY;
+	void Renderer::SetBlockPosition(CLGEngine::CORE::Vector2<float> newPosition) {
+		block.x = newPosition.x;
+		block.y = newPosition.y;
 	}
 	void Renderer::SetBlockSize(float newWidth, float newHeight) {
 		block.width = newWidth;
 		block.height = newHeight;
 	}
 	void Renderer::UpdateBlock(float newX, float newY, float newWidth, float newHeight) {
-		SetBlockPosition(newX, newY);
+		SetBlockPosition({newX, newY});
 		SetBlockSize(newWidth, newHeight);
 	}
 

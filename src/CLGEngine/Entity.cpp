@@ -7,7 +7,7 @@ namespace CLGEngine {
 	Entity::Entity(float x, float y, float width,float height)
 		   : rend(nullptr)
 		   , col(nullptr)
-		   , rect({x, y, width, height})
+		   , rect_({x, y, width, height})
 		{
 		EntityManager::AddEntity(this);
 	}
@@ -23,45 +23,47 @@ namespace CLGEngine {
 		EntityManager::RemoveEntity(this);
 	}
 
-	void Entity::Translate(float x, float y) {
+	void Entity::Translate(CORE::Vector2<float> direction) {
 		//Check if we can translate first
 		//project new location
-		float newX = rect.position.x + x;
-		float newY = rect.position.y + y;
+		float newX = rect_.position.x + direction.x;
+		float newY = rect_.position.y + direction.y;
 		if(col != nullptr){
-			col->SetColliderPosition(newX, newY);
+			col->SetColliderPosition({newX, newY});
 			Collider* hit = NULL;
 			if(col->CheckCollision(&hit)){
 				// if new movement hits something, snap position to hug collided object..
-				if(x > 0){
-					newX = hit->bounds.left - rect.size.x;
+				if(direction.x > 0){
+					newX = hit->bounds.left - rect_.size.x;
 				}
-				if(x < 0){
+				if(direction.x < 0){
 					newX = hit->bounds.right;
 				}
-				if(y > 0){
-					newY = hit->bounds.top - rect.size.y;
+				if(direction.y > 0){
+					newY = hit->bounds.top - rect_.size.y;
 				}
-				if(y < 0){
+				if(direction.y < 0){
 					newY = hit->bounds.bottom;
 				}
-				col->SetColliderPosition(newX, newY);
+				col->SetColliderPosition({newX, newY});
 			}
 		}
 		if(rend != nullptr){
-			rend->SetBlockPosition(newX, newY);
+			rend->SetBlockPosition({newX, newY});
 		}
-		rect.position.x = newX;
-		rect.position.y = newY;
+		rect_.position.x = newX;
+		rect_.position.y = newY;
 	}
 
-	void Entity::Translate(CORE::Vector2<float> direction) {
-		Translate(direction.x, direction.y);
+	void Entity::SetPosition(CORE::Vector2<float> newPos){
+		//Tell Components I moved.
+		col->SetColliderPosition(newPos);
+		rend->SetBlockPosition(newPos);
 	}
 
 	void Entity::Scale(float x, float y) {
-		this->rect.size.x *= x;
-		this->rect.size.y *= y;
+		this->rect_.size.x *= x;
+		this->rect_.size.y *= y;
 	}
 
 	void Entity::AddRenderer(CHAR_INFO material){
@@ -69,7 +71,7 @@ namespace CLGEngine {
 		if(rend != nullptr){
 			delete rend;
 		}
-		rend = new Graphics::Renderer(&this->rect, material);
+		rend = new Graphics::Renderer(&this->rect_, material);
 	}
 
 	void Entity::AddCollider(){
@@ -77,6 +79,6 @@ namespace CLGEngine {
 			// remove from component
 			delete col;
 		}
-		col = new Collider(&this->rect);
+		col = new Collider(&this->rect_);
 	}
 }
