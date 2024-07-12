@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CORE/Utility.h"
+#include "CORE/Component.h"
 
 namespace CLGEngine{
 
@@ -11,17 +12,15 @@ struct Bounds{
         bottom;
 };
 
-class Collider{
+class Collider : public Component{
 private:
-    CORE::Vector2<float> position;
-    CORE::Vector2<float> size;
-
     int id;
     void UpdateBounds();
 public:
     bool solid;
     Bounds bounds;
-    Collider(float x, float y, float width, float height);
+    Collider(Rect* entRect);
+    Collider(Rect* entRect, Rect offset);
     ~Collider();
     /// @brief 
     /// @return collided entity. Returns Nullptr if no collision.

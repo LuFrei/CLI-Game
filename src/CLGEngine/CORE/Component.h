@@ -1,12 +1,19 @@
 #pragma once
 
 #include "Utility.h"
+#include "Rect.h"
 
 class Component{
+protected:
+    const Rect* entityRect;
 public:
-    CLGEngine::CORE::Vector2<float> offset;
-    Component() 
-        : offset({0,0}) {};
-    Component(float offsetX, float offsetY)
-        : offset({offsetX, offsetY}) {};
+    Rect offset;
+    Component();
+    Component(Rect* entRect)
+        : entityRect(entRect)
+    {};
+    Component(Rect* entRect, Rect offset)
+        : entityRect(entRect)
+        , offset(offset)
+    {};
 };

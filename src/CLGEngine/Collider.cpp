@@ -30,14 +30,27 @@ int FindColliderIdx(Collider* col){
     return -1;
 }
 
-void Collider::UpdateBounds(){
-    bounds = {position.x, position.y, position.x+size.x, position.y+size.y};
+Collider::Collider(Rect* entityRect):
+    Component(entityRect),
+    bounds({
+        entityRect->position.x, 
+        entityRect->position.y, 
+        entityRect->position.x + entityRect->size.x,
+        entityRect->position.y + entityRect->size.y
+    }),
+    solid(true)
+{
+    activeColliders.push_back(this);
 }
 
-Collider::Collider(float x, float y, float width, float height):
-    position({x, y}),
-    size({width, height}),
-    bounds({x, y, x+width, y+height}),
+Collider::Collider(Rect* entityRect, Rect offset):
+    Component(entityRect, offset),
+    bounds({
+        entityRect->position.x + offset.position.x, 
+        entityRect->position.y + offset.position.y, 
+        (entityRect->position.x + offset.position.x) + (entityRect->size.x + offset.size.x),
+        (entityRect->position.y + offset.position.y) + (entityRect->size.y + offset.size.y)
+    }),
     solid(true)
 {
     activeColliders.push_back(this);
@@ -46,25 +59,39 @@ Collider::Collider(float x, float y, float width, float height):
 Collider::~Collider(){
     int idx = FindColliderIdx(this); //TODO : Handle if idx = -1
     activeColliders.erase(activeColliders.begin() + idx);
+
+
 }
 
+void Collider::UpdateBounds(){
+    bounds = {
+        entityRect->position.x + offset.position.x, 
+        entityRect->position.y + offset.position.y, 
+        (entityRect->position.x + offset.position.x) + (entityRect->size.x + offset.size.x),
+        (entityRect->position.y + offset.position.y) + (entityRect->size.y + offset.size.y)
+    };
+}
+
+// TODO(start): The following functions are using offset as a local rect, and updating it to match Entity's Rect.
+//            We'll have to change this later to directly use Entity's Rect
 void Collider::SetColliderPosition(float newX, float newY){
-    position = {newX, newY};
+    offset.position = {newX, newY};
     UpdateBounds();
 }
 
 void Collider::SetColliderSize(float newWidth, float newHeight){
-    size = {newWidth, newHeight};
+    offset.size = {newWidth, newHeight};
     UpdateBounds();
 }
 
 void Collider::UpdateCollider(float newX, float newY, float newWidth, float newHeight){
-    CORE::Vector2<float> deltaVec = {newX - position.x, newY - position.y};
-    position = {newX, newY};
-    size = {newWidth, newHeight};
+    CORE::Vector2<float> deltaVec = {newX - offset.position.x, newY - offset.position.y};
+    offset.position = {newX, newY};
+    offset.size = {newWidth, newHeight};
     UpdateBounds();
 }
 
+// TODO(end)
 bool Collider::CheckCollision(){
     Collider* hit = nullptr;
     return CheckCollision(&hit);

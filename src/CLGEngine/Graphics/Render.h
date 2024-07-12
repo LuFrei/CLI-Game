@@ -2,15 +2,13 @@
 
 #include <vector>
 #include <Windows.h>
-#include "Screen.h"
 #include "../CORE/Component.h"
 
 // We can store all created instances to update every cycle
 namespace Graphics {
 
 	/// <summary>
-	/// Data that define how something will be rendered on screen. 
-	/// Position, Dimension, Material.
+	/// Almalgomation of Entity position nd RendOffset.
 	/// </summary>
 	struct Block {
 		int x, y, z,
@@ -19,16 +17,16 @@ namespace Graphics {
 		CHAR_INFO material;
 	};
 
-	class Renderer : Component {
+	class Renderer : public Component {
 	private:
 		static std::vector<Block*> blocks;
 	public:
 		Block block;
-		// CHAR_INFO material;
+		CHAR_INFO material;
 
-		Renderer();
-		Renderer(int x, int y, int width, int height);
-		Renderer(int x, int y, int width, int height, CHAR_INFO& material);
+		Renderer(Rect* entityRect);
+		Renderer(Rect* entityRect, int x, int y, int width, int height);
+		Renderer(Rect* entityRect, CHAR_INFO& material);
 		~Renderer();
 
 		// ! Do we want to create a new new Vector to pass on?

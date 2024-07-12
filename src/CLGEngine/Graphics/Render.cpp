@@ -21,29 +21,16 @@ namespace Graphics {
 		BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY | FOREGROUND_BLUE | FOREGROUND_RED
 	};
 
-	Renderer::Renderer(int x, int y, int width, int height) 
-		: Component (x, y) {
+
+	Renderer::Renderer(Rect* entityRect, CHAR_INFO& material)
+		: Component(entityRect) {
 		block.id = blockIdCounter;
 		blockIdCounter++;
 
-		block.x = x;
-		block.y = y;
-		block.width = width;
-		block.height = height;
-		block.material = defaultMaterial;
-
-		blocks.push_back(&block);
-	}
-
-	Renderer::Renderer(int x, int y, int width, int height, CHAR_INFO& material)
-		: Component(x, y) {
-		block.id = blockIdCounter;
-		blockIdCounter++;
-
-		block.x = x;
-		block.y = y;
-		block.width = width;
-		block.height = height;
+		block.x = entityRect->position.x;
+		block.y = entityRect->position.y;
+		block.width = entityRect->size.x;
+		block.height = entityRect->size.y;
 		block.material = material;
 
 		blocks.push_back(&block);

@@ -83,16 +83,16 @@ void Character::Jump(){
         vertMomentum = 1;
     }
 
-    position.y += -vertMomentum * jumpSpeed * CLGEngine::Time::deltaTime;
+    rect.position.y += -vertMomentum * jumpSpeed * CLGEngine::Time::deltaTime;
 
 // TODO: CHANGE RENDERING SO IT ALWAYS UPDATES
-    if(position.y <= maxHeight && vertMomentum == 1){
-        position.y = maxHeight;
+    if(rect.position.y <= maxHeight && vertMomentum == 1){
+        rect.position.y = maxHeight;
         vertMomentum = -1;
     }
 
-    if(position.y >= groundHeight && vertMomentum == -1){
-        position.y = groundHeight;
+    if(rect.position.y >= groundHeight && vertMomentum == -1){
+        rect.position.y = groundHeight;
         vertMomentum = 1;
         jumping = 0;
     }
