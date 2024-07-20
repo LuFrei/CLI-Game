@@ -5,7 +5,7 @@
 
 class Component{
 protected:
-    const Rect* entityRect;
+    Rect* const entityRect;
 public:
     Rect offset;
     Component();
