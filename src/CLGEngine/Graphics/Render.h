@@ -12,9 +12,8 @@ namespace Graphics {
 	/// Almalgomation of Entity position nd RendOffset.
 	/// </summary>
 	struct Block {
-		int x, y, z,
-			width, height, 
-			id;
+		Rect* rect;
+		int z, id;
 		CHAR_INFO material;
 	};
 

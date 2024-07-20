@@ -27,10 +27,7 @@ namespace Graphics {
 		block.id = blockIdCounter;
 		blockIdCounter++;
 
-		block.x = entityRect->position.x;
-		block.y = entityRect->position.y;
-		block.width = entityRect->size.x;
-		block.height = entityRect->size.y;
+		block.rect = entityRect;
 		block.material = material;
 
 		blocks.push_back(&block);
@@ -55,19 +52,6 @@ namespace Graphics {
 			std::cout << "ERROR: Wrong block was deleted." << std::endl;
 		}
 
-	}
-
-	void Renderer::SetBlockPosition(CLGEngine::CORE::Vector2<float> newPosition) {
-		block.x = newPosition.x;
-		block.y = newPosition.y;
-	}
-	void Renderer::SetBlockSize(float newWidth, float newHeight) {
-		block.width = newWidth;
-		block.height = newHeight;
-	}
-	void Renderer::UpdateBlock(float newX, float newY, float newWidth, float newHeight) {
-		SetBlockPosition({newX, newY});
-		SetBlockSize(newWidth, newHeight);
 	}
 
 }
