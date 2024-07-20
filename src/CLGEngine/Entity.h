@@ -18,9 +18,10 @@ namespace CLGEngine {
 		Entity* parent;
 		Graphics::Renderer* rend;
 		Collider* col;
+	protected:
 		Rect rect_; //May have to set as protected later for COmponent Rework.
-		void UpdateCollider(float x, float y);
 	public:
+		friend class Component;
 		Rect rect() const {return rect_;}
 		Entity(float x, float y, float width, float height);
 		~Entity();

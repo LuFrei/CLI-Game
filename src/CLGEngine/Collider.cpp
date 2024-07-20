@@ -30,6 +30,16 @@ int FindColliderIdx(Collider* col){
     return -1;
 }
 
+// TODO: Maybe a good funciton to put INSIDE of Rect?
+Bounds GetBoundsFromRect(Rect rect){
+    return {
+        rect.position.x, 
+        rect.position.y, 
+        rect.position.x + rect.size.x,
+        rect.position.y + rect.size.y
+    };
+}
+
 Collider::Collider(Rect* entityRect):
     Component(entityRect),
     bounds({
@@ -38,7 +48,11 @@ Collider::Collider(Rect* entityRect):
         entityRect->position.x + entityRect->size.x,
         entityRect->position.y + entityRect->size.y
     }),
-    solid(true)
+    centerPoint({
+        entityRect->position.x + (entityRect->size.x/2),
+        entityRect->position.y + (entityRect->size.y/2)
+    }),
+    isSolid(true)
 {
     activeColliders.push_back(this);
 }
@@ -46,12 +60,12 @@ Collider::Collider(Rect* entityRect):
 Collider::Collider(Rect* entityRect, Rect offset):
     Component(entityRect, offset),
     bounds({
-        entityRect->position.x + offset.position.x, 
-        entityRect->position.y + offset.position.y, 
-        (entityRect->position.x + offset.position.x) + (entityRect->size.x + offset.size.x),
-        (entityRect->position.y + offset.position.y) + (entityRect->size.y + offset.size.y)
+        entityRect->position.x, 
+        entityRect->position.y, 
+        entityRect->position.x + entityRect->size.x,
+        entityRect->position.y + entityRect->size.y
     }),
-    solid(true)
+    isSolid(true)
 {
     activeColliders.push_back(this);
 }
@@ -65,39 +79,22 @@ Collider::~Collider(){
 
 void Collider::UpdateBounds(){
     bounds = {
-        entityRect->position.x + offset.position.x, 
-        entityRect->position.y + offset.position.y, 
-        (entityRect->position.x + offset.position.x) + (entityRect->size.x + offset.size.x),
-        (entityRect->position.y + offset.position.y) + (entityRect->size.y + offset.size.y)
+        entityRect->position.x, 
+        entityRect->position.y, 
+        entityRect->position.x + entityRect->size.x,
+        entityRect->position.y + entityRect->size.y
     };
 }
 
-// TODO(start): The following functions are using offset as a local rect, and updating it to match Entity's Rect.
-//            We'll have to change this later to directly use Entity's Rect
+// TODO: Remove this.
+//      Right now it's used to update Bound when Entity calls SetPosition().
+//      UpdateBounds() should be called automatically when a move event comes from Entity.
 void Collider::SetColliderPosition(CORE::Vector2<float> newPosition){
-    offset.position = newPosition;
     UpdateBounds();
-}
-
-void Collider::SetColliderSize(float newWidth, float newHeight){
-    offset.size = {newWidth, newHeight};
-    UpdateBounds();
-}
-
-void Collider::UpdateCollider(float newX, float newY, float newWidth, float newHeight){
-    CORE::Vector2<float> deltaVec = {newX - offset.position.x, newY - offset.position.y};
-    offset.position = {newX, newY};
-    offset.size = {newWidth, newHeight};
-    UpdateBounds();
-}
-
-// TODO(end)
-bool Collider::CheckCollision(){
-    Collider* hit = nullptr;
-    return CheckCollision(&hit);
 }
 
 bool Collider::CheckCollision(Collider** hit){
+    UpdateBounds();
     for(Collider* col : activeColliders){
         if(bounds.left >= col->bounds.right
           || bounds.right <= col->bounds.left 
@@ -111,5 +108,27 @@ bool Collider::CheckCollision(Collider** hit){
         return true;
     }
     return false;
+}
+
+
+// TODO: make data flow work to check collision and reposition the entity to not overlap
+//      Idea right now is to use a center point and compare x, y to know where to snap the entity.
+void Collider::ProjectPath(CORE::Vector2<float> direction, Collider** hit){
+    if(CheckCollision(hit)){
+        CORE::Vector2<float> newPos = entityRect->position;
+        if(direction.x > 0){
+            newPos.x = (*hit)->bounds.left - entityRect->size.x;
+        }
+        if (direction.x < 0) {
+            newPos.x = (*hit)->bounds.right;
+        }
+        if(direction.y > 0){
+            newPos.y = (*hit)->bounds.top - entityRect->size.y;
+        }
+        if(direction.y < 0){
+            newPos.y = (*hit)->bounds.bottom;
+        }
+        entityRect->position = newPos;
+    }
 }
 }

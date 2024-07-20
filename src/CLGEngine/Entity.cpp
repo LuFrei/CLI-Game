@@ -24,41 +24,19 @@ namespace CLGEngine {
 	}
 
 	void Entity::Translate(CORE::Vector2<float> direction) {
-		//Check if we can translate first
-		//project new location
-		float newX = rect_.position.x + direction.x;
-		float newY = rect_.position.y + direction.y;
+		rect_.position.x += direction.x;
+		rect_.position.y += direction.y;
+		// TODO: We need to move this out of here. Idealy with a Message/Event Call.
 		if(col != nullptr){
-			col->SetColliderPosition({newX, newY});
 			Collider* hit = NULL;
-			if(col->CheckCollision(&hit)){
-				// if new movement hits something, snap position to hug collided object..
-				if(direction.x > 0){
-					newX = hit->bounds.left - rect_.size.x;
-				}
-				if(direction.x < 0){
-					newX = hit->bounds.right;
-				}
-				if(direction.y > 0){
-					newY = hit->bounds.top - rect_.size.y;
-				}
-				if(direction.y < 0){
-					newY = hit->bounds.bottom;
-				}
-				col->SetColliderPosition({newX, newY});
-			}
+			col->ProjectPath(direction, &hit);
 		}
-		if(rend != nullptr){
-			rend->SetBlockPosition({newX, newY});
-		}
-		rect_.position.x = newX;
-		rect_.position.y = newY;
 	}
 
 	void Entity::SetPosition(CORE::Vector2<float> newPos){
-		//Tell Components I moved.
+		rect_.position = newPos;	
+		// TODO: Should be an event, collider shouldn't be explicitly called here.
 		col->SetColliderPosition(newPos);
-		rend->SetBlockPosition(newPos);
 	}
 
 	void Entity::Scale(float x, float y) {
@@ -75,8 +53,8 @@ namespace CLGEngine {
 	}
 
 	void Entity::AddCollider(){
+		// Replace existing
 		if(col != nullptr){
-			// remove from component
 			delete col;
 		}
 		col = new Collider(&this->rect_);
