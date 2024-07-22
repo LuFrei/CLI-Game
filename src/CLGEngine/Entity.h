@@ -1,34 +1,35 @@
 #pragma once
 #include "CORE/Utility.h"
-#include "Entity.h"
-#include "CORE/Component.h"
 #include <vector>
-#include "Graphics/Render.h"
 #include "Collider.h"
-
-
+#include "Graphics/Render.h"
+#include <string>
+#include <map>
+#include "CORE/Rect.h"
+ 
 namespace CLGEngine {
+
 	/// <summary>
-	/// Any "physical" thing that can be represented in "world-space". 
+	/// Any "physical" thing thato can be represented in "world-space". 
 	/// Such as a playable or non-playable character, floors, walls, props
 	/// </summary>	
 	class Entity {
 	private:
 		Entity* parent;
-		std::vector<Component*> components;
 		Graphics::Renderer* rend;
 		Collider* col;
+	protected:
+		Rect rect_; //May have to set as protected later for COmponent Rework.
 	public:
-		CORE::Vector2<float> position;
-		CORE::Vector2<float> size;
-		Entity(float x, float y, float width,float height);
+		friend class Component;
+		Rect rect() const {return rect_;}
+		Entity(float x, float y, float width, float height);
 		~Entity();
 		virtual void Update() = 0;
-		void Translate(float x, float y);
 		void Translate(CORE::Vector2<float> direction);
+		void SetPosition(CORE::Vector2<float> newPosition);
 		void Scale(float x, float y);
 		void AddRenderer(CHAR_INFO material);
-		/// @brief Add Renderer with offset
 		void AddCollider();
 	};
 }

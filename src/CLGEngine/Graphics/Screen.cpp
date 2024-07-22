@@ -81,16 +81,16 @@ namespace Graphics {
 
 		for (Graphics::Block* block : blocks) {
 			// is this block ever going going to show up in the screen?
-			if (block->x >= width
-				|| block->y >= height
-				|| block->x + block->width < 0
-				|| block->y + block->height < 0)
+			if (block->rect->position.x >= width
+				|| block->rect->position.y >= height
+				|| block->rect->position.x + block->rect->size.x < 0
+				|| block->rect->position.y + block->rect->size.y < 0)
 			{ continue; }
 
-			for (int h = 0; h < block->height; h++) {
-				for (int w = 0; w < block->width; w++) {
-					int cellX = block->x + w;
-					int cellY = block->y + h;
+			for (int h = 0; h < block->rect->size.y; h++) {
+				for (int w = 0; w < block->rect->size.x; w++) {
+					int cellX = block->rect->position.x + w;
+					int cellY = block->rect->position.y + h;
 
 					if (this->squareCells) {
 						cellX *= 2;

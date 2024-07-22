@@ -3,11 +3,12 @@
 #include "EntityManager.h"
 
 namespace CLGEngine {
+
 	Entity::Entity(float x, float y, float width,float height)
-		: rend(nullptr)
-		, col(nullptr) {
-		position = {x, y};
-		size = {width, height};
+		   : rend(nullptr)
+		   , col(nullptr)
+		   , rect_({x, y, width, height})
+		{
 		EntityManager::AddEntity(this);
 	}
 
@@ -17,64 +18,45 @@ namespace CLGEngine {
 		}
 		if(col != nullptr){
 			delete col;
-		}		
+		}
+		// delete componentMan;		
 		EntityManager::RemoveEntity(this);
 	}
 
-	void Entity::Translate(float x, float y) {
-		//Check if we can translate first
-		//project new location
-		float newX = position.x + x;
-		float newY = position.y + y;
+	void Entity::Translate(CORE::Vector2<float> direction) {
+		rect_.position.x += direction.x;
+		rect_.position.y += direction.y;
+		// TODO: We need to move this out of here. Idealy with a Message/Event Call.
 		if(col != nullptr){
-			col->SetColliderPosition(newX, newY);
 			Collider* hit = NULL;
-			if(col->CheckCollision(&hit)){
-				// if new movement hits something, snap position to hug collided object..
-				if(x > 0){
-					newX = hit->bounds.left - size.x;
-				}
-				if(x < 0){
-					newX = hit->bounds.right;
-				}
-				if(y > 0){
-					newY = hit->bounds.top - size.y;
-				}
-				if(y < 0){
-					newY = hit->bounds.bottom;
-				}
-				col->SetColliderPosition(newX, newY);
-			}
+			col->ProjectPath(direction, &hit);
 		}
-		if(rend != nullptr){
-			rend->SetBlockPosition(newX, newY);
-		}
-		position.x = newX;
-		position.y = newY;
 	}
 
-	void Entity::Translate(CORE::Vector2<float> direction) {
-		Translate(direction.x, direction.y);
+	void Entity::SetPosition(CORE::Vector2<float> newPos){
+		rect_.position = newPos;	
+		// TODO: Should be an event, collider shouldn't be explicitly called here.
+		col->SetColliderPosition(newPos);
 	}
 
 	void Entity::Scale(float x, float y) {
-		this->size.x *= x;
-		this->size.y *= y;
+		this->rect_.size.x *= x;
+		this->rect_.size.y *= y;
 	}
 
 	void Entity::AddRenderer(CHAR_INFO material){
+		// Replace existing
 		if(rend != nullptr){
-			// remove from component
 			delete rend;
 		}
-		rend = new Graphics::Renderer(position.x, position.y, size.x, size.y, material);
+		rend = new Graphics::Renderer(&this->rect_, material);
 	}
 
 	void Entity::AddCollider(){
+		// Replace existing
 		if(col != nullptr){
-			// remove from component
 			delete col;
 		}
-		col = new Collider(position.x, position.y, size.x, size.y);
+		col = new Collider(&this->rect_);
 	}
 }

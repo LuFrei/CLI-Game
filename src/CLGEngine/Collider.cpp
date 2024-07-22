@@ -30,15 +30,42 @@ int FindColliderIdx(Collider* col){
     return -1;
 }
 
-void Collider::UpdateBounds(){
-    bounds = {position.x, position.y, position.x+size.x, position.y+size.y};
+// TODO: Maybe a good funciton to put INSIDE of Rect?
+Bounds GetBoundsFromRect(Rect rect){
+    return {
+        rect.position.x, 
+        rect.position.y, 
+        rect.position.x + rect.size.x,
+        rect.position.y + rect.size.y
+    };
 }
 
-Collider::Collider(float x, float y, float width, float height):
-    position({x, y}),
-    size({width, height}),
-    bounds({x, y, x+width, y+height}),
-    solid(true)
+Collider::Collider(Rect* entityRect):
+    Component(entityRect),
+    bounds({
+        entityRect->position.x, 
+        entityRect->position.y, 
+        entityRect->position.x + entityRect->size.x,
+        entityRect->position.y + entityRect->size.y
+    }),
+    centerPoint({
+        entityRect->position.x + (entityRect->size.x/2),
+        entityRect->position.y + (entityRect->size.y/2)
+    }),
+    isSolid(true)
+{
+    activeColliders.push_back(this);
+}
+
+Collider::Collider(Rect* entityRect, Rect offset):
+    Component(entityRect, offset),
+    bounds({
+        entityRect->position.x, 
+        entityRect->position.y, 
+        entityRect->position.x + entityRect->size.x,
+        entityRect->position.y + entityRect->size.y
+    }),
+    isSolid(true)
 {
     activeColliders.push_back(this);
 }
@@ -46,31 +73,28 @@ Collider::Collider(float x, float y, float width, float height):
 Collider::~Collider(){
     int idx = FindColliderIdx(this); //TODO : Handle if idx = -1
     activeColliders.erase(activeColliders.begin() + idx);
+
+
 }
 
-void Collider::SetColliderPosition(float newX, float newY){
-    position = {newX, newY};
+void Collider::UpdateBounds(){
+    bounds = {
+        entityRect->position.x, 
+        entityRect->position.y, 
+        entityRect->position.x + entityRect->size.x,
+        entityRect->position.y + entityRect->size.y
+    };
+}
+
+// TODO: Remove this.
+//      Right now it's used to update Bound when Entity calls SetPosition().
+//      UpdateBounds() should be called automatically when a move event comes from Entity.
+void Collider::SetColliderPosition(CORE::Vector2<float> newPosition){
     UpdateBounds();
-}
-
-void Collider::SetColliderSize(float newWidth, float newHeight){
-    size = {newWidth, newHeight};
-    UpdateBounds();
-}
-
-void Collider::UpdateCollider(float newX, float newY, float newWidth, float newHeight){
-    CORE::Vector2<float> deltaVec = {newX - position.x, newY - position.y};
-    position = {newX, newY};
-    size = {newWidth, newHeight};
-    UpdateBounds();
-}
-
-bool Collider::CheckCollision(){
-    Collider* hit = nullptr;
-    return CheckCollision(&hit);
 }
 
 bool Collider::CheckCollision(Collider** hit){
+    UpdateBounds();
     for(Collider* col : activeColliders){
         if(bounds.left >= col->bounds.right
           || bounds.right <= col->bounds.left 
@@ -84,5 +108,27 @@ bool Collider::CheckCollision(Collider** hit){
         return true;
     }
     return false;
+}
+
+
+// TODO: make data flow work to check collision and reposition the entity to not overlap
+//      Idea right now is to use a center point and compare x, y to know where to snap the entity.
+void Collider::ProjectPath(CORE::Vector2<float> direction, Collider** hit){
+    if(CheckCollision(hit)){
+        CORE::Vector2<float> newPos = entityRect->position;
+        if(direction.x > 0){
+            newPos.x = (*hit)->bounds.left - entityRect->size.x;
+        }
+        if (direction.x < 0) {
+            newPos.x = (*hit)->bounds.right;
+        }
+        if(direction.y > 0){
+            newPos.y = (*hit)->bounds.top - entityRect->size.y;
+        }
+        if(direction.y < 0){
+            newPos.y = (*hit)->bounds.bottom;
+        }
+        entityRect->position = newPos;
+    }
 }
 }

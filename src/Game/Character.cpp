@@ -69,7 +69,7 @@ void Character::Update(){
 Character::~Character(){ }
 
 void Character::Move(float momentum) {
-    Translate(momentum * speed * CLGEngine::Time::deltaTime, 0);
+    Translate({momentum * speed * CLGEngine::Time::deltaTime, 0});
 }
 
 const int jumpHeight = 4;
@@ -83,16 +83,18 @@ void Character::Jump(){
         vertMomentum = 1;
     }
 
-    position.y += -vertMomentum * jumpSpeed * CLGEngine::Time::deltaTime;
+    // rect.position.y += -vertMomentum * jumpSpeed * CLGEngine::Time::deltaTime;
 
-// TODO: CHANGE RENDERING SO IT ALWAYS UPDATES
-    if(position.y <= maxHeight && vertMomentum == 1){
-        position.y = maxHeight;
+    Translate({0, -vertMomentum * jumpSpeed * CLGEngine::Time::deltaTime});
+
+// TODO: CHANGE RENDERING SO IT ALWAYS UPDATES, even when position is directly changed.
+    if(rect().position.y <= maxHeight && vertMomentum == 1){
+        SetPosition({rect().position.x, maxHeight});
         vertMomentum = -1;
     }
 
-    if(position.y >= groundHeight && vertMomentum == -1){
-        position.y = groundHeight;
+    if(rect().position.y >= groundHeight && vertMomentum == -1){
+        SetPosition({rect().position.x, groundHeight});
         vertMomentum = 1;
         jumping = 0;
     }
