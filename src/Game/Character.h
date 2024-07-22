@@ -9,6 +9,7 @@ class Character : public Entity {
 private:
 	int speed;
 	bool grounded;
+	float groundLevel;
 public:
 	Character(int speed);
 	~Character();
