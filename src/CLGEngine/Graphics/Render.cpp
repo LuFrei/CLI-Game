@@ -18,7 +18,7 @@ namespace Graphics {
 	
 	CHAR_INFO defaultMaterial = {
 		ASCII_SHADE1,
-		BACKGROUND_BLUE | BACKGROUND_RED | BACKGROUND_GREEN | FOREGROUND_BLUE
+		BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY | FOREGROUND_BLUE | FOREGROUND_RED
 	};
 
 	Renderer::Renderer(int x, int y, int width, int height) 

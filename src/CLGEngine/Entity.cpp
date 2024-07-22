@@ -58,12 +58,12 @@ namespace CLGEngine {
 		this->size.y *= y;
 	}
 
-	void Entity::AddRenderer(){
+	void Entity::AddRenderer(CHAR_INFO material){
 		if(rend != nullptr){
 			// remove from component
 			delete rend;
 		}
-		rend = new Graphics::Renderer(position.x, position.y, size.x, size.y);
+		rend = new Graphics::Renderer(position.x, position.y, size.x, size.y, material);
 	}
 
 	void Entity::AddCollider(){

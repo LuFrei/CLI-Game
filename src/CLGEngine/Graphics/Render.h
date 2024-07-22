@@ -24,6 +24,8 @@ namespace Graphics {
 		static std::vector<Block*> blocks;
 	public:
 		Block block;
+		// CHAR_INFO material;
+
 		Renderer();
 		Renderer(int x, int y, int width, int height);
 		Renderer(int x, int y, int width, int height, CHAR_INFO& material);
@@ -41,5 +43,8 @@ namespace Graphics {
 		void SetBlockPosition(float newX, float newY);
 		void SetBlockSize(float newWidth, float newHeight);
 		void UpdateBlock(float newX, float newY, float newWidth, float newHeight);
+
+		// CHAR_INFO CreateColoredMaterial(Color color);
+		// CHAR_INFO CreateColoredMaterial(char, Color bgColor, Color fgColor);
 	};
 }
