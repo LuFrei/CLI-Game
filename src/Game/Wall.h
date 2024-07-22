@@ -10,6 +10,7 @@ private:
 public:
     Wall();
     Wall(int x, int y);
+    Wall(int x, int y, int width, int height);
     ~Wall();
     void Update();
 };

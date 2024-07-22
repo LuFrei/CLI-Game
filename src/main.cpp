@@ -11,10 +11,20 @@ int main()
     Game game = Game();
 
     Character* player = new Character(10);
-    Wall* wall = new Wall();
-
+    Wall* ground = new Wall(0, 21, 60, 3);
+    Wall* wall1 = new Wall(10, 20, 1, 1);
+    Wall* wall2 = new Wall(15, 19, 1, 2);
+    Wall* wall3 = new Wall(20, 18, 5, 3);
+    Wall* wall4 = new Wall(35, 17, 1, 4);
+    
+    
     game.Play();
     
+    // TODO: Make an auto Entitiy cleaner.
     delete player;
-    delete wall;
+    delete ground;
+    delete wall1;
+    delete wall2;
+    delete wall3;
+    delete wall4;
 }

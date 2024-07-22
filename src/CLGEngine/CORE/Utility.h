@@ -14,6 +14,10 @@ namespace CLGEngine {
 				sum.y = y + vec.y;
 				return sum;
 			}
+			void operator+=(Vector2<T> const& vec) {
+				x += vec.x;
+				y += vec.y;
+			}
 			Vector2<T> operator-(Vector2<T> const& vec) {
 				Vector2<T> diff;
 				diff.x = x - vec.x;
