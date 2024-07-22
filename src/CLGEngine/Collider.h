@@ -31,5 +31,6 @@ public:
     void UpdateCollider(float newX, float newY, float newWidth, float newHeight); // Dejavu... Maybe we should reduce this somehow.
     bool CheckCollision(Collider** hit);
     void ProjectPath(CORE::Vector2<float> direction, Collider** hit);
+    bool CastCollider(Rect rect, Collider** hit);
 };
 }
