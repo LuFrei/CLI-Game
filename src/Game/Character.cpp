@@ -23,7 +23,7 @@ Character::Character(int speed):
 
 
 float momentum = 0;
-float const acceleration = 1;
+float const acceleration = 2;
 void AdjustMomentum(int direction){
     if(direction == 0){
         momentum = (momentum > 0) 
