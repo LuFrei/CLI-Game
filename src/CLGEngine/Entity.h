@@ -14,11 +14,10 @@ namespace CLGEngine {
 	/// Such as a playable or non-playable character, floors, walls, props
 	/// </summary>	
 	class Entity {
-	private:
+	protected:
 		Entity* parent;
 		Graphics::Renderer* rend;
 		Collider* col;
-	protected:
 		Rect rect_; //May have to set as protected later for COmponent Rework.
 	public:
 		friend class Component;

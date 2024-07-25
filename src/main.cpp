@@ -10,11 +10,16 @@ int main()
 {
     Game game = Game();
 
-    Character* player = new Character(10);
-    Wall* ground = new Wall(0, 21, 60, 3);
+
+    Character* player = new Character({7, 20});
+    Wall* ground = new Wall(0, 22, 60, 13);
+    Wall* borderWallL = new Wall(0, 0, 5, 25);
+    Wall* borderWallR = new Wall(55, 0, 5, 25);
+    Wall* borderWallT = new Wall(0, 0, 60, 1);
+
     Wall* wall1 = new Wall(10, 20, 1, 1);
     Wall* wall2 = new Wall(15, 19, 1, 2);
-    Wall* wall3 = new Wall(20, 18, 5, 3);
+    Wall* wall3 = new Wall(40, 6, 1, 25);
     Wall* wall4 = new Wall(35, 17, 1, 4);
     
     
@@ -23,6 +28,9 @@ int main()
     // TODO: Make an auto Entitiy cleaner.
     delete player;
     delete ground;
+    delete borderWallL;
+    delete borderWallR;
+    delete borderWallT;
     delete wall1;
     delete wall2;
     delete wall3;

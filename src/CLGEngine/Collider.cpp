@@ -114,21 +114,39 @@ bool Collider::CheckCollision(Collider** hit){
 // TODO: make data flow work to check collision and reposition the entity to not overlap
 //      Idea right now is to use a center point and compare x, y to know where to snap the entity.
 void Collider::ProjectPath(CORE::Vector2<float> direction, Collider** hit){
+    CORE::Vector2<float> newPos = entityRect->position;
     if(CheckCollision(hit)){
-        CORE::Vector2<float> newPos = entityRect->position;
         if(direction.x > 0){
-            newPos.x = (*hit)->bounds.left - entityRect->size.x;
+            entityRect->position.x = (*hit)->bounds.left - entityRect->size.x;
         }
         if (direction.x < 0) {
-            newPos.x = (*hit)->bounds.right;
+            entityRect->position.x = (*hit)->bounds.right;
         }
         if(direction.y > 0){
-            newPos.y = (*hit)->bounds.top - entityRect->size.y;
+            entityRect->position.y = (*hit)->bounds.top - entityRect->size.y;
         }
         if(direction.y < 0){
-            newPos.y = (*hit)->bounds.bottom;
+            entityRect->position.y = (*hit)->bounds.bottom;
         }
-        entityRect->position = newPos;
     }
+}
+
+bool Collider::CastCollider(Rect rect, Collider** hit){
+    // TODO(?): Make bounds a part of Rect? We seem to be using them a lot together...
+    // Create bounds for Rect
+    Bounds rectBounds = GetBoundsFromRect(rect);
+    for(Collider* col : activeColliders){
+        if(rectBounds.left >= col->bounds.right
+          || rectBounds.right <= col->bounds.left 
+          || rectBounds.bottom <= col->bounds.top
+          || rectBounds.top >= col->bounds.bottom
+          || col == this)
+        {
+            continue;
+        }
+        *hit = col;
+        return true;
+    }
+    return false;
 }
 }
