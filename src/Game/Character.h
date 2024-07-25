@@ -11,7 +11,7 @@ private:
 	bool grounded;
 	float groundLevel;
 public:
-	Character(int speed);
+	Character(CORE::Vector2<float> startPosition);
 	~Character();
 	void Move(float direction);
 	void Jump();

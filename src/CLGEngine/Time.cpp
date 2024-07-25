@@ -5,7 +5,7 @@
 
 namespace CLGEngine {
 	float Time::deltaTime;
-	std::chrono::steady_clock::time_point lastUpdate;
+	std::chrono::steady_clock::time_point lastUpdate = std::chrono::steady_clock::now();
 
 	void Time::CalculateDeltaTime() {
 		auto now = std::chrono::steady_clock::now();

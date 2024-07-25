@@ -14,9 +14,9 @@ CHAR_INFO charMat = {
     ' ', BACKGROUND_BLUE
 };
 
-Character::Character(int speed):
-	Entity(0, 20, 1, 1),
-	speed(speed) {
+Character::Character(CORE::Vector2<float> startPosition):
+	Entity(startPosition.x, startPosition.y, 1, 1),
+	speed(10) {
 		AddRenderer(charMat);
 		AddCollider();
 }
