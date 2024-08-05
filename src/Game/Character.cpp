@@ -14,13 +14,39 @@ CHAR_INFO charMat = {
     ' ', BACKGROUND_BLUE
 };
 
-Character::Character(CORE::Vector2<float> startPosition):
-	Entity(startPosition.x, startPosition.y, 1, 1),
-	speed(10) {
-		AddRenderer(charMat);
-		AddCollider();
+Character::Character(CORE::Vector2<float> startPosition)
+            : Entity(startPosition.x, startPosition.y, 1, 1)
+            , _speed(10) 
+{
+    AddRenderer(charMat);
+    AddCollider();
 }
 
+Character::~Character(){ }
+
+#pragma region TileMap-Interaction
+void Character::AddTileMap(TileMap* map){
+    _tileMap = map;
+    col->SetTileMap(map);
+}
+
+bool Character::CheckTileMapCollision(){
+    // Get vertices
+    CORE::Vector2<float> vertices[4] = {
+         rect().position                  ,                                        //TopLeft
+        {rect().position.x + rect().size.x, rect().position.y},                    //TopRight
+        {rect().position.x + rect().size.x, rect().position.y + rect().size.y},    //BottomRight
+        {rect().position.x                , rect().position.y + rect().size.y}     //BottomLeft
+    };
+    //Check if it's in a tile zone
+    for(CORE::Vector2<float> vertex : vertices){
+        if(_tileMap->GetTile(vertex) == '#'){
+            return true;
+        }
+    }
+    return false;  
+}
+#pragma endregion
 
 float momentum = 0;
 float const acceleration = 2;
@@ -53,18 +79,22 @@ void Character::Update(){
     //      Seriously need a way to have entity/component heirarchy 
     //      and build up a coordinate position like that..
     Rect groundChecker = {
-        rect_.position.x,
-        rect_.position.y + 0.01f,
-        rect_.size.x,
-        rect_.size.y
+        _rect.position.x,
+        _rect.position.y + 0.01f,
+        _rect.size.x,
+        _rect.size.y
     };
     Collider* hitGround = NULL;
-    grounded = col->CastCollider(groundChecker, &hitGround);
+    _grounded = col->CastCollider(groundChecker, &hitGround);
     
     
-    if(grounded){
-        SetPosition({rect().position.x, hitGround->bounds.top - rect_.size.y});
-        groundLevel = hitGround->bounds.top - rect_.size.y;
+    if(_grounded){
+        if(hitGround == NULL){
+            _groundLevel = std::floor(groundChecker.position.y);
+        } else {
+            _groundLevel = hitGround->bounds.top - _rect.size.y;
+        }
+        SetPosition({rect().position.x, _groundLevel});
         jumping = 0;
         vertMomentum = 0;
     } else {
@@ -80,7 +110,7 @@ void Character::Update(){
     if (Input::Input::GetKeyPressed(Input::KeyCode::Right)) {
         direction += 1;
     }
-    if (Input::Input::GetKeyPressed(Input::KeyCode::Space) && grounded){
+    if (Input::Input::GetKeyPressed(Input::KeyCode::Space) && _grounded){
         jumping = 1;
     }
     if(jumping){
@@ -94,12 +124,29 @@ void Character::Update(){
         Move(momentum);
     }
 
+    // // TileMap stuff
+    // if(CheckTileMapCollision()){
+    //     if(momentum > 0){
+    //         _rect.position.x = std::floor(_rect.position.x);
+    //     }
+    //     if (momentum < 0) {
+    //         _rect.position.x = std::floor(_rect.position.x) + 1;
+    //     }
+    //     if(vertMomentum > 0){
+    //         _rect.position.y = std::floor(_rect.position.y);
+    //         _grounded = true;
+    //         jumping = 0;
+    //         vertMomentum = 0;
+    //     }
+    //     if(vertMomentum < 0){
+    //         _rect.position.y = std::floor(_rect.position.y) + 1;
+    //     }
+    // }
+
 }
 
-Character::~Character(){ }
-
 void Character::Move(float momentum) {
-    Translate({momentum * speed * CLGEngine::Time::deltaTime, 0});
+    Translate({momentum * _speed * CLGEngine::Time::deltaTime, 0});
 }
 
 void Character::Jump(){
@@ -107,12 +154,10 @@ void Character::Jump(){
         vertMomentum = 1;
     }
 
-    // rect.position.y += -vertMomentum * jumpSpeed * CLGEngine::Time::deltaTime;
-
     Translate({0, -vertMomentum * jumpSpeed * CLGEngine::Time::deltaTime});
 
-    if(rect().position.y <= groundLevel - jumpHeight && vertMomentum == 1){
-        SetPosition({rect().position.x, groundLevel - jumpHeight});
+    if(rect().position.y <= _groundLevel - jumpHeight && vertMomentum == 1){
+        SetPosition({rect().position.x, _groundLevel - jumpHeight});
         vertMomentum = -1;
         jumping = 0;
     }

@@ -1,19 +1,25 @@
 #pragma once
 #include "../CLGEngine/Entity.h"
-// #include "../CLGEngine/Graphics/Render.h"
-// #include "../CLGEngine/Collider.h"
+#include "TileMap.h"
 
 using namespace CLGEngine;
 
 class Character : public Entity {
 private:
-	int speed;
-	bool grounded;
-	float groundLevel;
+	int _speed;
+	bool _grounded;
+	float _groundLevel;
+	TileMap* _tileMap;
+
+	bool CheckTileMapCollision();
 public:
 	Character(CORE::Vector2<float> startPosition);
 	~Character();
+	void Update();
+
 	void Move(float direction);
 	void Jump();
-	void Update();
+
+	// TileMap
+	void AddTileMap(TileMap* map);
 };

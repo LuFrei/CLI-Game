@@ -1,5 +1,6 @@
 #include "Collider.h"
 
+#include <cmath>
 #include <vector>
 
 namespace CLGEngine{
@@ -110,11 +111,28 @@ bool Collider::CheckCollision(Collider** hit){
     return false;
 }
 
+bool Collider::CheckTileMapCollision(){
+    // Get vertices
+    CORE::Vector2<float> vertices[4] = {
+         entityRect->position                       ,                                                  //TopLeft
+        {entityRect->position.x + entityRect->size.x, entityRect->position.y},                         //TopRight
+        {entityRect->position.x + entityRect->size.x, entityRect->position.y + entityRect->size.y},    //BottomRight
+        {entityRect->position.x                     , entityRect->position.y + entityRect->size.y}     //BottomLeft
+    };
+    //Check if it's in a tile zone
+    for(CORE::Vector2<float> vertex : vertices){
+        if(tileMap->GetTile(vertex) == '#'){
+            return true;
+        }
+    }
+    return false;  
+}
 
 // TODO: make data flow work to check collision and reposition the entity to not overlap
 //      Idea right now is to use a center point and compare x, y to know where to snap the entity.
 void Collider::ProjectPath(CORE::Vector2<float> direction, Collider** hit){
-    CORE::Vector2<float> newPos = entityRect->position;
+    CORE::Vector2 newPos = entityRect->position;
+    //Check against other Entities
     if(CheckCollision(hit)){
         if(direction.x > 0){
             entityRect->position.x = (*hit)->bounds.left - entityRect->size.x;
@@ -129,13 +147,32 @@ void Collider::ProjectPath(CORE::Vector2<float> direction, Collider** hit){
             entityRect->position.y = (*hit)->bounds.bottom;
         }
     }
+
+    //Check Against Map
+    if(CheckTileMapCollision()){
+        if(direction.x > 0){
+            entityRect->position.x = std::floor(entityRect->position.x);
+        }
+        if (direction.x < 0) {
+            entityRect->position.x = std::floor(entityRect->position.x) + 1;
+        }
+        if(direction.y > 0){
+            entityRect->position.y = std::floor(entityRect->position.y);
+        }
+        if(direction.y < 0){
+            entityRect->position.y = std::floor(entityRect->position.y) + 1;
+        }
+    }
 }
+
+// What if Collider is like RigidBody. And evberything has a collider. but you only check for interaction with a collider on.
 
 bool Collider::CastCollider(Rect rect, Collider** hit){
     // TODO(?): Make bounds a part of Rect? We seem to be using them a lot together...
     // Create bounds for Rect
     Bounds rectBounds = GetBoundsFromRect(rect);
     for(Collider* col : activeColliders){
+        // Check other Entities
         if(rectBounds.left >= col->bounds.right
           || rectBounds.right <= col->bounds.left 
           || rectBounds.bottom <= col->bounds.top
@@ -147,6 +184,29 @@ bool Collider::CastCollider(Rect rect, Collider** hit){
         *hit = col;
         return true;
     }
-    return false;
+    return CheckTileMapCollision();
 }
+
+
+#pragma region ISubject
+void Collider::Subscribe(int event, IObserver* o){
+    _observers[event].emplace_front(o);
+}
+
+void Collider::Unsubscribe(int event, IObserver* o){
+    _observers[event].remove(o);
+}
+
+void Collider::Notify(int Event){
+    for(IObserver* o : _observers[Event]){
+        o->OnNotify();
+    }
+}
+#pragma endregion
+
+#pragma region IObserver
+void Collider::OnNotify(){
+    
+}
+#pragma endregion
 }
