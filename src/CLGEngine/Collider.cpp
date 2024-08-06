@@ -112,19 +112,38 @@ bool Collider::CheckCollision(Collider** hit){
 }
 
 bool Collider::CheckTileMapCollision(){
+    // Well have to check for whole numbers
+    //  we are getting some bleed into neighboring cells when checking collisison.
+    int wholePosX = std::floor(entityRect->position.x);
+    int wholePosY = std::floor(entityRect->position.y);
+
+    // "Locked" into the same cell as position.[x|y]
+    bool lockedX = false;
+    bool lockedY = false;
+    if(wholePosX == entityRect->position.x)
+        { lockedX = true; }
+    if(wholePosX == entityRect->position.x)
+        { lockedY = true; }
+
     // Get vertices
-    CORE::Vector2<float> vertices[4] = {
-         entityRect->position                       ,                                                  //TopLeft
-        {entityRect->position.x + entityRect->size.x, entityRect->position.y},                         //TopRight
-        {entityRect->position.x + entityRect->size.x, entityRect->position.y + entityRect->size.y},    //BottomRight
-        {entityRect->position.x                     , entityRect->position.y + entityRect->size.y}     //BottomLeft
-    };
+    CORE::Vector2<float> TL = entityRect->position;
+    CORE::Vector2<float> TR = {entityRect->position.x + entityRect->size.x, entityRect->position.y};
+    CORE::Vector2<float> BR = {entityRect->position.x + entityRect->size.x, entityRect->position.y + entityRect->size.y};
+    CORE::Vector2<float> BL = {entityRect->position.x                     , entityRect->position.y + entityRect->size.y};
+
     //Check if it's in a tile zone
-    for(CORE::Vector2<float> vertex : vertices){
-        if(tileMap->GetTile(vertex) == '#'){
-            return true;
-        }
-    }
+    if(tileMap->GetTile(TL) == '#'){
+        return true;
+    } 
+    if(!lockedX && tileMap->GetTile(TR) == '#'){
+        return true;
+    } 
+    if(!lockedY && tileMap->GetTile(BL) == '#'){
+        return true;
+    } 
+    if(!lockedX && !lockedY &&tileMap->GetTile(BR) == '#'){
+        return true;
+    } 
     return false;  
 }
 
