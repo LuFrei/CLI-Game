@@ -87,11 +87,14 @@ namespace Graphics {
 					}
 					wchar_t character = tileMap->GetTile({(float)x, (float)y});
 					int idx = width * y + xCell;
-					if (this->squareCells) {
-						data[idx] = {character, BACKGROUND_GREEN};
-						data[idx +1] = {character, BACKGROUND_GREEN};
-					} else {
-						data[idx] = {character, BACKGROUND_GREEN};
+					if(character == '#'){
+						unsigned short whiteBG = BACKGROUND_GREEN | BACKGROUND_BLUE | BACKGROUND_RED | BACKGROUND_INTENSITY;
+						if (this->squareCells) {
+							data[idx] = {' ', whiteBG};
+							data[idx +1] = {' ', whiteBG};
+						} else {
+							data[idx] = {' ', whiteBG};
+						}
 					}
 			}
 		}
