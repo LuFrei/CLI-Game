@@ -54,6 +54,6 @@ public:
 
     // TileMap
     void SetTileMap(TileMap* map) { tileMap = map; };
-    bool CheckTileMapCollision();
+    bool CheckTileMapCollision(Rect rect);
 };
 }

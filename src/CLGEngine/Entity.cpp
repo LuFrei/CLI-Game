@@ -33,7 +33,7 @@ namespace CLGEngine {
 	}
 
 	void Entity::SetPosition(CORE::Vector2<float> newPos){
-		_rect.position = newPos;	
+		_rect.position = newPos;
 		// TODO: Should be an event, collider shouldn't be explicitly called here.
 		col->SetColliderPosition(newPos);
 	}

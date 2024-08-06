@@ -111,25 +111,25 @@ bool Collider::CheckCollision(Collider** hit){
     return false;
 }
 
-bool Collider::CheckTileMapCollision(){
+bool Collider::CheckTileMapCollision(Rect rect){
     // Well have to check for whole numbers
     //  we are getting some bleed into neighboring cells when checking collisison.
-    int wholePosX = std::floor(entityRect->position.x);
-    int wholePosY = std::floor(entityRect->position.y);
+    int wholePosX = std::floor(rect.position.x);
+    int wholePosY = std::floor(rect.position.y);
 
     // "Locked" into the same cell as position.[x|y]
     bool lockedX = false;
     bool lockedY = false;
-    if(wholePosX == entityRect->position.x)
+    if(wholePosX == rect.position.x)
         { lockedX = true; }
-    if(wholePosX == entityRect->position.x)
+    if(wholePosY == rect.position.y)
         { lockedY = true; }
 
     // Get vertices
-    CORE::Vector2<float> TL = entityRect->position;
-    CORE::Vector2<float> TR = {entityRect->position.x + entityRect->size.x, entityRect->position.y};
-    CORE::Vector2<float> BR = {entityRect->position.x + entityRect->size.x, entityRect->position.y + entityRect->size.y};
-    CORE::Vector2<float> BL = {entityRect->position.x                     , entityRect->position.y + entityRect->size.y};
+    CORE::Vector2<float> TL = rect.position;
+    CORE::Vector2<float> TR = {rect.position.x + rect.size.x, rect.position.y};
+    CORE::Vector2<float> BR = {rect.position.x + rect.size.x, rect.position.y + rect.size.y};
+    CORE::Vector2<float> BL = {rect.position.x                     , rect.position.y + rect.size.y};
 
     //Check if it's in a tile zone
     if(tileMap->GetTile(TL) == '#'){
@@ -155,30 +155,26 @@ void Collider::ProjectPath(CORE::Vector2<float> direction, Collider** hit){
     if(CheckCollision(hit)){
         if(direction.x > 0){
             entityRect->position.x = (*hit)->bounds.left - entityRect->size.x;
-        }
-        if (direction.x < 0) {
+        } else if (direction.x < 0) {
             entityRect->position.x = (*hit)->bounds.right;
         }
         if(direction.y > 0){
             entityRect->position.y = (*hit)->bounds.top - entityRect->size.y;
-        }
-        if(direction.y < 0){
+        } else if(direction.y < 0){
             entityRect->position.y = (*hit)->bounds.bottom;
         }
     }
 
     //Check Against Map
-    if(CheckTileMapCollision()){
+    if(CheckTileMapCollision(*entityRect)){
         if(direction.x > 0){
             entityRect->position.x = std::floor(entityRect->position.x);
-        }
-        if (direction.x < 0) {
+        } else if (direction.x < 0) {
             entityRect->position.x = std::floor(entityRect->position.x) + 1;
         }
         if(direction.y > 0){
             entityRect->position.y = std::floor(entityRect->position.y);
-        }
-        if(direction.y < 0){
+        } else if(direction.y < 0){
             entityRect->position.y = std::floor(entityRect->position.y) + 1;
         }
     }
@@ -203,7 +199,7 @@ bool Collider::CastCollider(Rect rect, Collider** hit){
         *hit = col;
         return true;
     }
-    return CheckTileMapCollision();
+    return CheckTileMapCollision(rect);
 }
 
 

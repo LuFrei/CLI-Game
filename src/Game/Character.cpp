@@ -85,10 +85,14 @@ void Character::Update(){
         _rect.size.y
     };
     Collider* hitGround = NULL;
+    // Debuging, erase after
+    if(groundChecker.position.y > 28){
+        int i = 10; // Hacking in a condition breakpoint.....
+    }
     _grounded = col->CastCollider(groundChecker, &hitGround);
     
     
-    if(_grounded){
+    if(_grounded){ 
         if(hitGround == NULL){
             _groundLevel = std::floor(groundChecker.position.y);
         } else {
