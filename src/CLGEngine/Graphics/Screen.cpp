@@ -78,6 +78,23 @@ namespace Graphics {
 
 		ClearScreenData();
 
+		//Add TileMap render
+		for(int y = 0; y < tileMap->height; y++){
+			for(int x = 0; x < tileMap->width; x++){
+					int xCell = x;
+					if (this->squareCells) {
+						xCell *= 2;
+					}
+					wchar_t character = tileMap->GetTile({(float)x, (float)y});
+					int idx = width * y + xCell;
+					if (this->squareCells) {
+						data[idx] = {character, BACKGROUND_GREEN};
+						data[idx +1] = {character, BACKGROUND_GREEN};
+					} else {
+						data[idx] = {character, BACKGROUND_GREEN};
+					}
+			}
+		}
 
 		for (Graphics::Block* block : blocks) {
 			// is this block ever going going to show up in the screen?
@@ -104,24 +121,6 @@ namespace Graphics {
 					{
 						continue;
 					}
-
-					// TODO: Move this out of here and into Character; May need to add renderer definition for shaders.
-					// ... As part of the renderer, we may be able to have a shader property we can add algos into to 
-					// make effects like this one below, or the screen border one...
-					// switch (w % 4) {
-					// case(0):
-					// 	block->material.Char.AsciiChar = ASCII_SHADE1;
-					// 	break;
-					// case(1):
-					// 	block->material.Char.AsciiChar = ASCII_SHADE2;
-					// 	break;
-					// case(2):
-					// 	block->material.Char.AsciiChar = ASCII_SHADE3;
-					// 	break;
-					// case(3):
-					// 	block->material.Char.AsciiChar = ASCII_SHADE4;
-					// 	break;
-					// }
 
 					if (this->squareCells) {
 						data[width * cellY + cellX] = block->material;

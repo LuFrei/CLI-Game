@@ -21,7 +21,7 @@ TileMap::TileMap(int width, int height, std::string mapData) :
     }
 }
 
-char TileMap::GetTile(CLGEngine::CORE::Vector2<float> coords){
+wchar_t TileMap::GetTile(CLGEngine::CORE::Vector2<float> coords){
     try {
         if (coords.x < 0 || coords.x > width){
             throw "X is out of bounds";
@@ -29,7 +29,9 @@ char TileMap::GetTile(CLGEngine::CORE::Vector2<float> coords){
         if (coords.y < 0 || coords.y > height){
             throw "Y is out of bounds";
         }
-        return map[std::floor(coords.x) * std::floor(coords.y)].Char.AsciiChar;
+        int xInt = std::floor(coords.x);
+        int yInt = std::floor(coords.y);
+        return map[width * yInt + xInt].Char.AsciiChar;
     } catch (std::string err) {
 
     }
