@@ -5,10 +5,8 @@
 namespace CLGEngine {
 
 	Entity::Entity(float x, float y, float width,float height)
-		   : rend(nullptr)
-		   , col(nullptr)
-		   , rect_({x, y, width, height})
-		{
+		   : _rect({x, y, width, height})
+	{
 		EntityManager::AddEntity(this);
 	}
 
@@ -23,9 +21,10 @@ namespace CLGEngine {
 		EntityManager::RemoveEntity(this);
 	}
 
+#pragma region Transform
 	void Entity::Translate(CORE::Vector2<float> direction) {
-		rect_.position.x += direction.x;
-		rect_.position.y += direction.y;
+		_rect.position.x += direction.x;
+		_rect.position.y += direction.y;
 		// TODO: We need to move this out of here. Idealy with a Message/Event Call.
 		if(col != nullptr){
 			Collider* hit = NULL;
@@ -34,22 +33,24 @@ namespace CLGEngine {
 	}
 
 	void Entity::SetPosition(CORE::Vector2<float> newPos){
-		rect_.position = newPos;	
+		_rect.position = newPos;
 		// TODO: Should be an event, collider shouldn't be explicitly called here.
 		col->SetColliderPosition(newPos);
 	}
 
 	void Entity::Scale(float x, float y) {
-		this->rect_.size.x *= x;
-		this->rect_.size.y *= y;
+		this->_rect.size.x *= x;
+		this->_rect.size.y *= y;
 	}
+#pragma endregion
 
+#pragma region Components
 	void Entity::AddRenderer(CHAR_INFO material){
 		// Replace existing
 		if(rend != nullptr){
 			delete rend;
 		}
-		rend = new Graphics::Renderer(&this->rect_, material);
+		rend = new Graphics::Renderer(&this->_rect, material);
 	}
 
 	void Entity::AddCollider(){
@@ -57,6 +58,26 @@ namespace CLGEngine {
 		if(col != nullptr){
 			delete col;
 		}
-		col = new Collider(&this->rect_);
+		col = new Collider(&this->_rect);
 	}
+#pragma endregion
+
+#pragma region Event
+// TODO: Will it make more ense to send this to ISubject itself?
+	void Entity::Subscribe(int event, IObserver* o){
+		_observers[event].emplace_front(o);
+	}
+
+	void Entity::Unsubscribe(int event, IObserver* o){
+		_observers[event].remove(o);
+	}
+	
+	void Entity::Notify(int Event){
+		for(IObserver* o : _observers[Event]){
+			o->OnNotify();
+		}
+	}
+
+
+#pragma endregion
 }

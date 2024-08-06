@@ -57,4 +57,3 @@ namespace CORE {
 
 } // namespace CORE
 } // namespace CLGEngine
-	

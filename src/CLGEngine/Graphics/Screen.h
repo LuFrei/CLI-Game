@@ -1,5 +1,7 @@
 #pragma once
+
 #include <Windows.h>
+#include "../../Game/TileMap.h"
 
 namespace Graphics {
 	/// <summary>
@@ -15,7 +17,7 @@ namespace Graphics {
 		CHAR_INFO* data;
 
 		bool squareCells;
-
+		TileMap* tileMap;
 		void ClearScreenData();
 	public:
 
@@ -31,5 +33,6 @@ namespace Graphics {
 		/// Visually display all active Blocks based on their position and dimensions.
 		/// </summary>
 		void Draw();
+		void SetTileMap(TileMap* map) {tileMap = map;};
 	};
 }
