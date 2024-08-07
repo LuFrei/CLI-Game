@@ -74,7 +74,7 @@ void AdjustMomentum(int direction){
 
 bool jumping = 0;
 void Character::Update(){
-    // //Check Ground
+    // -- Check Ground
     //TODO: This is expensive we build the checker EVERY FRAME.
     //      Seriously need a way to have entity/component heirarchy 
     //      and build up a coordinate position like that..
@@ -85,12 +85,7 @@ void Character::Update(){
         _rect.size.y
     };
     Collider* hitGround = NULL;
-    // Debuging, erase after
-    if(groundChecker.position.y > 28){
-        int i = 10; // Hacking in a condition breakpoint.....
-    }
     _grounded = col->CastCollider(groundChecker, &hitGround);
-    
     
     if(_grounded){ 
         if(hitGround == NULL){
@@ -127,26 +122,6 @@ void Character::Update(){
         AdjustMomentum(direction);
         Move(momentum);
     }
-
-    // // TileMap stuff
-    // if(CheckTileMapCollision()){
-    //     if(momentum > 0){
-    //         _rect.position.x = std::floor(_rect.position.x);
-    //     }
-    //     if (momentum < 0) {
-    //         _rect.position.x = std::floor(_rect.position.x) + 1;
-    //     }
-    //     if(vertMomentum > 0){
-    //         _rect.position.y = std::floor(_rect.position.y);
-    //         _grounded = true;
-    //         jumping = 0;
-    //         vertMomentum = 0;
-    //     }
-    //     if(vertMomentum < 0){
-    //         _rect.position.y = std::floor(_rect.position.y) + 1;
-    //     }
-    // }
-
 }
 
 void Character::Move(float momentum) {
@@ -160,8 +135,20 @@ void Character::Jump(){
 
     Translate({0, -vertMomentum * jumpSpeed * CLGEngine::Time::deltaTime});
 
-    if(rect().position.y <= _groundLevel - jumpHeight && vertMomentum == 1){
-        SetPosition({rect().position.x, _groundLevel - jumpHeight});
+    // -- Check Ceiling
+    Rect ceilingChecker = {
+        _rect.position.x,
+        _rect.position.y - 0.01f,
+        _rect.size.x,
+        _rect.size.y
+    };
+    Collider* hit = NULL; // only need to fill the func.
+    bool ceilingHit = col->CastCollider(ceilingChecker, &hit);
+    if(ceilingHit){
+        int num = 10;
+    }
+
+    if((ceilingHit || rect().position.y <= _groundLevel - jumpHeight) && vertMomentum == 1){
         vertMomentum = -1;
         jumping = 0;
     }
