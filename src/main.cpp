@@ -12,8 +12,8 @@ int main()
 {
     Game game = Game();
 
-    TileMap* level = new TileMap(30, 30, map01);
-    Character* player = new Character({1, 1});
+    TileMap* level = new TileMap(31, 13, demoMap);
+    Character* player = new Character({2, 0});
     player->AddTileMap(level);
     game.screen.SetTileMap(level);
     
