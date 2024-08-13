@@ -16,13 +16,14 @@ CHAR_INFO charMat = {
 
 Character::Character(CORE::Vector2<float> startPosition)
             : Entity(startPosition.x, startPosition.y, 1, 1)
-            , _speed(10) 
+            , _speed(10)
+            ,_position({startPosition.x + 0.5f, startPosition.y + 0.5f})
 {
     AddRenderer(charMat);
     AddCollider();
 }
 
-Character::~Character(){ }
+Character::~Character(){}
 
 #pragma region TileMap-Interaction
 void Character::AddTileMap(TileMap* map){
@@ -30,22 +31,17 @@ void Character::AddTileMap(TileMap* map){
     col->SetTileMap(map);
 }
 
-bool Character::CheckTileMapCollision(){
-    // Get vertices
-    CORE::Vector2<float> vertices[4] = {
-         rect().position                  ,                                        //TopLeft
-        {rect().position.x + rect().size.x, rect().position.y},                    //TopRight
-        {rect().position.x + rect().size.x, rect().position.y + rect().size.y},    //BottomRight
-        {rect().position.x                , rect().position.y + rect().size.y}     //BottomLeft
-    };
-    //Check if it's in a tile zone
-    for(CORE::Vector2<float> vertex : vertices){
-        if(_tileMap->GetTile(vertex) == '#'){
-            return true;
-        }
-    }
-    return false;  
-}
+// bool Character::CheckTileMapCollision(){
+//     // Get center-point
+//     CORE::Vector2<float> center = {rect().position.x + 0.5, rect().position.y + 0.5};
+//     //Check if it's in a tile zone
+//     for(CORE::Vector2<float> vertex : vertices){
+//         if(_tileMap->GetTile(vertex) == '#'){
+//             return true;
+//         }
+//     }
+//     return false;  
+// }
 #pragma endregion
 
 float momentum = 0;
@@ -84,8 +80,10 @@ void Character::Update(){
         _rect.size.x,
         _rect.size.y
     };
+    CORE::Vector2<float> belowCell = {std::floor(_position.x), std::floor(_position.y) + 1};
     Collider* hitGround = NULL;
-    _grounded = col->CastCollider(groundChecker, &hitGround);
+    _grounded = col->CastCollider(groundChecker, &hitGround)
+                || _tileMap->GetTile(belowCell) == '#';
     
     if(_grounded){ 
         if(hitGround == NULL){
@@ -98,7 +96,8 @@ void Character::Update(){
         vertMomentum = 0;
     } else {
         if(vertMomentum != 1){
-            Translate({0, jumpSpeed * CLGEngine::Time::deltaTime});
+            _position += {0, jumpSpeed * CLGEngine::Time::deltaTime};
+            SetPosition({std::floor(_position.x), std::floor(_position.y)});
         }
     }
 
@@ -125,33 +124,43 @@ void Character::Update(){
 }
 
 void Character::Move(float momentum) {
-    Translate({momentum * _speed * CLGEngine::Time::deltaTime, 0});
+
+    int x = momentum > 0 
+        ? std::floor(_position.x) + 1
+        : std::floor(_position.x) - 1;
+    
+    CORE::Vector2<float> nextCell = {(float)x , std::floor(_position.y)};
+
+    if(_tileMap->GetTile(nextCell) != '#'){
+        _position += {momentum * _speed * CLGEngine::Time::deltaTime, 0};
+        CORE::Vector2<float> currCell = {std::floor(_position.x), std::floor(_position.y)};
+        if(currCell.x == nextCell.x){
+            SetPosition(currCell);
+        }
+    }
 }
 
 void Character::Jump(){
     if(vertMomentum == 0){
         vertMomentum = 1;
     }
+    CORE::Vector2<float> lastPos = _position;
+    _position += {0, -vertMomentum * jumpSpeed * CLGEngine::Time::deltaTime};
 
     Translate({0, -vertMomentum * jumpSpeed * CLGEngine::Time::deltaTime});
 
-    // -- Check Ceiling
-    Rect ceilingChecker = {
-        _rect.position.x,
-        _rect.position.y - 0.01f,
-        _rect.size.x,
-        _rect.size.y
-    };
-    Collider* hit = NULL; // only need to fill the func.
-    bool ceilingHit = col->CastCollider(ceilingChecker, &hit);
-    if(ceilingHit){
-        int num = 10;
+    CORE::Vector2<float> currCell = {std::floor(_position.x), std::floor(_position.y)};
+    bool ceilingHit = false;
+    if(_tileMap->GetTile(currCell) == '#'){
+        ceilingHit = true;
+        _position = lastPos;
     }
 
     if((ceilingHit || rect().position.y <= _groundLevel - jumpHeight) && vertMomentum == 1){
         vertMomentum = -1;
         jumping = 0;
     }
+    SetPosition({std::floor(_position.x), std::floor(_position.y)});
 }
 
 #pragma region  !/ / / QUARANTINE ZONE / / /! 

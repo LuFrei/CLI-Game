@@ -1,6 +1,7 @@
 #pragma once
 #include "../CLGEngine/Entity.h"
 #include "TileMap.h"
+#include "../CLGEngine/CORE/Utility.h"
 
 using namespace CLGEngine;
 
@@ -10,6 +11,7 @@ private:
 	bool _grounded;
 	float _groundLevel;
 	TileMap* _tileMap;
+	CORE::Vector2<float> _position;
 
 	bool CheckTileMapCollision();
 public:

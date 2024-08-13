@@ -21,6 +21,12 @@ namespace CLGEngine {
 				x += vec.x;
 				y += vec.y;
 			}
+			// bool operator==(Vector2 const& vec){
+			// 	if (vec.x == x && vec.y == y){
+			// 		return true;
+			// 	}
+			// 	return false;
+			// }
 			Vector2 operator-(Vector2 const& vec) {
 				Vector2 diff;
 				diff.x = x - vec.x;
