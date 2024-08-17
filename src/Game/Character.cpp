@@ -17,7 +17,7 @@ CHAR_INFO charMat = {
 Character::Character(CORE::Vector2<float> startPosition)
             : Entity(startPosition.x, startPosition.y, 1, 1)
             , _speed(10)
-            ,_position({startPosition.x + 0.5f, startPosition.y + 0.5f})
+            , _position({startPosition.x + 0.5f, startPosition.y + 0.5f})
 {
     AddRenderer(charMat);
     AddCollider();
@@ -31,17 +31,6 @@ void Character::AddTileMap(TileMap* map){
     col->SetTileMap(map);
 }
 
-// bool Character::CheckTileMapCollision(){
-//     // Get center-point
-//     CORE::Vector2<float> center = {rect().position.x + 0.5, rect().position.y + 0.5};
-//     //Check if it's in a tile zone
-//     for(CORE::Vector2<float> vertex : vertices){
-//         if(_tileMap->GetTile(vertex) == '#'){
-//             return true;
-//         }
-//     }
-//     return false;  
-// }
 #pragma endregion
 
 float momentum = 0;
@@ -70,28 +59,14 @@ void AdjustMomentum(int direction){
 
 bool jumping = 0;
 void Character::Update(){
-    // -- Check Ground
-    //TODO: This is expensive we build the checker EVERY FRAME.
-    //      Seriously need a way to have entity/component heirarchy 
-    //      and build up a coordinate position like that..
-    Rect groundChecker = {
-        _rect.position.x,
-        _rect.position.y + 0.01f,
-        _rect.size.x,
-        _rect.size.y
-    };
-    CORE::Vector2<float> belowCell = {std::floor(_position.x), std::floor(_position.y) + 1};
-    Collider* hitGround = NULL;
-    _grounded = col->CastCollider(groundChecker, &hitGround)
-                || _tileMap->GetTile(belowCell) == '#';
+
+    CORE::Vector2<float> belowCell = {std::floor(_position.x), std::floor(_position.y + 0.5f)};
+    _grounded = _tileMap->GetTile(belowCell) == '#';
     
     if(_grounded){ 
-        if(hitGround == NULL){
-            _groundLevel = std::floor(groundChecker.position.y);
-        } else {
-            _groundLevel = hitGround->bounds.top - _rect.size.y;
-        }
-        SetPosition({rect().position.x, _groundLevel});
+        _groundLevel = belowCell.y;
+        _position.y = _groundLevel - 0.5;
+        SetPosition({std::floor(_position.x), std::floor(_position.y)});
         jumping = 0;
         vertMomentum = 0;
     } else {
@@ -100,6 +75,7 @@ void Character::Update(){
             SetPosition({std::floor(_position.x), std::floor(_position.y)});
         }
     }
+
 
     int direction = 0; //1 = right; -1 = left
     if (Input::Input::GetKeyPressed(Input::KeyCode::Left)) {
@@ -114,10 +90,7 @@ void Character::Update(){
     if(jumping){
         Jump();
     }
-    if(direction != 0){
-        AdjustMomentum(direction);
-        Move(momentum);
-    } else if (momentum != 0){
+    if(direction != 0 || momentum != 0){
         AdjustMomentum(direction);
         Move(momentum);
     }
@@ -147,16 +120,12 @@ void Character::Jump(){
     CORE::Vector2<float> lastPos = _position;
     _position += {0, -vertMomentum * jumpSpeed * CLGEngine::Time::deltaTime};
 
-    Translate({0, -vertMomentum * jumpSpeed * CLGEngine::Time::deltaTime});
-
     CORE::Vector2<float> currCell = {std::floor(_position.x), std::floor(_position.y)};
-    bool ceilingHit = false;
-    if(_tileMap->GetTile(currCell) == '#'){
-        ceilingHit = true;
-        _position = lastPos;
-    }
 
-    if((ceilingHit || rect().position.y <= _groundLevel - jumpHeight) && vertMomentum == 1){
+    if((_tileMap->GetTile(currCell) == '#' || _position.y <= _groundLevel - jumpHeight) 
+        && vertMomentum == 1)
+    {
+        _position = lastPos;
         vertMomentum = -1;
         jumping = 0;
     }
