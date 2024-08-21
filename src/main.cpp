@@ -2,7 +2,7 @@
 #include "CLGEngine/Game.h"
 
 #include "Game/Character.h"
-#include "Game/Map.h"
+#include "Game/Maps.h"
 #include "Game/TileMap.h"
 #include "Game/Wall.h"
 
@@ -12,8 +12,8 @@ int main()
 {
     Game game = Game();
 
-    TileMap* level = new TileMap(31, 13, demoMap);
-    Character* player = new Character({2, 0});
+    TileMap* level = new TileMap(60, 30, titleMap);
+    Character* player = new Character({52, 5});
     player->AddTileMap(level);
     game.screen.SetTileMap(level);
     
