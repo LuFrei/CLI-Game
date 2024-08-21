@@ -7,12 +7,9 @@ namespace CLGEngine {
 		//	and cant be converted to flaot.
 		template <typename T>
 		struct Vector2 {
-			// TODO: REstrict T to numeric types (?)
-			//	*(?) May not be needed unless we allow for type casting.
-			// -> static_assert();
 			T x, y;
-			Vector2 operator+(Vector2 const& vec) {
-				Vector2 sum;
+			Vector2<T> operator+(Vector2 const& vec) {
+				Vector2<T> sum;
 				sum.x = x + vec.x;
 				sum.y = y + vec.y;
 				return sum;
@@ -21,12 +18,12 @@ namespace CLGEngine {
 				x += vec.x;
 				y += vec.y;
 			}
-			// bool operator==(Vector2 const& vec){
-			// 	if (vec.x == x && vec.y == y){
-			// 		return true;
-			// 	}
-			// 	return false;
-			// }
+			bool operator==(Vector2 const& vec) const{
+				if (x == vec.x && y == vec.y){
+					return true;
+				}
+				return false;
+			}
 			Vector2 operator-(Vector2 const& vec) {
 				Vector2 diff;
 				diff.x = x - vec.x;

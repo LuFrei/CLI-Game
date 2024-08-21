@@ -66,15 +66,14 @@ void Character::Update(){
     if(_grounded){ 
         _groundLevel = belowCell.y;
         _position.y = _groundLevel - 0.5;
-        SetPosition({std::floor(_position.x), std::floor(_position.y)});
         jumping = 0;
         vertMomentum = 0;
     } else {
         if(vertMomentum != 1){
             _position += {0, jumpSpeed * CLGEngine::Time::deltaTime};
-            SetPosition({std::floor(_position.x), std::floor(_position.y)});
         }
     }
+    AdjustRectAsNeeded();
 
 
     int direction = 0; //1 = right; -1 = left
@@ -98,18 +97,22 @@ void Character::Update(){
 
 void Character::Move(float momentum) {
 
-    int x = momentum > 0 
-        ? std::floor(_position.x) + 1
-        : std::floor(_position.x) - 1;
-    
-    CORE::Vector2<float> nextCell = {(float)x , std::floor(_position.y)};
+    int nextX = momentum > 0 
+          ? std::floor(_position.x) + 1
+          : std::floor(_position.x) - 1;
 
+    if(_position.x < 0 
+    || _position.x > _tileMap->width 
+    || _position.y < 0 
+    || _position.y > _tileMap->height) {
+        _position += {momentum * _speed * CLGEngine::Time::deltaTime, 0};
+        AdjustRectAsNeeded();
+        return;
+    }
+    CORE::Vector2<float> nextCell = {(float)nextX , std::floor(_position.y)};
     if(_tileMap->GetTile(nextCell) != '#'){
         _position += {momentum * _speed * CLGEngine::Time::deltaTime, 0};
-        CORE::Vector2<float> currCell = {std::floor(_position.x), std::floor(_position.y)};
-        if(currCell.x == nextCell.x){
-            SetPosition(currCell);
-        }
+        AdjustRectAsNeeded();
     }
 }
 
@@ -117,19 +120,27 @@ void Character::Jump(){
     if(vertMomentum == 0){
         vertMomentum = 1;
     }
-    CORE::Vector2<float> lastPos = _position;
-    _position += {0, -vertMomentum * jumpSpeed * CLGEngine::Time::deltaTime};
 
-    CORE::Vector2<float> currCell = {std::floor(_position.x), std::floor(_position.y)};
+    CORE::Vector2<float> offSet = {0, -vertMomentum * jumpSpeed * CLGEngine::Time::deltaTime};
+    CORE::Vector2<float> nextPos = _position + offSet;
 
-    if((_tileMap->GetTile(currCell) == '#' || _position.y <= _groundLevel - jumpHeight) 
+    CORE::Vector2<float> nextCell = {std::floor(nextPos.x), std::floor(nextPos.y)};
+    if((_tileMap->GetTile(nextCell) == '#' || _position.y <= _groundLevel - jumpHeight) 
         && vertMomentum == 1)
     {
-        _position = lastPos;
         vertMomentum = -1;
         jumping = 0;
+        return;
     }
+    _position = nextPos;
     SetPosition({std::floor(_position.x), std::floor(_position.y)});
+}
+
+void Character::AdjustRectAsNeeded() {
+    CORE::Vector2<float> posFloored = {std::floor(_position.x), std::floor(_position.y)};
+    if(posFloored == rect().position){
+        return;    }
+    SetPosition(posFloored);
 }
 
 #pragma region  !/ / / QUARANTINE ZONE / / /! 
