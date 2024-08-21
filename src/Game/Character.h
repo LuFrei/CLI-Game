@@ -13,7 +13,7 @@ private:
 	TileMap* _tileMap;
 	CORE::Vector2<float> _position;
 
-	bool CheckTileMapCollision();
+	void AdjustRectAsNeeded();
 public:
 	Character(CORE::Vector2<float> startPosition);
 	~Character();

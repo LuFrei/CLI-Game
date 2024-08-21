@@ -22,17 +22,10 @@ TileMap::TileMap(int width, int height, std::string mapData) :
 }
 
 wchar_t TileMap::GetTile(CLGEngine::CORE::Vector2<float> coords){
-    try {
-        if (coords.x < 0 || coords.x > width){
-            throw "X is out of bounds";
-        }
-        if (coords.y < 0 || coords.y > height){
-            throw "Y is out of bounds";
-        }
-        int xInt = std::floor(coords.x);
-        int yInt = std::floor(coords.y);
-        return map[width * yInt + xInt].Char.AsciiChar;
-    } catch (std::string err) {
-
+    if (coords.x < 0 || coords.x > width || coords.y < 0 || coords.y > height){
+        return ' ';
     }
+    int xInt = std::floor(coords.x);
+    int yInt = std::floor(coords.y);
+    return map[width * yInt + xInt].Char.AsciiChar;
 }

@@ -5,12 +5,7 @@ TileMapChecker::TileMapChecker(Character* player, TileMap* map)
 : Entity(0, 0, 0, 0)
 , player(player)
 , map(map)
-{
-    TL = player->rect().position;
-    TR = {player->rect().position.x + player->rect().size.x, player->rect().position.y};
-    BR = {player->rect().position.x + player->rect().size.x, player->rect().position.y + player->rect().size.y};
-    BL = {player->rect().position.x, player->rect().position.y + player->rect().size.y};
-}
+{ }
 
 
 void TileMapChecker::Update(){
