@@ -35,17 +35,17 @@ namespace CLGEngine {
 #pragma region Event
 // TODO: Will it make more ense to send this to ISubject itself?
 	void Entity::AddSubscriber(IObserver* o) {
-		_observers[e].emplace_front(o);
+		_observers.emplace_front(o);
 	}
 
 	void Entity::RemoveSubscriber(IObserver* o) {
-		_observers[e].remove(o);
+		_observers.remove(o);
 	}
 	
 
 
 	void Entity::Notify(Event e) {
-		for(IObserver* o : _observers[e]){
+		for(IObserver* o : _observers){
 			o->OnNotify();
 		}
 	}

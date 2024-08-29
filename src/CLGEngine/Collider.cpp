@@ -88,25 +88,6 @@ bool Collider::CheckCollision(Collider** hit){
     return false;
 }
 
-// TODO: make data flow work to check collision and reposition the entity to not overlap
-//      Idea right now is to use a center point and compare x, y to know where to snap the entity.
-void Collider::ProjectPath(CORE::Vector2<float> direction, Collider** hit){
-    CORE::Vector2 newPos = _ent->rect.position;
-    //Check against other Entities
-    if(CheckCollision(hit)){
-        if(direction.x > 0){
-            _ent->rect.position.x = (*hit)->bounds.left - _ent->rect.size.x;
-        } else if (direction.x < 0) {
-            _ent->rect.position.x = (*hit)->bounds.right;
-        }
-        if(direction.y > 0){
-            _ent->rect.position.y = (*hit)->bounds.top - _ent->rect.size.y;
-        } else if(direction.y < 0){
-            _ent->rect.position.y = (*hit)->bounds.bottom;
-        }
-    }
-}
-
 // What if Collider is like RigidBody. And evberything has a collider. but you only check for interaction with a collider on.
 
 bool Collider::CastCollider(Rect rect, Collider** hit){
