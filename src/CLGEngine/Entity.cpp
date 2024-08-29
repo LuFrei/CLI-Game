@@ -41,10 +41,8 @@ namespace CLGEngine {
 	void Entity::RemoveSubscriber(IObserver* o) {
 		_observers.remove(o);
 	}
-	
 
-
-	void Entity::Notify(Event e) {
+	void Entity::Notify() {
 		for(IObserver* o : _observers){
 			o->OnNotify();
 		}

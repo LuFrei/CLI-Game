@@ -24,7 +24,6 @@ namespace CLGEngine {
 		void AddSubscriber(IObserver* o) override;
 		void RemoveSubscriber(IObserver* o) override;
 	private:
-		void Notify(Event e);
 		void Notify() override;
 		std::forward_list<IObserver*> _observers;
 

@@ -21,11 +21,11 @@ Character::Character(CORE::Vector2<float> startPosition)
 {
     _col = new Collider(this);
     _rend = new Graphics::Renderer(this, charMat);
-    AddSubscriber(Event::Moved, _col);
+    AddSubscriber(_col);
 }
 
 Character::~Character(){
-    RemoveSubscriber(Event::Moved, _col);
+    RemoveSubscriber(_col);
     delete _col;
     delete _rend;
 }
@@ -97,6 +97,7 @@ void Character::Update(){
         AdjustMomentum(direction);
         Move(momentum);
     }
+    _col->ClearHit();
 }
 
 void Character::Move(float momentum) {

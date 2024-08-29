@@ -43,6 +43,7 @@ Bounds GetBoundsFromRect(Rect rect){
 
 Collider::Collider(CLGEngine::Entity* ent):
     Component(ent),
+    _hit(nullptr),
     bounds({
         GetBoundsFromRect(ent->rect)
     }),
@@ -56,12 +57,10 @@ Collider::~Collider(){
     activeColliders.erase(activeColliders.begin() + idx);
 }
 
-
-
-void Collider::UpdateBounds(){
+void Collider::UpdateBounds() {
     bounds = {
-        _ent->rect.position.x, 
-        _ent->rect.position.y, 
+        _ent->rect.position.x,
+        _ent->rect.position.y,
         _ent->rect.position.x + _ent->rect.size.x,
         _ent->rect.position.y + _ent->rect.size.y
     };
@@ -100,6 +99,7 @@ bool Collider::CastCollider(Rect rect, Collider** hit){
             continue;
         }
         *hit = col;
+        _hit = col;
         return true;
     }
     return false;

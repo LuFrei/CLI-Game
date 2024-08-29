@@ -35,8 +35,9 @@ public:
     
     // Main Logic
     bool CheckCollision();
+    bool CastCollider(Rect rect, Collider** hit);
+    Collider* GetHit(){return _hit;};
     // Temp func for current refactor. call inthe end of caller's Update()
     void ClearHit();
-    bool CastCollider(Rect rect, Collider** hit);
 };
 }
