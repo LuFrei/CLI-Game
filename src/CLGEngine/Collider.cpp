@@ -41,30 +41,14 @@ Bounds GetBoundsFromRect(Rect rect){
     };
 }
 
-Collider::Collider(Rect* entityRect):
-    Component(entityRect),
+Collider::Collider(CLGEngine::Entity* ent):
+    Component(ent),
     bounds({
-        entityRect->position.x, 
-        entityRect->position.y, 
-        entityRect->position.x + entityRect->size.x,
-        entityRect->position.y + entityRect->size.y
+        GetBoundsFromRect(ent->rect)
     }),
     centerPoint({
-        entityRect->position.x + (entityRect->size.x/2),
-        entityRect->position.y + (entityRect->size.y/2)
-    }),
-    isSolid(true)
-{
-    activeColliders.push_back(this);
-}
-
-Collider::Collider(Rect* entityRect, Rect offset):
-    Component(entityRect, offset),
-    bounds({
-        entityRect->position.x, 
-        entityRect->position.y, 
-        entityRect->position.x + entityRect->size.x,
-        entityRect->position.y + entityRect->size.y
+        ent->rect.position.x + (ent->rect.size.x/2),
+        ent->rect.position.y + (ent->rect.size.y/2)
     }),
     isSolid(true)
 {
@@ -80,18 +64,11 @@ Collider::~Collider(){
 
 void Collider::UpdateBounds(){
     bounds = {
-        entityRect->position.x, 
-        entityRect->position.y, 
-        entityRect->position.x + entityRect->size.x,
-        entityRect->position.y + entityRect->size.y
+        _ent->rect.position.x, 
+        _ent->rect.position.y, 
+        _ent->rect.position.x + _ent->rect.size.x,
+        _ent->rect.position.y + _ent->rect.size.y
     };
-}
-
-// TODO: Remove this.
-//      Right now it's used to update Bound when Entity calls SetPosition().
-//      UpdateBounds() should be called automatically when a move event comes from Entity.
-void Collider::SetColliderPosition(CORE::Vector2<float> newPosition){
-    UpdateBounds();
 }
 
 bool Collider::CheckCollision(Collider** hit){
@@ -114,18 +91,18 @@ bool Collider::CheckCollision(Collider** hit){
 // TODO: make data flow work to check collision and reposition the entity to not overlap
 //      Idea right now is to use a center point and compare x, y to know where to snap the entity.
 void Collider::ProjectPath(CORE::Vector2<float> direction, Collider** hit){
-    CORE::Vector2 newPos = entityRect->position;
+    CORE::Vector2 newPos = _ent->rect.position;
     //Check against other Entities
     if(CheckCollision(hit)){
         if(direction.x > 0){
-            entityRect->position.x = (*hit)->bounds.left - entityRect->size.x;
+            _ent->rect.position.x = (*hit)->bounds.left - _ent->rect.size.x;
         } else if (direction.x < 0) {
-            entityRect->position.x = (*hit)->bounds.right;
+            _ent->rect.position.x = (*hit)->bounds.right;
         }
         if(direction.y > 0){
-            entityRect->position.y = (*hit)->bounds.top - entityRect->size.y;
+            _ent->rect.position.y = (*hit)->bounds.top - _ent->rect.size.y;
         } else if(direction.y < 0){
-            entityRect->position.y = (*hit)->bounds.bottom;
+            _ent->rect.position.y = (*hit)->bounds.bottom;
         }
     }
 }
@@ -152,26 +129,9 @@ bool Collider::CastCollider(Rect rect, Collider** hit){
     return false;
 }
 
-
-#pragma region ISubject
-void Collider::Subscribe(int event, IObserver* o){
-    _observers[event].emplace_front(o);
-}
-
-void Collider::Unsubscribe(int event, IObserver* o){
-    _observers[event].remove(o);
-}
-
-void Collider::Notify(int Event){
-    for(IObserver* o : _observers[Event]){
-        o->OnNotify();
-    }
-}
-#pragma endregion
-
 #pragma region IObserver
 void Collider::OnNotify(){
-    
+    UpdateBounds();
 }
 #pragma endregion
 }

@@ -2,7 +2,6 @@
 #include "Input.h"
 #include "Time.h"
 #include "EntityManager.h"
-#include "Collider.h"
 
 
 Game::Game() : 

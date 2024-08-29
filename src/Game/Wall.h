@@ -7,9 +7,9 @@ using namespace CLGEngine;
 
 class Wall : public Entity {
 private:
+    Graphics::Renderer* _rend;
+    Collider* _col;
 public:
-    Wall();
-    Wall(int x, int y);
     Wall(int x, int y, int width, int height);
     ~Wall();
     void Update();
