@@ -46,10 +46,6 @@ Collider::Collider(CLGEngine::Entity* ent):
     bounds({
         GetBoundsFromRect(ent->rect)
     }),
-    centerPoint({
-        ent->rect.position.x + (ent->rect.size.x/2),
-        ent->rect.position.y + (ent->rect.size.y/2)
-    }),
     isSolid(true)
 {
     activeColliders.push_back(this);
@@ -58,9 +54,9 @@ Collider::Collider(CLGEngine::Entity* ent):
 Collider::~Collider(){
     int idx = FindColliderIdx(this); //TODO : Handle if idx = -1
     activeColliders.erase(activeColliders.begin() + idx);
-
-
 }
+
+
 
 void Collider::UpdateBounds(){
     bounds = {
@@ -71,8 +67,7 @@ void Collider::UpdateBounds(){
     };
 }
 
-bool Collider::CheckCollision(Collider** hit){
-    UpdateBounds();
+bool Collider::CheckCollision(){
     for(Collider* col : activeColliders){
         if(bounds.left >= col->bounds.right
           || bounds.right <= col->bounds.left 
@@ -82,7 +77,7 @@ bool Collider::CheckCollision(Collider** hit){
         {
             continue;
         }
-        *hit = col;
+        _hit = col;
         return true;
     }
     return false;
@@ -110,9 +105,14 @@ bool Collider::CastCollider(Rect rect, Collider** hit){
     return false;
 }
 
+void Collider::ClearHit(){
+    _hit = nullptr;
+}
+
 #pragma region IObserver
 void Collider::OnNotify(){
     UpdateBounds();
+    CheckCollision();
 }
 #pragma endregion
 }

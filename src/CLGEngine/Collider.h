@@ -20,8 +20,8 @@ class Collider :
     public IObserver
     {
 private:
-    int id;
-    CORE::Vector2<float> centerPoint;
+    int _id;
+    Collider* _hit;
     void UpdateBounds();
 public:
     bool isSolid;
@@ -34,8 +34,9 @@ public:
     void OnNotify();
     
     // Main Logic
-    bool CheckCollision(Collider** hit);
-    void ProjectPath(CORE::Vector2<float> direction, Collider** hit);
+    bool CheckCollision();
+    // Temp func for current refactor. call inthe end of caller's Update()
+    void ClearHit();
     bool CastCollider(Rect rect, Collider** hit);
 };
 }
