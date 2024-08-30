@@ -1,19 +1,14 @@
 #pragma once
 
 #include "Utility.h"
-#include "Rect.h"
+#include "../Entity.h"
 
 class Component{
 protected:
-    Rect* const entityRect;
+    CLGEngine::Entity* const _ent;
 public:
-    Rect offset;
     Component();
-    Component(Rect* entRect)
-        : entityRect(entRect)
-    {};
-    Component(Rect* entRect, Rect offset)
-        : entityRect(entRect)
-        , offset(offset)
+    Component(CLGEngine::Entity* ent)
+        : _ent(ent)
     {};
 };

@@ -19,16 +19,20 @@ Character::Character(CORE::Vector2<float> startPosition)
             , _speed(10)
             , _position({startPosition.x + 0.5f, startPosition.y + 0.5f})
 {
-    AddRenderer(charMat);
-    AddCollider();
+    _col = new Collider(this);
+    _rend = new Graphics::Renderer(this, charMat);
+    AddSubscriber(_col);
 }
 
-Character::~Character(){}
+Character::~Character(){
+    RemoveSubscriber(_col);
+    delete _col;
+    delete _rend;
+}
 
 #pragma region TileMap-Interaction
 void Character::AddTileMap(TileMap* map){
     _tileMap = map;
-    col->SetTileMap(map);
 }
 
 #pragma endregion
@@ -93,6 +97,7 @@ void Character::Update(){
         AdjustMomentum(direction);
         Move(momentum);
     }
+    _col->ClearHit();
 }
 
 void Character::Move(float momentum) {
@@ -138,8 +143,9 @@ void Character::Jump(){
 
 void Character::AdjustRectAsNeeded() {
     CORE::Vector2<float> posFloored = {std::floor(_position.x), std::floor(_position.y)};
-    if(posFloored == rect().position){
-        return;    }
+    if(posFloored == rect.position){
+        return;    
+    }
     SetPosition(posFloored);
 }
 

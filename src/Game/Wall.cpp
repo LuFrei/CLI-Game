@@ -4,27 +4,16 @@ CHAR_INFO wallMat = {
     ' ', BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | BACKGROUND_INTENSITY
 };
 
-Wall::Wall()
-    : Entity(20, 9, 2, 8){
-        AddRenderer(wallMat);
-        AddCollider();
-}
-
-Wall::Wall(int x, int y)
-    : Entity(x, y, 2, 8){
-        AddRenderer(wallMat);
-        AddCollider();
-}
-
 Wall::Wall(int x, int y, int width, int height)
     : Entity(x, y, width, height){
-        AddRenderer(wallMat);
-        AddCollider();
+        _rend = new Graphics::Renderer(this, wallMat);
+        _col = new Collider(this);
 }
 
 Wall::~Wall(){
+    delete _rend;
+    delete _col;
 }
 
 void Wall::Update(){
-
 }

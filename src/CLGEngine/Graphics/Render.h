@@ -24,9 +24,7 @@ namespace Graphics {
 		Block block;
 		CHAR_INFO material;
 
-		Renderer(Rect* entityRect);
-		Renderer(Rect* entityRect, int x, int y, int width, int height);
-		Renderer(Rect* entityRect, CHAR_INFO& material);
+		Renderer(CLGEngine::Entity* ent, CHAR_INFO& material);
 		~Renderer();
 
 		// ! Do we want to create a new new Vector to pass on?
@@ -41,8 +39,5 @@ namespace Graphics {
 		void SetBlockPosition(CLGEngine::CORE::Vector2<float> newPosition);
 		void SetBlockSize(float newWidth, float newHeight);
 		void UpdateBlock(float newX, float newY, float newWidth, float newHeight);
-
-		// CHAR_INFO CreateColoredMaterial(Color color);
-		// CHAR_INFO CreateColoredMaterial(char, Color bgColor, Color fgColor);
 	};
 }

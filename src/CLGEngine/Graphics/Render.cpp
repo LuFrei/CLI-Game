@@ -22,12 +22,12 @@ namespace Graphics {
 	};
 
 
-	Renderer::Renderer(Rect* entityRect, CHAR_INFO& material)
-		: Component(entityRect) {
+	Renderer::Renderer(CLGEngine::Entity* ent, CHAR_INFO& material)
+		: Component(ent) {
 		block.id = blockIdCounter;
 		blockIdCounter++;
 
-		block.rect = entityRect;
+		block.rect = &ent->rect;
 		block.material = material;
 
 		blocks.push_back(&block);
