@@ -1,10 +1,9 @@
 #pragma once
 
-#include "CORE/Utility.h"
 #include "CORE/Component.h"
+#include "CORE/Utility.h"
 #include "CORE/ISubject.h"
 #include "CORE/IObserver.h"
-#include "../Game/TileMap.h"
 
 namespace CLGEngine{
 
@@ -18,42 +17,27 @@ struct Bounds
 
 class Collider : 
     public Component,
-    public ISubject,
     public IObserver
     {
 private:
-    int id;
-    CORE::Vector2<float> centerPoint;
-    TileMap* tileMap = nullptr;
+    int _id;
+    Collider* _hit;
     void UpdateBounds();
 public:
     bool isSolid;
     Bounds bounds;
 
-    Collider(Rect* entRect);
-    Collider(Rect* entRect, Rect offset);
+    Collider(CLGEngine::Entity* ent);
     ~Collider();
-
-    //ISubject
-    void Subscribe(int Event, IObserver* o);
-    void Unsubscribe(int Event, IObserver* o);
-    void Notify(int Event);
 
     //IObserver
     void OnNotify();
     
-    // Offsets
-    void SetColliderPosition(CORE::Vector2<float> newPosition);
-    void SetColliderSize(float newWidth, float newHeight);
-    void UpdateCollider(float newX, float newY, float newWidth, float newHeight); // Dejavu... Maybe we should reduce this somehow.
-
     // Main Logic
-    bool CheckCollision(Collider** hit);
-    void ProjectPath(CORE::Vector2<float> direction, Collider** hit);
+    bool CheckCollision();
     bool CastCollider(Rect rect, Collider** hit);
-
-    // TileMap
-    void SetTileMap(TileMap* map) { tileMap = map; };
-    bool CheckTileMapCollision(Rect rect);
+    Collider* GetHit(){return _hit;};
+    // Temp func for current refactor. call inthe end of caller's Update()
+    void ClearHit();
 };
 }

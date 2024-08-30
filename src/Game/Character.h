@@ -1,7 +1,11 @@
 #pragma once
-#include "../CLGEngine/Entity.h"
+
 #include "TileMap.h"
 #include "../CLGEngine/CORE/Utility.h"
+#include "../CLGEngine/Collider.h"
+#include "../CLGEngine/Entity.h"
+#include "../CLGEngine/Graphics/Render.h"
+
 
 using namespace CLGEngine;
 
@@ -12,7 +16,8 @@ private:
 	float _groundLevel;
 	TileMap* _tileMap;
 	CORE::Vector2<float> _position;
-
+	Collider* _col;
+	Graphics::Renderer* _rend;
 	void AdjustRectAsNeeded();
 public:
 	Character(CORE::Vector2<float> startPosition);
