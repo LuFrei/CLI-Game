@@ -6,7 +6,7 @@ namespace CORE {
 	MainWindow::MainWindow() {
         // ! Could this cause a bug if the user clicks on something else while the game iss tarting??
         // 
-        h_window = GetForegroundWindow();
+        h_window = GetConsoleWindow();
         GetWindowRect(h_window, &windowRect);
 
         position = { windowRect.left , windowRect.top };
