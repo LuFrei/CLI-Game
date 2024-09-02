@@ -3,5 +3,9 @@
 #include <string>
 
 class TextRenderer{
-    std::string string;
-}
+private:
+    std::string _string;
+public:
+    TextRenderer(std::string text);
+    ~TextRenderer();
+};

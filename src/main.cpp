@@ -3,6 +3,7 @@
 
 #include "Game/Character.h"
 #include "Game/Maps.h"
+#include "Game/ScreenText.h"
 #include "Game/TileMap.h"
 #include "Game/Wall.h"
 
@@ -14,6 +15,7 @@ int main()
 
     TileMap* level = new TileMap(30, 30, map01);
     Character* player = new Character({20, 11});
+    // ScreenText* instructionalText = new ScreenText({35, 10});
     player->AddTileMap(level);
     game.screen.SetTileMap(level);
     
@@ -22,4 +24,5 @@ int main()
     // TODO: Make an auto Entitiy cleaner.
     delete level;
     delete player;
+    // delete instructionalText; 
 }
