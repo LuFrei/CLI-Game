@@ -4,12 +4,9 @@
 #include "EntityManager.h"
 
 
-Game::Game() : 
-    screen(120, 30),
+Game::Game() :
     mainWindow() 
-{
-    screen.SetSquareCells(true);
-}
+{ }
 
 void Game::Play() {
     while(running){
@@ -19,7 +16,7 @@ void Game::Play() {
 
         CLGEngine::EntityManager::UpdateEntities();
 
-        screen.Draw();
+        mainWindow.screen->Draw();
     }
 }
 

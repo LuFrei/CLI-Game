@@ -2,7 +2,7 @@
 
 namespace CLGEngine {
 	namespace CORE {
-		// Using templates for cases like in MainWindow.h 
+		// Using templates for cases like in ConsoleWindow.h 
 		//	where Win API's RECT uses LONG values 
 		//	and cant be converted to flaot.
 		template <typename T>

@@ -17,7 +17,7 @@ int main()
     Character* player = new Character({20, 11});
     // ScreenText* instructionalText = new ScreenText({35, 10});
     player->AddTileMap(level);
-    game.screen.SetTileMap(level);
+    game.mainWindow.screen->SetTileMap(level);
     
     game.Play();
     

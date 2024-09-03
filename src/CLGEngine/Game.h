@@ -1,16 +1,15 @@
 #pragma once
 
 #include "Graphics/Screen.h"
-#include "CORE/MainWindow.h"
+#include "CORE/ConsoleWindow.h"
 
 
 
 class Game {
 private:
     bool running = true;
-    CLGEngine::CORE::MainWindow mainWindow;
 public:
-    Graphics::Screen screen;
+    CLGEngine::CORE::ConsoleWindow mainWindow;
     Game();
     void Play();
     void Exit();

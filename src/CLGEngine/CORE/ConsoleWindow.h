@@ -1,22 +1,25 @@
 #pragma once
 #include <Windows.h>
 #include "Utility.h"
+#include "../Graphics/Screen.h"
 
 namespace CLGEngine {
 namespace CORE {
 	/// <summary>
 	/// Represents the main window the app is running on.
 	/// </summary>
-	class MainWindow {
+	class ConsoleWindow {
 	public:
 		HWND h_window;
 		RECT windowRect;
 
 		CORE::Vector2<LONG> position;
 		CORE::Vector2<LONG> size;
+		Graphics::Screen* screen;
 
-		MainWindow();
-		
+		ConsoleWindow();
+		~ConsoleWindow();
+				
 		/// <summary>
 		/// Move relative to current position in pixels.
 		/// </summary>
