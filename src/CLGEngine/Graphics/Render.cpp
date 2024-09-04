@@ -15,7 +15,6 @@ namespace Graphics {
 	/// </summary>
 	unsigned int blockIdCounter = 0;
 	
-	
 	CHAR_INFO defaultMaterial = {
 		ASCII_SHADE1,
 		BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY | FOREGROUND_BLUE | FOREGROUND_RED

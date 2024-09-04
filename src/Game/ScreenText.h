@@ -3,12 +3,15 @@
 #include "../CLGEngine/CORE/Utility.h"
 #include "../CLGEngine/Entity.h"
 #include "../CLGEngine/Graphics/TextRenderer.h"
+#include <string>
 
 class ScreenText 
     : public CLGEngine::Entity {
 private:
-    TextRenderer* _text;
 public:
-    ScreenText(CLGEngine::CORE::Vector2<float> position);
+    Graphics::TextRenderer* _text;
+    ScreenText(CLGEngine::CORE::Vector2<int> position);
     ~ScreenText();
+    void Update() {};
+    void SetText(std::string text);
 };

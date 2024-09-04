@@ -27,9 +27,6 @@ namespace Graphics {
 		Renderer(CLGEngine::Entity* ent, CHAR_INFO& material);
 		~Renderer();
 
-		// ! Do we want to create a new new Vector to pass on?
-		//   Do we want to give access to the OG Vector that may be modifiable?
-		//   Maybe we will have a middle-
 		static std::vector<Block*> GetBlocks() {
 			return blocks;
 		}
