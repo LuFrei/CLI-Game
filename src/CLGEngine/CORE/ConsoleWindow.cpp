@@ -1,13 +1,15 @@
-#include "MainWindow.h"
+#include "ConsoleWindow.h"
 #include "../Time.h"
 
 namespace CLGEngine {
 namespace CORE {
-	MainWindow::MainWindow() {
+	ConsoleWindow::ConsoleWindow() {
         // ! Could this cause a bug if the user clicks on something else while the game iss tarting??
         // 
-        h_window = GetForegroundWindow();
+        h_window = GetConsoleWindow();
         GetWindowRect(h_window, &windowRect);
+        screen = new Graphics::Screen(120, 30);
+        screen->SetSquareCells(true);
 
         position = { windowRect.left , windowRect.top };
         size = { 
@@ -16,7 +18,11 @@ namespace CORE {
         };
 	}
 
-    void MainWindow::Move(Vector2<LONG> distance) {
+    ConsoleWindow::~ConsoleWindow(){
+        delete screen;
+    }
+
+    void ConsoleWindow::Move(Vector2<LONG> distance) {
         size.x += 10 * Time::deltaTime;
         // TODO: add functionality to make operations with whole Vectors.
         position.x += distance.x;
@@ -36,7 +42,7 @@ namespace CORE {
         EndDeferWindowPos(h_windowPosition);
     };
 
-    void MainWindow::Resize(Vector2<LONG> deltaSize){
+    void ConsoleWindow::Resize(Vector2<LONG> deltaSize){
         size.x += deltaSize.x;
         size.y += deltaSize.y;
 

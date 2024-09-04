@@ -144,7 +144,7 @@ void Character::Jump(){
 void Character::AdjustRectAsNeeded() {
     CORE::Vector2<float> posFloored = {std::floor(_position.x), std::floor(_position.y)};
     if(posFloored == rect.position){
-        return;    
+        return;
     }
     SetPosition(posFloored);
 }
