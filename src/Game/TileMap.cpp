@@ -1,19 +1,10 @@
 #include "TileMap.h"
 #include <cmath>
 
-// class TileMap{
-//     int width, height;
-//     const CHAR_INFO map[];
-//     /// @brief Whether the contents of map should be displayed literal.
-//     bool coded;
-//     std::map<std::string, CHAR_INFO> codeMapping;
-// };
-
-
-TileMap::TileMap(int width, int height, std::string mapData) : 
-    width(width),
-    height(height),
-    coded(false)
+TileMap::TileMap(int width, int height, std::string mapData) 
+    : width(width)
+    , height(height)
+    , coded(false)
 {
     for(char& c : mapData){
         CHAR_INFO cInfo = {c, 0};

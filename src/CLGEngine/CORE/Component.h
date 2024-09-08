@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Utility.h"
+#include "Vector2.h"
 #include "../Entity.h"
 
 class Component{

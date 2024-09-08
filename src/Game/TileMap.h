@@ -3,10 +3,10 @@
 #include <string>
 #include <map>
 #include <vector>
-#include "../CLGEngine/CORE/Utility.h"
+#include "../CLGEngine/CORE/Vector2.h"
 
-class TileMap{
-    /// @brief Whether the contents of map should be displayed literal.
+class TileMap {
+private:
     std::vector<CHAR_INFO> map;
     const bool coded;
     std::map<std::string, CHAR_INFO> codeMapping;

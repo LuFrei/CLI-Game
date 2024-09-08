@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CORE/Component.h"
-#include "CORE/Utility.h"
+#include "CORE/Vector2.h"
 #include "CORE/ISubject.h"
 #include "CORE/IObserver.h"
 

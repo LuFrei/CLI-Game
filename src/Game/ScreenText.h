@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../CLGEngine/CORE/Utility.h"
+#include "../CLGEngine/CORE/Vector2.h"
 #include "../CLGEngine/Entity.h"
 #include "../CLGEngine/Graphics/TextRenderer.h"
 #include <string>

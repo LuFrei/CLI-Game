@@ -1,6 +1,6 @@
 #pragma once
 #include <Windows.h>
-#include "Utility.h"
+#include "Vector2.h"
 #include "../Graphics/Screen.h"
 
 namespace CLGEngine {

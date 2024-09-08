@@ -2,7 +2,7 @@
 #include "CLGEngine/Game.h"
 
 #include "Game/Character.h"
-#include "Game/Maps.h"
+#include "Game/MapData.h"
 #include "Game/ScreenText.h"
 #include "Game/TileMap.h"
 #include "Game/Wall.h"
@@ -23,8 +23,8 @@ int main()
     wrappingText->SetText("12345678901234567890The text should wrap around after 20 characters by default. But you can change this by changing maxCharsPerLine property!");
     thinWrappingText->SetText("Like this!");
     
-    player->AddTileMap(level);
-    game.mainWindow.screen->SetTileMap(level); 
+    player->AddTileMap(level); 
+    game.mainWindow.screen->SetTileMap(level); // TODO: TileMap Renderer
     game.Play();
     
     // TODO: Make an auto Entitiy cleaner.
