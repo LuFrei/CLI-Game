@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TileMap.h"
-#include "../CLGEngine/CORE/Utility.h"
+#include "../CLGEngine/CORE/Vector2.h"
 #include "../CLGEngine/Collider.h"
 #include "../CLGEngine/Entity.h"
 #include "../CLGEngine/Graphics/Render.h"

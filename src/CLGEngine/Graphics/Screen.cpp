@@ -4,7 +4,7 @@
 #include "ASCII.h" 
 #include "Render.h"
 #include "TextRenderer.h"
-#include "../CORE/Utility.h"
+#include "../CORE/Vector2.h"
 
 namespace Graphics {
 SMALL_RECT bounds;

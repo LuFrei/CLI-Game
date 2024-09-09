@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../CLGEngine/Entity.h"
-#include "../CLGEngine/CORE/Utility.h"
+#include "../CLGEngine/CORE/Vector2.h"
 #include "TileMap.h"
 #include "Character.h"
 

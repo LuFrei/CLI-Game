@@ -2,7 +2,7 @@
 
 #include <string>
 #include <vector>
-#include "../CORE/Utility.h"
+#include "../CORE/Vector2.h"
 
 namespace Graphics {
 class TextRenderer{

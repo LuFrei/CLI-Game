@@ -1,21 +1,12 @@
 #include "TileMap.h"
 #include <cmath>
 
-// class TileMap{
-//     int width, height;
-//     const CHAR_INFO map[];
-//     /// @brief Whether the contents of map should be displayed literal.
-//     bool coded;
-//     std::map<std::string, CHAR_INFO> codeMapping;
-// };
-
-
-TileMap::TileMap(int width, int height, std::string mapData) : 
-    width(width),
-    height(height),
-    coded(false)
+TileMap::TileMap(MapData data) 
+    : width(data.width)
+    , height(data.height)
+    , coded(false)
 {
-    for(char& c : mapData){
+    for(char& c : data.data){
         CHAR_INFO cInfo = {c, 0};
         map.push_back(cInfo);
     }
@@ -28,4 +19,14 @@ wchar_t TileMap::GetTile(CLGEngine::CORE::Vector2<float> coords){
     int xInt = std::floor(coords.x);
     int yInt = std::floor(coords.y);
     return map[width * yInt + xInt].Char.AsciiChar;
+}
+
+void TileMap::SetMap(MapData data){
+    map.clear();
+    for(char& c : data.data){
+        CHAR_INFO cInfo = {c, 0};
+        map.push_back(cInfo);
+    }
+    width = data.width;
+    height = data.height;
 }
