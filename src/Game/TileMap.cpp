@@ -1,12 +1,12 @@
 #include "TileMap.h"
 #include <cmath>
 
-TileMap::TileMap(int width, int height, std::string mapData) 
-    : width(width)
-    , height(height)
+TileMap::TileMap(MapData data) 
+    : width(data.width)
+    , height(data.height)
     , coded(false)
 {
-    for(char& c : mapData){
+    for(char& c : data.data){
         CHAR_INFO cInfo = {c, 0};
         map.push_back(cInfo);
     }

@@ -4,6 +4,7 @@
 #include <map>
 #include <vector>
 #include "../CLGEngine/CORE/Vector2.h"
+#include "MapData.h"
 
 class TileMap {
 private:
@@ -12,6 +13,7 @@ private:
     std::map<std::string, CHAR_INFO> codeMapping;
 public:
     const int width, height;
-    TileMap(int width, int height, std::string mapData);
+    TileMap(MapData data);
     wchar_t GetTile(CLGEngine::CORE::Vector2<float> coords);
+    void ChangeMap(MapData);
 };

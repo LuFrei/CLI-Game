@@ -2,7 +2,7 @@
 #include "CLGEngine/Game.h"
 
 #include "Game/Character.h"
-#include "Game/MapData.h"
+#include "Game/Maps.h"
 #include "Game/ScreenText.h"
 #include "Game/TileMap.h"
 #include "Game/Wall.h"
@@ -13,7 +13,7 @@ int main()
 {
     Game game = Game();
 
-    TileMap* level = new TileMap(30, 30, map01);
+    TileMap* level = new TileMap(map01);
     Character* player = new Character({20, 11});
     ScreenText* instructionalText = new ScreenText({35, 10});
     ScreenText* wrappingText = new ScreenText({35, 15});
