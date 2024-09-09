@@ -5,6 +5,7 @@
 #include "../CLGEngine/Graphics/ASCII.h"
 #include "../CLGEngine/Time.h"
 #include "../CLGEngine/Input.h"
+#include "Maps.h"
 
 const int jumpHeight = 4;
 const int jumpSpeed = 10;
@@ -98,6 +99,20 @@ void Character::Update(){
         Move(momentum);
     }
     _col->ClearHit();
+
+    //!! Level Swap test
+    if(Input::Input::GetKeyPressed(Input::KeyCode::Alpha1)) {
+        _tileMap->SetMap(Maps::GetMap("titleMap"));
+    }
+    if(Input::Input::GetKeyPressed(Input::KeyCode::Alpha2)) {
+        _tileMap->SetMap(Maps::GetMap("demoMap"));
+    }
+    if(Input::Input::GetKeyPressed(Input::KeyCode::Alpha3)) {
+        _tileMap->SetMap(Maps::GetMap("map01"));
+    }
+    if(Input::Input::GetKeyPressed(Input::KeyCode::Alpha4)) {
+        _tileMap->SetMap(Maps::GetMap("visualTestMap"));
+    }
 }
 
 void Character::Move(float momentum) {

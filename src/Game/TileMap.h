@@ -12,8 +12,8 @@ private:
     const bool coded;
     std::map<std::string, CHAR_INFO> codeMapping;
 public:
-    const int width, height;
+    int width, height;
     TileMap(MapData data);
     wchar_t GetTile(CLGEngine::CORE::Vector2<float> coords);
-    void ChangeMap(MapData);
+    void SetMap(MapData map);
 };
