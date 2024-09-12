@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <Windows.h>
-#include "../CORE/Component.h"
+#include "Component.h"
 #include "../CORE/Vector2.h"
 
 // We can store all created instances to update every cycle

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "CORE/Component.h"
-#include "CORE/Vector2.h"
-#include "CORE/ISubject.h"
-#include "CORE/IObserver.h"
+#include "Component.h"
+#include "../CORE/Vector2.h"
+#include "../CORE/ISubject.h"
+#include "../CORE/IObserver.h"
 
 namespace CLGEngine{
 

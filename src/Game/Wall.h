@@ -1,7 +1,7 @@
 #pragma once
 #include "../CLGEngine/Entity.h"
-#include "../CLGEngine/Graphics/Render.h"
-#include "../CLGEngine/Collider.h"
+#include "../CLGEngine/Component/Render.h"
+#include "../CLGEngine/Component/Collider.h"
 
 using namespace CLGEngine;
 

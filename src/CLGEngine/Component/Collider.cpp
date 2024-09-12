@@ -59,10 +59,10 @@ Collider::~Collider(){
 
 void Collider::UpdateBounds() {
     bounds = {
-        _ent->rect.position.x,
-        _ent->rect.position.y,
-        _ent->rect.position.x + _ent->rect.size.x,
-        _ent->rect.position.y + _ent->rect.size.y
+        entity->rect.position.x,
+        entity->rect.position.y,
+        entity->rect.position.x + entity->rect.size.x,
+        entity->rect.position.y + entity->rect.size.y
     };
 }
 
