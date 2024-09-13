@@ -5,7 +5,7 @@
 #include <wincon.h>
 
 #include "Render.h"
-#include "ASCII.h"
+#include "../Graphics/ASCII.h"
 
 namespace Graphics {
 	std::vector<Block*> Renderer::blocks;

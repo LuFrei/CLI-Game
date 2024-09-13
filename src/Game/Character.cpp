@@ -20,6 +20,7 @@ Character::Character(CORE::Vector2<float> startPosition)
             , _speed(10)
             , _position({startPosition.x + 0.5f, startPosition.y + 0.5f})
 {
+    name = "player";
     _col = new Collider(this);
     _rend = new Graphics::Renderer(this, charMat);
     AddSubscriber(_col);

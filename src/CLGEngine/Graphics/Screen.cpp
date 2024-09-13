@@ -1,8 +1,7 @@
 #include "Screen.h"
 
-// TODO: Temp, we should not use ASCII_SHADE or Block here.
 #include "ASCII.h" 
-#include "Render.h"
+#include "../Component/Render.h" //TODO: This shouldn't be here.
 #include "TextRenderer.h"
 #include "../CORE/Vector2.h"
 

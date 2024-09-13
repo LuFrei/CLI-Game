@@ -2,9 +2,9 @@
 
 #include "TileMap.h"
 #include "../CLGEngine/CORE/Vector2.h"
-#include "../CLGEngine/Collider.h"
+#include "../CLGEngine/Component/Collider.h"
 #include "../CLGEngine/Entity.h"
-#include "../CLGEngine/Graphics/Render.h"
+#include "../CLGEngine/Component/Render.h"
 
 
 using namespace CLGEngine;

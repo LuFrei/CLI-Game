@@ -6,6 +6,8 @@
 #include "Game/TileMap.h"
 #include "Game/Wall.h"
 #include "Game/Maps.h"
+#include "Game/GameManager.h"
+#include "Game/LevelTrigger.h"
 
 using namespace CLGEngine;
 
@@ -15,8 +17,13 @@ int main()
 
     Maps* maps = new Maps();
 
-    TileMap* level = new TileMap(Maps::GetMap("map01"));
-    Character* player = new Character({20, 11});
+    Character* player = new Character({2, 0});
+    TileMap* level = new TileMap(Maps::GetMap("demoMap"));
+    GameManager* gM = new GameManager();
+    GameManager::player = player;
+    GameManager::tileMap = level;
+
+    LevelTrigger* levelEnd = new LevelTrigger({28, 2}, "map01");
     ScreenText* instructionalText = new ScreenText({35, 10});
     ScreenText* wrappingText = new ScreenText({35, 15});
     ScreenText* thinWrappingText = new ScreenText({47, 15});
@@ -25,14 +32,18 @@ int main()
     wrappingText->SetText("12345678901234567890The text should wrap around after 20 characters by default. But you can change this by changing maxCharsPerLine property!");
     thinWrappingText->SetText("Like this!");
     
+    GameManager::player = player;
+    GameManager::tileMap = level;
     player->AddTileMap(level); 
     game.mainWindow.screen->SetTileMap(level); // TODO: TileMap Renderer
     game.Play();
     
     // TODO: Make an auto Entitiy cleaner.
+    delete gM;
     delete maps;
     delete level;
     delete player;
+    delete levelEnd;
     delete instructionalText;
     delete wrappingText;
     delete thinWrappingText;

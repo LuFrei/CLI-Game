@@ -1,0 +1,1 @@
+add_library(Component Component.h Collider.cpp Render.cpp)

@@ -1,14 +1,13 @@
 #pragma once
 
-#include "Vector2.h"
 #include "../Entity.h"
 
 class Component{
 protected:
-    CLGEngine::Entity* const _ent;
 public:
+    CLGEngine::Entity* const entity;
     Component();
     Component(CLGEngine::Entity* ent)
-        : _ent(ent)
+        : entity(ent)
     {};
 };
