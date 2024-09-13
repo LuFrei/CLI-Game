@@ -77,6 +77,7 @@ bool Collider::CheckCollision(){
             continue;
         }
         _hit = col;
+        col->_hit = this;
         return true;
     }
     return false;
