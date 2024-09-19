@@ -10,7 +10,7 @@ class LevelTrigger
 : public CLGEngine::Entity {
 private:
     CLGEngine::Collider* _col;
-    Graphics::Renderer* _rend;
+    CLGEngine::Renderer* _rend;
 public:
     std::string levelTo;
     LevelTrigger(CLGEngine::CORE::Vector2<int> position, std::string levelName);

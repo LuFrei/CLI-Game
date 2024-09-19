@@ -6,7 +6,7 @@ CHAR_INFO wallMat = {
 
 Wall::Wall(int x, int y, int width, int height)
     : Entity(x, y, width, height){
-        _rend = new Graphics::Renderer(this, wallMat);
+        _rend = new CLGEngine::Renderer(this, wallMat);
         _col = new Collider(this);
 }
 

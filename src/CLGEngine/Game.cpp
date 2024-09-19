@@ -3,7 +3,7 @@
 #include "Time.h"
 #include "EntityManager.h"
 
-
+namespace CLGEngine{
 Game::Game() :
     mainWindow() 
 { }
@@ -22,4 +22,5 @@ void Game::Play() {
 
 void Game::Exit(){
     running = false;
+}
 }

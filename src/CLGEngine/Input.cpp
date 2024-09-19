@@ -8,6 +8,7 @@
 #define KS_DOWN 0x8000
 #define KS_CHANGED 1
 
+namespace CLGEngine{
 namespace Input {
 	int keys[254];
 
@@ -32,4 +33,5 @@ namespace Input {
 		return !GetKeyPressed(key) 
 			&& (keys[key] & KS_CHANGED);
 	}
+}
 }

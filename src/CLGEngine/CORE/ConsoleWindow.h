@@ -15,7 +15,7 @@ namespace CORE {
 
 		CORE::Vector2<LONG> position;
 		CORE::Vector2<LONG> size;
-		Graphics::Screen* screen;
+		CLGEngine::Screen* screen;
 
 		ConsoleWindow();
 		~ConsoleWindow();

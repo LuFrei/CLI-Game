@@ -7,7 +7,7 @@
 #include "Render.h"
 #include "../Graphics/ASCII.h"
 
-namespace Graphics {
+namespace CLGEngine {
 	std::vector<Block*> Renderer::blocks;
 
 	/// <summary>

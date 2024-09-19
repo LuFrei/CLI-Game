@@ -1,5 +1,6 @@
 #pragma once
 
+namespace CLGEngine{
 namespace Input {
 
 
@@ -39,4 +40,5 @@ namespace Input {
 		static bool GetKeyJustPressed(KeyCode key);
 		static bool GetKeyJustReleased(KeyCode key);
 	};
+}
 }

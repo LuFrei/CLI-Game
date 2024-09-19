@@ -1,8 +1,8 @@
 #pragma once
 
 #include "../CLGEngine/Entity.h"
-#include "Character.h"
-#include "TileMap.h"
+#include "Entities/Character.h"
+#include "../CLGEngine/TileMap.h"
 
 class GameManager {
 public:

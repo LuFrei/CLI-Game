@@ -2,7 +2,7 @@
 
 #include <map>
 #include <string>
-#include "MapData.h"
+#include "../CLGEngine/MapData.h"
 
 class Maps{
 private:

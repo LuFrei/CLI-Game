@@ -1,9 +1,9 @@
 #pragma once
 
 #include <Windows.h>
-#include "../../Game/TileMap.h"
+#include "../TileMap.h"
 
-namespace Graphics {
+namespace CLGEngine {
 /// <summary>
 /// Object that represents the viewport into the virttual world; i.e. 
 /// the client's screen that renders the game.

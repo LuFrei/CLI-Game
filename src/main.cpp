@@ -1,10 +1,10 @@
 #include "CLGEngine/Entity.h"
 #include "CLGEngine/Game.h"
+#include "CLGEngine/TileMap.h"
 
-#include "Game/Character.h"
+#include "Game/Entities/Character.h"
 #include "Game/ScreenText.h"
-#include "Game/TileMap.h"
-#include "Game/Wall.h"
+#include "Game/Entities/Wall.h"
 #include "Game/Maps.h"
 #include "Game/GameManager.h"
 #include "Game/LevelTrigger.h"

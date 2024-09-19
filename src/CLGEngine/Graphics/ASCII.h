@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Graphics {
+namespace CLGEngine {
 	namespace ASCII{
 #define ASCII_VERTICAL_BAR 179
 #define ASCII_HORIZONTAL_BAR 196

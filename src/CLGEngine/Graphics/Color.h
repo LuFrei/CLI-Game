@@ -1,4 +1,4 @@
-namespace Graphics {
+namespace CLGEngine {
 namespace Color{
 
     #define BLUE 0x0001

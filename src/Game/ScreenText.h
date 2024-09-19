@@ -9,7 +9,7 @@ class ScreenText
     : public CLGEngine::Entity {
 private:
 public:
-    Graphics::TextRenderer* _text;
+    CLGEngine::TextRenderer* _text;
     ScreenText(CLGEngine::CORE::Vector2<int> position);
     ~ScreenText();
     void Update() {};

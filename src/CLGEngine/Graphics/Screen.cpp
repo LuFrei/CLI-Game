@@ -5,7 +5,7 @@
 #include "TextRenderer.h"
 #include "../CORE/Vector2.h"
 
-namespace Graphics {
+namespace CLGEngine {
 SMALL_RECT bounds;
 HANDLE cOutBuffer;
 
@@ -74,8 +74,8 @@ void Screen::Draw() {
 
 	// TODO: All of this logic should idealy be taken out and each component shoul take care of it;
 	//		Renderer should add the blocks to the screen. TileMapRenderer should interpret Chars to CHAR_INFO. TextREnderer as well. 
-	std::vector<Graphics::Block*> blocks = Graphics::Renderer::GetBlocks();
-	std::vector<Graphics::TextRenderer*> textElems = Graphics::TextRenderer::GetTextPool();
+	std::vector<Block*> blocks = Renderer::GetBlocks();
+	std::vector<TextRenderer*> textElems = TextRenderer::GetTextPool();
 
 	ClearScreenData();
 
@@ -100,7 +100,7 @@ void Screen::Draw() {
 		}
 	}
 
-	for (Graphics::Block* block : blocks) {
+	for (Block* block : blocks) {
 		// is this block ever going going to show up in the screen?
 		if (block->rect->position.x >= width
 			|| block->rect->position.y >= height
@@ -137,8 +137,8 @@ void Screen::Draw() {
 	}
 
 	// Text Render pseudo
-	for(Graphics::TextRenderer* textEl : textElems){
-		CLGEngine::CORE::Vector2<int> cursorPos = textEl->position;
+	for(TextRenderer* textEl : textElems){
+		CORE::Vector2<int> cursorPos = textEl->position;
 		if (this->squareCells) {
 			cursorPos.x *= 2;
 		}
