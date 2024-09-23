@@ -6,7 +6,7 @@
 #include "../CORE/Vector2.h"
 
 // We can store all created instances to update every cycle
-namespace Graphics {
+namespace CLGEngine {
 
 	/// <summary>
 	/// Almalgomation of Entity position nd RendOffset.

@@ -4,7 +4,7 @@
 #include "CORE/ConsoleWindow.h"
 
 
-
+namespace CLGEngine{
 class Game {
 private:
     bool running = true;
@@ -14,3 +14,4 @@ public:
     void Play();
     void Exit();
 };
+}

@@ -2,7 +2,7 @@
 
 ScreenText::ScreenText(CLGEngine::CORE::Vector2<int> position)
     : CLGEngine::Entity(position.x, position.y, 0, 0)
-    , _text(new Graphics::TextRenderer(""))
+    , _text(new CLGEngine::TextRenderer(""))
 { 
     _text->position = position;
 }

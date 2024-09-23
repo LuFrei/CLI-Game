@@ -1,7 +1,7 @@
 #include "TextRenderer.h"
 
 
-namespace Graphics{
+namespace CLGEngine{
 std::vector<TextRenderer*> TextRenderer::_textPool;
 
 TextRenderer::TextRenderer(std::string text)

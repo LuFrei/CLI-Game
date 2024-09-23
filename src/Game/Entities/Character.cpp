@@ -2,14 +2,16 @@
 
 #include <iostream>
 #include <cmath>
-#include "../CLGEngine/Graphics/ASCII.h"
-#include "../CLGEngine/Time.h"
-#include "../CLGEngine/Input.h"
-#include "Maps.h"
+#include "../../CLGEngine/Graphics/ASCII.h"
+#include "../../CLGEngine/Time.h"
+#include "../../CLGEngine/Input.h"
+#include "../Maps.h"
 
 const int jumpHeight = 4;
 const int jumpSpeed = 10;
 int vertMomentum = 0;
+
+using namespace CLGEngine;
 
 CHAR_INFO charMat = {
     ' ', BACKGROUND_BLUE
@@ -22,7 +24,7 @@ Character::Character(CORE::Vector2<float> startPosition)
 {
     name = "player";
     _col = new Collider(this);
-    _rend = new Graphics::Renderer(this, charMat);
+    _rend = new CLGEngine::Renderer(this, charMat);
     AddSubscriber(_col);
 }
 
@@ -43,10 +45,9 @@ float momentum = 0;
 float const acceleration = 2;
 void AdjustMomentum(int direction){
     if(direction == 0){
-        momentum = (momentum > 0) 
+        momentum = (momentum > 0)
             ? momentum - (acceleration * CLGEngine::Time::deltaTime)
             : momentum + (acceleration * CLGEngine::Time::deltaTime);
-
         // Prevent oscilation
         if(-0.01 < momentum || momentum < 0.01){
             momentum = 0;

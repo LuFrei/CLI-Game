@@ -4,7 +4,7 @@
 #include <vector>
 #include "../CORE/Vector2.h"
 
-namespace Graphics {
+namespace CLGEngine {
 class TextRenderer{
 private:
     static std::vector<TextRenderer*> _textPool;

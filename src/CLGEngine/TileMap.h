@@ -3,7 +3,7 @@
 #include <string>
 #include <map>
 #include <vector>
-#include "../CLGEngine/CORE/Vector2.h"
+#include "CORE/Vector2.h"
 #include "MapData.h"
 
 class TileMap {

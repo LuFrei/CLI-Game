@@ -1,14 +1,14 @@
 #include "LevelTrigger.h"
 
-#include "GameManager.h"
-#include "Maps.h"
+#include "../GameManager.h"
+#include "../Maps.h"
 
 CHAR_INFO material = {' ', BACKGROUND_GREEN | BACKGROUND_RED};
 
 LevelTrigger::LevelTrigger(CLGEngine::CORE::Vector2<int> position, std::string levelName)
 : Entity(position.x, position.y, 1, 1)
 , _col(new CLGEngine::Collider(this))
-, _rend(new Graphics::Renderer(this, material))
+, _rend(new CLGEngine::Renderer(this, material))
 , levelTo(levelName) { 
     _col->isSolid = false;
 }
@@ -19,7 +19,7 @@ LevelTrigger::~LevelTrigger(){
 }
 
 void LevelTrigger::Update(){
-    if(Collider* hit = _col->GetHit()){
+    if(CLGEngine::Collider* hit = _col->GetHit()){
         if(hit->entity->name == "player"){ 
             GameManager::tileMap->SetMap(Maps::GetMap(levelTo));
         }
