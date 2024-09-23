@@ -1,1 +1,1 @@
-add_library(Entities Character.cpp Wall.cpp)
+add_library(Entities Character.cpp Wall.cpp LevelTrigger.cpp)

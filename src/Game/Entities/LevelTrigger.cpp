@@ -1,7 +1,7 @@
 #include "LevelTrigger.h"
 
-#include "GameManager.h"
-#include "Maps.h"
+#include "../GameManager.h"
+#include "../Maps.h"
 
 CHAR_INFO material = {' ', BACKGROUND_GREEN | BACKGROUND_RED};
 
