@@ -1,7 +1,8 @@
 #include "Level.h"
 
 
-Level::Level(){
+Level::Level()
+: name("unnamed"){
     _levels.push_back(this);
 }
 
