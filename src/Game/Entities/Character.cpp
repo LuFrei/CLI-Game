@@ -104,16 +104,16 @@ void Character::Update(){
 
     //!! Level Swap test
     if(Input::Input::GetKeyPressed(Input::KeyCode::Alpha1)) {
-        _tileMap->SetMap(Maps::GetMap("titleMap"));
+        _tileMap->SetMap(Maps::list[0]);
     }
     if(Input::Input::GetKeyPressed(Input::KeyCode::Alpha2)) {
-        _tileMap->SetMap(Maps::GetMap("demoMap"));
+        _tileMap->SetMap(Maps::list[1]);
     }
     if(Input::Input::GetKeyPressed(Input::KeyCode::Alpha3)) {
-        _tileMap->SetMap(Maps::GetMap("map01"));
+        _tileMap->SetMap(Maps::list[2]);
     }
     if(Input::Input::GetKeyPressed(Input::KeyCode::Alpha4)) {
-        _tileMap->SetMap(Maps::GetMap("visualTestMap"));
+        _tileMap->SetMap(Maps::list[3]);
     }
 }
 
@@ -135,6 +135,9 @@ void Character::Move(float momentum) {
     if(_tileMap->GetTile(nextCell) != '#'){
         _position += {momentum * _speed * CLGEngine::Time::deltaTime, 0};
         AdjustRectAsNeeded();
+    }
+    if(_tileMap->GetTile({std::floor(_position.x), std::floor(_position.y)}) == '*'){
+        
     }
 }
 

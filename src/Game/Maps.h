@@ -7,9 +7,8 @@
 class Maps{
 private:
     static Maps* _instance;
-    static std::map<std::string, MapData> _mapList;
 public:
+    static const MapData list[4];
     Maps();
-    static MapData GetMap(std::string mapName);
 };
 

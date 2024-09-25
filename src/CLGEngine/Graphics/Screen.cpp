@@ -80,6 +80,7 @@ void Screen::Draw() {
 	ClearScreenData();
 
 	//Add TileMap render
+	// TODO improve this when we mov it to a renderer.
 	for(int y = 0; y < tileMap->height; y++){
 		for(int x = 0; x < tileMap->width; x++){
 			int xCell = x;
