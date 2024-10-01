@@ -84,10 +84,10 @@ void Character::Update(){
 
 
     int direction = 0; //1 = right; -1 = left
-    if (Input::Input::GetKeyPressed(Input::KeyCode::Left)) {
+    if (Input::Input::GetKeyPressed(Input::KeyCode::Left) || Input::Input::GetKeyPressed(Input::KeyCode::Comma)) {
         direction += -1;
     }
-    if (Input::Input::GetKeyPressed(Input::KeyCode::Right)) {
+    if (Input::Input::GetKeyPressed(Input::KeyCode::Right) || Input::Input::GetKeyPressed(Input::KeyCode::Period)) {
         direction += 1;
     }
     if (Input::Input::GetKeyPressed(Input::KeyCode::Space) && _grounded){
@@ -102,7 +102,7 @@ void Character::Update(){
     }
     _col->ClearHit();
 
-    //!! Level Swap test
+    //!! Level Swap test 
     if(Input::Input::GetKeyPressed(Input::KeyCode::Alpha1)) {
         _tileMap->SetMap(Maps::list[0]);
     }
@@ -137,7 +137,7 @@ void Character::Move(float momentum) {
         AdjustRectAsNeeded();
     }
     if(_tileMap->GetTile({std::floor(_position.x), std::floor(_position.y)}) == '*'){
-        
+        gm->SetLevel(gm->GetCurrentLevelIdx()+1);
     }
 }
 

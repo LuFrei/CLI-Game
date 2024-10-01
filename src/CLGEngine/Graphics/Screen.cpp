@@ -97,6 +97,14 @@ void Screen::Draw() {
 				} else {
 					data[idx] = {' ', whiteBG};
 				}
+			} else if (character == '*'){
+				unsigned short yellowBG = BACKGROUND_GREEN | BACKGROUND_RED;
+				if (this->squareCells) {
+					data[idx] = {' ', yellowBG};
+					data[idx +1] = {' ', yellowBG};
+				} else {
+					data[idx] = {' ', yellowBG};
+				}
 			}
 		}
 	}

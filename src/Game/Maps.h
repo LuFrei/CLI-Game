@@ -11,4 +11,3 @@ public:
     static const MapData list[4];
     Maps();
 };
-
