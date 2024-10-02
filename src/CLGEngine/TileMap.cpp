@@ -4,7 +4,7 @@
 TileMap::TileMap(MapData data) 
     : width(data.width)
     , height(data.height)
-    , _offset({data.xOffset, data.yOffset})
+    , offset({data.xOffset, data.yOffset})
 {
     for(char& c : data.data){
         CHAR_INFO cInfo = {c, 0};
@@ -13,9 +13,9 @@ TileMap::TileMap(MapData data)
 }
 
 wchar_t TileMap::GetTile(CLGEngine::CORE::Vector2<float> coords){
-    int x = std::floor(coords.x - _offset.x);
-    int y = std::floor(coords.y - _offset.y);
-    if (x < 0 || x > width || y < 0 || y > height){
+    int x = std::floor(coords.x - offset.x);
+    int y = std::floor(coords.y - offset.y);
+    if (x < 0 || x >= width || y < 0 || y >= height){
         return ' ';
     }
 
@@ -30,5 +30,5 @@ void TileMap::SetMap(MapData data){
     }
     width = data.width;
     height = data.height;
-    _offset = {data.xOffset, data.yOffset};
+    offset = {data.xOffset, data.yOffset};
 }

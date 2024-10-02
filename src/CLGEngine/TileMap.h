@@ -9,8 +9,8 @@
 class TileMap {
 private:
     std::vector<CHAR_INFO> _map;
-    CLGEngine::CORE::Vector2<int> _offset;
 public:
+    CLGEngine::CORE::Vector2<int> offset;
     int width, height;
     TileMap(MapData data);
     wchar_t GetTile(CLGEngine::CORE::Vector2<float> coords);

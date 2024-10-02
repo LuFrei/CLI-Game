@@ -81,8 +81,8 @@ void Screen::Draw() {
 
 	//Add TileMap render
 	// TODO improve this when we mov it to a renderer.
-	for(int y = 0; y < tileMap->height; y++){
-		for(int x = 0; x < tileMap->width; x++){
+	for(int y = tileMap->offset.y; y < tileMap->height + tileMap->offset.y; y++){
+		for(int x = tileMap->offset.x; x < tileMap->width + tileMap->offset.x; x++){
 			int xCell = x;
 			if (this->squareCells) {
 				xCell *= 2;

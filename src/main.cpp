@@ -18,7 +18,7 @@ int main()
 // - as simple as posisble. THEN, we move into modularization
     GameManager* gm = new GameManager();
 
-    Character* player = new Character({8, 22});
+    Character* player = new Character({8, 21});
     player->gm = gm;
     player->AddTileMap(gm->GetLevelTileMap()); // MAke this internal. No need if we reference gm in Player.
 
