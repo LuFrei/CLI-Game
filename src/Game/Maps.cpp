@@ -97,7 +97,7 @@ MapData tallJumps = {
 
 MapData babyHops = {
     22, 8,
-    30, 15,"\
+    32, 16,"\
 ######################\
 #                    #\
 #                    #\

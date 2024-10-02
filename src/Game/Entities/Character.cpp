@@ -123,10 +123,11 @@ void Character::Move(float momentum) {
           ? std::floor(_position.x) + 1
           : std::floor(_position.x) - 1;
 
-    if(_position.x < 0 
-    || _position.x > _tileMap->width 
-    || _position.y < 0 
-    || _position.y > _tileMap->height) {
+    // TODO: MAke a Rect for TileMap to identify bounds  it emcompases in the world
+    if(_position.x < _tileMap->offset.x
+    || _position.x > _tileMap->width + _tileMap->offset.x
+    || _position.y < _tileMap->offset.y
+    || _position.y > _tileMap->height + _tileMap->offset.y) {
         _position += {momentum * _speed * CLGEngine::Time::deltaTime, 0};
         AdjustRectAsNeeded();
         return;
