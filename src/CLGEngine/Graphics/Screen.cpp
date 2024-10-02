@@ -38,9 +38,8 @@ void Screen::ClearScreenData() {
 	// Paint the border
 	for (int i = 0; i < width * height; i++) {
 		unsigned char asciiSymbol = ' ';
-		unsigned short backgroundColor = 0;
-		unsigned short foreGroundColor = FOREGROUND_RED;
 
+		/* Border...
 		if (i < width
 			|| (i > width * (height - 1))) {
 			asciiSymbol = ASCII_HORIZONTAL_BAR;
@@ -61,6 +60,7 @@ void Screen::ClearScreenData() {
 		if (i == width * (height - 1)) {
 			asciiSymbol = ASCII_CORNER_SW;
 		}
+		*/
 
 		CHAR_INFO texture;
 		texture.Char.AsciiChar = asciiSymbol;
