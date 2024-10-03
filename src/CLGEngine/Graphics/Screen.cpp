@@ -38,9 +38,8 @@ void Screen::ClearScreenData() {
 	// Paint the border
 	for (int i = 0; i < width * height; i++) {
 		unsigned char asciiSymbol = ' ';
-		unsigned short backgroundColor = 0;
-		unsigned short foreGroundColor = FOREGROUND_RED;
 
+		/* Border...
 		if (i < width
 			|| (i > width * (height - 1))) {
 			asciiSymbol = ASCII_HORIZONTAL_BAR;
@@ -61,6 +60,7 @@ void Screen::ClearScreenData() {
 		if (i == width * (height - 1)) {
 			asciiSymbol = ASCII_CORNER_SW;
 		}
+		*/
 
 		CHAR_INFO texture;
 		texture.Char.AsciiChar = asciiSymbol;
@@ -81,8 +81,8 @@ void Screen::Draw() {
 
 	//Add TileMap render
 	// TODO improve this when we mov it to a renderer.
-	for(int y = 0; y < tileMap->height; y++){
-		for(int x = 0; x < tileMap->width; x++){
+	for(int y = tileMap->offset.y; y < tileMap->height + tileMap->offset.y; y++){
+		for(int x = tileMap->offset.x; x < tileMap->width + tileMap->offset.x; x++){
 			int xCell = x;
 			if (this->squareCells) {
 				xCell *= 2;
@@ -96,6 +96,14 @@ void Screen::Draw() {
 					data[idx +1] = {' ', whiteBG};
 				} else {
 					data[idx] = {' ', whiteBG};
+				}
+			} else if (character == '*'){
+				unsigned short yellowBG = BACKGROUND_GREEN | BACKGROUND_RED;
+				if (this->squareCells) {
+					data[idx] = {' ', yellowBG};
+					data[idx +1] = {' ', yellowBG};
+				} else {
+					data[idx] = {' ', yellowBG};
 				}
 			}
 		}

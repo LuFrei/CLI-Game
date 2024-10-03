@@ -18,15 +18,14 @@ int main()
 // - as simple as posisble. THEN, we move into modularization
     GameManager* gm = new GameManager();
 
-    Character* player = new Character({2, 0});
+    Character* player = new Character({8, 21});
+    player->gm = gm;
+    player->AddTileMap(gm->GetLevelTileMap()); // MAke this internal. No need if we reference gm in Player.
 
-    gm->SetPlayer(player);
-
-    ScreenText* instructionalText = new ScreenText({35, 10});
-    ScreenText* wrappingText = new ScreenText({35, 15});
-    ScreenText* thinWrappingText = new ScreenText({47, 15});
-    thinWrappingText->_text->charPerLine = 1; // TODO: expose _text a little bit better..
+    ScreenText* instructionalText = new ScreenText({0, 0});
+    ScreenText* mapNameText = new ScreenText({20, 0});
     instructionalText->SetText("[SpaceBar]  [<][>]");
+
     
     
     game.mainWindow.screen->SetTileMap(gm->GetLevelTileMap()); // TODO: TileMap Renderer
@@ -36,8 +35,7 @@ int main()
     // TODO: Make an auto Entitiy cleaner.
     delete player;
     delete instructionalText;
-    delete wrappingText;
-    delete thinWrappingText;
+    delete mapNameText;
     delete gm;
 }
 

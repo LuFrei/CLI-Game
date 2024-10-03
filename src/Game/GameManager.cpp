@@ -1,29 +1,24 @@
 #include "GameManager.h"
 
+GameManager* GameManager::_instance;
 GameManager::GameManager()
 : _levels(new Maps())
 , _currLevelIdx(0){
     try{
-        if(_gm != nullptr){
+        if(_instance != nullptr){
             throw "a GameManager already exists.";
         }
     } catch(std::string) 
     { }
 
-    _gm = this;
+    _instance = this;
     _level = new TileMap(Maps::list[_currLevelIdx]);
 }
 
 GameManager::~GameManager(){
     delete _level;
     delete _levels;
-    _gm = nullptr;
-}
-
-void GameManager::SetPlayer(Character* p){
-    p->AddTileMap(_level);
-    _player = p;
-    
+    _instance = nullptr;
 }
 
 void GameManager::SetLevel(int idx){
@@ -36,7 +31,7 @@ TileMap* GameManager::GetLevelTileMap(){
 }
 
 int GameManager::GetCurrentLevelIdx(){
-    return _currLevelIdx;o
+    return _currLevelIdx;
 }
 
 

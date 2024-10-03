@@ -8,10 +8,9 @@
 
 class TileMap {
 private:
-    std::vector<CHAR_INFO> map;
-    const bool coded;
-    std::map<std::string, CHAR_INFO> codeMapping;
+    std::vector<CHAR_INFO> _map;
 public:
+    CLGEngine::CORE::Vector2<int> offset;
     int width, height;
     TileMap(MapData data);
     wchar_t GetTile(CLGEngine::CORE::Vector2<float> coords);

@@ -5,22 +5,19 @@
 #include "../CLGEngine/Entity.h"
 #include "../CLGEngine/TileMap.h"
 #include "Maps.h"
-#include "Entities/Character.h"
 
 class GameManager : public ISubject {
 private:
-    static GameManager* _gm;
+    static GameManager* _instance;
     TileMap* _level;
     int _currLevelIdx;
     Maps* _levels;
-    static Character* _player;
 public:
     GameManager();
     ~GameManager();
-    void SetPlayer(Character* p);
     void SetLevel(int idx);
     TileMap* GetLevelTileMap();
-    int GetCurrentLevelIdx() {return _currLevelIdx;};
+    int GetCurrentLevelIdx();
 
 // ISubject
 private:
