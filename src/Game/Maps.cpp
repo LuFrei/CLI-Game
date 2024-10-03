@@ -108,11 +108,32 @@ MapData babyHops = {
 ######################"
 };
 
+MapData easyDoesIt = {
+    9, 15,
+    31, 7,"\
+#########\
+#       #\
+#  ##   #\
+#  #    #\
+#**#    #\
+   #   ##\
+   #    #\
+   #    #\
+   ##   #\
+   #    #\
+   #    #\
+   #   ##\
+   #    #\
+   #    #\
+   ######"    
+};
+
 
 Maps* Maps::_instance;
-const MapData Maps::list[4]= {
+const MapData Maps::list[MAX_LEVELS]= {
         titleMap,
         babyHops,
+        easyDoesIt,
         tallJumps,
         map01
     };
