@@ -102,6 +102,10 @@ void Character::Update(){
     }
     _col->ClearHit();
 
+    if(_tileMap->GetTile({std::floor(_position.x), std::floor(_position.y)}) == '*'){
+        gm->SetLevel(gm->GetCurrentLevelIdx()+1);
+    }
+
     //!! Level Swap test 
     if(Input::Input::GetKeyPressed(Input::KeyCode::Alpha1)) {
         _tileMap->SetMap(Maps::list[0]);
@@ -137,9 +141,9 @@ void Character::Move(float momentum) {
         _position += {momentum * _speed * CLGEngine::Time::deltaTime, 0};
         AdjustRectAsNeeded();
     }
-    if(_tileMap->GetTile({std::floor(_position.x), std::floor(_position.y)}) == '*'){
-        gm->SetLevel(gm->GetCurrentLevelIdx()+1);
-    }
+    // if(_tileMap->GetTile({std::floor(_position.x), std::floor(_position.y)}) == '*'){
+    //     gm->SetLevel(gm->GetCurrentLevelIdx()+1);
+    // }
 }
 
 void Character::Jump(){
@@ -158,6 +162,9 @@ void Character::Jump(){
         jumping = 0;
         return;
     }
+    // if(_tileMap->GetTile({std::floor(_position.x), std::floor(_position.y)}) == '*'){
+    //     gm->SetLevel(gm->GetCurrentLevelIdx()+1);
+    // }
     _position = nextPos;
     SetPosition({std::floor(_position.x), std::floor(_position.y)});
 }

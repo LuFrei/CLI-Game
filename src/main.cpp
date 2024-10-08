@@ -18,11 +18,11 @@ int main()
 // - as simple as posisble. THEN, we move into modularization
     GameManager* gm = new GameManager();
 
-    Character* player = new Character({8, 21});
+    Character* player = new Character({17, 21});
     player->gm = gm;
     player->AddTileMap(gm->GetLevelTileMap()); // MAke this internal. No need if we reference gm in Player.
 
-    ScreenText* instructionalText = new ScreenText({0, 0});
+    ScreenText* instructionalText = new ScreenText({0, 29});
     ScreenText* mapNameText = new ScreenText({20, 0});
     instructionalText->SetText("[SpaceBar]  [<][>]");
 
