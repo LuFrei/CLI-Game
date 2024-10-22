@@ -4,37 +4,24 @@
 #include <Windows.h>
 #include "Component.h"
 #include "../CORE/Vector2.h"
+#include "../Game.h"
+#include "../Graphics/Screen.h" // Game includes screen... slgihtly redudant
 
 // We can store all created instances to update every cycle
 namespace CLGEngine {
+class Renderer : public Component {
+private:
+	Screen* _screen;
+public:
+	Block block;
+	CHAR_INFO material;
 
-	/// <summary>
-	/// Almalgomation of Entity position nd RendOffset.
-	/// </summary>
-	struct Block {
-		Rect* rect;
-		int z, id;
-		CHAR_INFO material;
-	};
+	Renderer(CLGEngine::Entity* ent, CHAR_INFO& material);
+	~Renderer();
 
-	class Renderer : public Component {
-	private:
-		static std::vector<Block*> blocks;
-	public:
-		Block block;
-		CHAR_INFO material;
-
-		Renderer(CLGEngine::Entity* ent, CHAR_INFO& material);
-		~Renderer();
-
-		static std::vector<Block*> GetBlocks() {
-			return blocks;
-		}
-		/// <summary>
-		/// Up date data to be displayed for this block.
-		/// </summary>
-		void SetBlockPosition(CLGEngine::CORE::Vector2<float> newPosition);
-		void SetBlockSize(float newWidth, float newHeight);
-		void UpdateBlock(float newX, float newY, float newWidth, float newHeight);
-	};
+	/// Up date data to be displayed for this block.
+	void SetBlockPosition(CLGEngine::CORE::Vector2<float> newPosition);
+	void SetBlockSize(float newWidth, float newHeight);
+	void UpdateBlock(float newX, float newY, float newWidth, float newHeight);
+};
 }

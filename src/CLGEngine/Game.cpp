@@ -4,9 +4,23 @@
 #include "EntityManager.h"
 
 namespace CLGEngine{
-Game::Game() :
-    mainWindow() 
-{ }
+Game* Game::_instance = nullptr;
+
+Game::Game()
+: mainWindow(){
+    try{
+        if(_instance != nullptr){
+            throw "a Game object already exists.";
+        }
+    } catch(std::string) 
+    { }
+
+    _instance = this;
+}
+
+Game::~Game(){
+    _instance = nullptr;
+}
 
 void Game::Play() {
     while(running){
