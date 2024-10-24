@@ -1,4 +1,4 @@
-add_library(CLGEngine Input.cpp Time.cpp Game.cpp EntityManager.cpp Entity.cpp TileMap.cpp Level.cpp MapData.h)
+add_library(CLGEngine Input.cpp Time.cpp Game.cpp EntityManager.cpp Entity.cpp TileMap.cpp MapData.h)
 
 add_subdirectory(Graphics)
 add_subdirectory(CORE)

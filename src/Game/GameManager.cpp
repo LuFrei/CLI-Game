@@ -1,6 +1,6 @@
 #include "GameManager.h"
 
-GameManager* GameManager::_instance;
+GameManager* GameManager::_instance = nullptr;
 GameManager::GameManager()
 : _levels(new Maps())
 , _currLevelIdx(0){
