@@ -19,21 +19,15 @@ namespace CORE {
 
 		ConsoleWindow();
 		~ConsoleWindow();
-				
-		/// <summary>
-		/// Move relative to current position in pixels.
-		/// </summary>
-		/// <param name="distance">pixel distance</param>
+
+		/// @brief Move relative to current position in pixels.
+		/// @param distance pixel distance
 		void Move(Vector2<LONG> distance);
-		/// <summary>
-		/// Move to specific location in Pixels.
-		/// </summary>
-		/// <param name="newPosition">pixel coordinate</param>
+		
+		/// @brief Move to specific location in Pixels.
+		/// @param newPosition pixel coordinate
 		void SetPosition(Vector2<LONG> newPosition);
-		/// <summary>
-		///  relative to current size in pixels.
-		/// </summary>
-		/// <param name="distance">pixel distance</param>
+		
 		void Resize(Vector2<LONG> deltaSize);
 		void SetSize(Vector2<LONG> newsize);
 	};
