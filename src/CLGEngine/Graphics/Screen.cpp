@@ -64,7 +64,7 @@ void Screen::Draw() {
 	// TODO: All of this logic should idealy be taken out and each component shoul take care of it;
 	//		Renderer should add the blocks to the screen. TileMapRenderer should interpret Chars to CHAR_INFO. TextREnderer as well. 
 	std::vector<TextRenderer*> textElems = TextRenderer::GetTextPool();
-
+ 
 	ClearScreenData();
 
 	// TODO Move this to a tilemap renderer 
