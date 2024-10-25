@@ -89,7 +89,7 @@ void Screen::Draw() {
 				} else {
 					_data[idx] = {' ', whiteBG};
 				}
-			} else if (character == '*'){
+			} else if (character == '*' || character == 'e'){
 				unsigned short yellowBG = BACKGROUND_GREEN | BACKGROUND_RED;
 				if (this->_squareCells) {
 					_data[idx] = {' ', yellowBG};

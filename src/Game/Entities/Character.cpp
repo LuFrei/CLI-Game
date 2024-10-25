@@ -102,7 +102,9 @@ void Character::Update(){
     }
     _col->ClearHit();
 
-    if(_tileMap->GetTile({std::floor(_position.x), std::floor(_position.y)}) == '*'){
+    char tileValue = _tileMap->GetTile({std::floor(_position.x), std::floor(_position.y)});
+
+    if(tileValue == '*' || tileValue == 'e'){
         gm->SetLevel(gm->GetCurrentLevelIdx()+1);
     }
 
