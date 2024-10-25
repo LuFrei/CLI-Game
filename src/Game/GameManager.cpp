@@ -22,8 +22,12 @@ GameManager::~GameManager(){
 }
 
 void GameManager::SetLevel(int idx){
+    CLGEngine::CORE::Vector2<int> lastEnd = _level->endPos;
+
     _currLevelIdx = idx;
     _level->SetMap(Maps::list[_currLevelIdx]);
+
+    _level->offset = lastEnd - _level->startPos; // maybe this can part of SetMap?
 }
 
 TileMap* GameManager::GetLevelTileMap(){

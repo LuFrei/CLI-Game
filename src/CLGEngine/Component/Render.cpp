@@ -20,11 +20,10 @@ namespace CLGEngine {
 		block.rect = &ent->rect;
 		block.material = material;
 
-		_screen->renderQueue.push_back(&block);
+		_screen->AddToRenderQueue(&block);
 	}
 	
 	Renderer::~Renderer() {
 		_screen->RemoveFromRenderQueue(&block);
 	}
-
 }

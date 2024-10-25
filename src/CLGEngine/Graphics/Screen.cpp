@@ -33,11 +33,15 @@ Screen::Screen(int width, int height) {
 	SetConsoleCursorInfo(cOutBuffer, &cursorInfo);
 }
 
+void Screen::AddToRenderQueue(Block* block){
+	_renderQueue.push_back(block);
+}
+
 void Screen::RemoveFromRenderQueue(Block* block){
-	renderQueue.erase(
+	_renderQueue.erase(
 		std::find(
-			renderQueue.begin(),
-			renderQueue.end(),
+			_renderQueue.begin(),
+			_renderQueue.end(),
 			block
 	));
 }
@@ -69,8 +73,8 @@ void Screen::Draw() {
 
 	// TODO Move this to a tilemap renderer 
 	// 		that sends results to renderQueue.
-	for(int y = tileMap->offset.y; y < tileMap->height + tileMap->offset.y; y++){
-		for(int x = tileMap->offset.x; x < tileMap->width + tileMap->offset.x; x++){
+	for(int y = tileMap->offset.y; y < tileMap->size.y + tileMap->offset.y; y++){
+		for(int x = tileMap->offset.x; x < tileMap->size.x + tileMap->offset.x; x++){
 			int xCell = x;
 			if (this->_squareCells) {
 				xCell *= 2;
@@ -97,7 +101,7 @@ void Screen::Draw() {
 		}
 	}
 
-	for (Block* block : renderQueue) {
+	for (Block* block : _renderQueue) {
 		// is this block ever going going to show up in the screen?
 		if (block->rect->position.x >= _width
 			|| block->rect->position.y >= _height
