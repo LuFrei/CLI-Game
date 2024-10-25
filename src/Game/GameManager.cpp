@@ -22,7 +22,7 @@ GameManager::~GameManager(){
 }
 
 void GameManager::SetLevel(int idx){
-    CLGEngine::CORE::Vector2<int> lastEnd = _level->endPos;
+    CLGEngine::CORE::Vector2<int> lastEnd = _level->offset + _level->endPos;
 
     _currLevelIdx = idx;
     _level->SetMap(Maps::list[_currLevelIdx]);

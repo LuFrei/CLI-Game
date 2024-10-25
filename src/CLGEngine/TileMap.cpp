@@ -41,10 +41,22 @@ wchar_t TileMap::GetTile(CLGEngine::CORE::Vector2<float> coords){
 
 void TileMap::SetMap(MapData data){
     _map.clear();
-    for(char& c : data.data){
-        CHAR_INFO cInfo = {c, 0};
-        _map.push_back(cInfo);
-    }
     size.x = data.width;
     size.y = data.height;
+    for(int i = 0; i < data.data.size(); i++){
+        char c = data.data[i];
+        CHAR_INFO cInfo = {c, 0};
+        _map.push_back(cInfo);
+
+        if(c == 's'){
+            int y = std::floor(i / size.x);
+            int x = i % size.x;
+            startPos = {x, y};
+        }
+        if(c == 'e'){
+            int y = std::floor(i / size.x);
+            int x = i % size.x;
+            endPos = {x, y};
+        }
+    }
 }
