@@ -29,9 +29,8 @@ private:
 	TileMap* tileMap;
 
 	void ClearScreenData();
+	std::vector<Block*> _renderQueue; //RenderCache? We are less going through a queue and more storing a cache of blocks...
 public:
-	std::vector<Block*> renderQueue; //RenderCache?
-
 
 	Screen(int width, int height);
 
@@ -39,6 +38,7 @@ public:
 
 	void Draw();
 
+	void AddToRenderQueue(Block* block);
 	void RemoveFromRenderQueue(Block* block);
 
 	// TODO: This needs to be out of here.

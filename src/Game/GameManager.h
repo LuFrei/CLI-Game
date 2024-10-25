@@ -4,20 +4,27 @@
 
 #include "../CLGEngine/Entity.h"
 #include "../CLGEngine/TileMap.h"
+#include "../CLGEngine/CORE/Vector2.h"
 #include "Maps.h"
 
 class GameManager : public ISubject {
+// Core
 private:
     static GameManager* _instance;
-    TileMap* _level;
-    int _currLevelIdx;
-    Maps* _levels;
 public:
     GameManager();
     ~GameManager();
+
+// Level
+private:
+    Maps* _levels;
+    int _currLevelIdx;
+    TileMap* _level;
+public:
     void SetLevel(int idx);
     TileMap* GetLevelTileMap();
     int GetCurrentLevelIdx();
+
 
 // ISubject
 private:

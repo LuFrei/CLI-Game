@@ -102,7 +102,9 @@ void Character::Update(){
     }
     _col->ClearHit();
 
-    if(_tileMap->GetTile({std::floor(_position.x), std::floor(_position.y)}) == '*'){
+    char tileValue = _tileMap->GetTile({std::floor(_position.x), std::floor(_position.y)});
+
+    if(tileValue == '*' || tileValue == 'e'){
         gm->SetLevel(gm->GetCurrentLevelIdx()+1);
     }
 
@@ -129,9 +131,9 @@ void Character::Move(float momentum) {
 
     // TODO: MAke a Rect for TileMap to identify bounds  it emcompases in the world
     if(_position.x < _tileMap->offset.x
-    || _position.x > _tileMap->width + _tileMap->offset.x
+    || _position.x > _tileMap->size.x + _tileMap->offset.x
     || _position.y < _tileMap->offset.y
-    || _position.y > _tileMap->height + _tileMap->offset.y) {
+    || _position.y > _tileMap->size.y + _tileMap->offset.y) {
         _position += {momentum * _speed * CLGEngine::Time::deltaTime, 0};
         AdjustRectAsNeeded();
         return;
