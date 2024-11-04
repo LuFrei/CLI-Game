@@ -11,11 +11,13 @@ TextRenderer::TextRenderer(std::string text)
 }
 
 TextRenderer::~TextRenderer(){
-    _textPool.erase(
-        std::find(
+    auto it = std::find(
             _textPool.begin(),
             _textPool.end(),
             this
-    ));
+    );
+    if(it != _textPool.end()) {
+        _textPool.erase(it);
+    }
 }
 };

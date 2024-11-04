@@ -130,9 +130,9 @@ Maps* Maps::_instance;
 const MapData Maps::list[MAX_LEVELS]= {
         titleMap,
         babyHops,
+        map01,
         easyDoesIt,
-        tallJumps,
-        map01
+        tallJumps
     };
 
 Maps::Maps(){

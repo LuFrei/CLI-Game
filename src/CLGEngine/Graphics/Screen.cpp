@@ -71,13 +71,18 @@ void Screen::Draw() {
  
 	ClearScreenData();
 
-	// TODO Move this to a tilemap renderer 
-	// 		that sends results to renderQueue.
+	// // TODO Move this to a tilemap renderer 
+	// // 		that sends results to renderQueue.
+	// // !! We aren't checking for overflows here!
 	for(int y = tileMap->offset.y; y < tileMap->size.y + tileMap->offset.y; y++){
 		for(int x = tileMap->offset.x; x < tileMap->size.x + tileMap->offset.x; x++){
 			int xCell = x;
 			if (this->_squareCells) {
 				xCell *= 2;
+			}
+			// check over flow
+			if(xCell >= _width || y >= _height){
+				continue;
 			}
 			wchar_t character = tileMap->GetTile({(float)x, (float)y});
 			int idx = _width * y + xCell;
@@ -135,6 +140,10 @@ void Screen::Draw() {
 				}
 			}
 		}
+	}
+
+	if(textElems.size() == 0){
+		throw "this shouldn't be empty.";
 	}
 
 	// Text Render pseudo
