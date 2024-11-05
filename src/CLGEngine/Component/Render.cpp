@@ -9,10 +9,18 @@
 
 namespace CLGEngine {
 	CHAR_INFO defaultMaterial = {
-		ASCII_SHADE1,
-		BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY | FOREGROUND_BLUE | FOREGROUND_RED
-	};
+	ASCII_SHADE1,
+	BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY | FOREGROUND_BLUE | FOREGROUND_RED
+};
 
+	Renderer::Renderer(CLGEngine::Entity* ent)
+		: Component(ent) 
+		, _screen(Game::GetGameInstance()->mainWindow.screen) {
+		block.rect = &ent->rect;
+		block.material = defaultMaterial;
+		
+		_screen->AddToRenderQueue(&block);
+	}
 
 	Renderer::Renderer(CLGEngine::Entity* ent, CHAR_INFO& material)
 		: Component(ent) 
