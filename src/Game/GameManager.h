@@ -5,9 +5,10 @@
 #include "../CLGEngine/Entity.h"
 #include "../CLGEngine/TileMap.h"
 #include "../CLGEngine/CORE/Vector2.h"
+#include "../CLGEngine/CORE/ISubject.h"
 #include "Maps.h"
 
-class GameManager : public ISubject {
+class GameManager : public CLGEngine::ISubject {
 // Core
 private:
     static GameManager* _instance;
@@ -28,9 +29,9 @@ public:
 
 // ISubject
 private:
-    std::forward_list<IObserver*> _subscribers;
+    std::forward_list<CLGEngine::IObserver*> _subscribers;
 public:
-    virtual void AddSubscriber(IObserver* o);
-    virtual void RemoveSubscriber(IObserver* o);
+    virtual void AddSubscriber(CLGEngine::IObserver* o);
+    virtual void RemoveSubscriber(CLGEngine::IObserver* o);
     virtual void Notify();
 };

@@ -1,6 +1,6 @@
 #include "ScreenText.h"
 
-ScreenText::ScreenText(CLGEngine::CORE::Vector2<int> position)
+ScreenText::ScreenText(CLGEngine::Vector2<int> position)
     : CLGEngine::Entity(position.x, position.y, 0, 0)
     , _text(new CLGEngine::TextRenderer(""))
 { 

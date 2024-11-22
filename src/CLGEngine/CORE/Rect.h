@@ -2,8 +2,9 @@
 
 #include "Vector2.h"
 
+namespace CLGEngine{
 struct Rect{
-    CLGEngine::CORE::Vector2<float>
-        position,
-        size;
+    Vector2<float>  position,
+                    size;
 };
+}

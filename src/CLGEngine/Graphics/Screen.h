@@ -2,16 +2,11 @@
 
 #include <Windows.h>
 #include <vector>
+#include "Block.h"
 #include "../TileMap.h"
 #include "../CORE/Rect.h"
 
 namespace CLGEngine {
-struct Block {
-	Rect* rect;
-	int z;
-	CHAR_INFO material;
-};
-
 
 /// @brief that represents the viewport into the virttual world; i.e. 
 /// the client's screen that renders the game.

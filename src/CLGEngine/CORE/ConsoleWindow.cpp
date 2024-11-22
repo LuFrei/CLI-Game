@@ -30,6 +30,7 @@ namespace CORE {
 
         HDWP h_windowPosition = BeginDeferWindowPos(1);
         DeferWindowPos(
+            
             h_windowPosition,
             h_window,
             NULL,

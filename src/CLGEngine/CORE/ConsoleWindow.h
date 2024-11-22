@@ -13,8 +13,8 @@ namespace CORE {
 		HWND h_window;
 		RECT windowRect;
 
-		CORE::Vector2<LONG> position;
-		CORE::Vector2<LONG> size;
+		Vector2<LONG> position;
+		Vector2<LONG> size;
 		CLGEngine::Screen* screen;
 
 		ConsoleWindow();

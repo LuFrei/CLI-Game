@@ -15,13 +15,13 @@ namespace CLGEngine {
 	}
 
 #pragma region Transform
-	void Entity::Translate(CORE::Vector2<float> direction) {
+	void Entity::Translate(Vector2<float> direction) {
 		rect.position.x += direction.x;
 		rect.position.y += direction.y;
 		Notify();
 	}
 
-	void Entity::SetPosition(CORE::Vector2<float> newPos){
+	void Entity::SetPosition(Vector2<float> newPos){
 		rect.position = newPos;
 		Notify();
 	}

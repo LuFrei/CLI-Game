@@ -4,17 +4,17 @@
 #include "../../CLGEngine/Entity.h"
 #include "../../CLGEngine/CORE/Vector2.h"
 #include "../../CLGEngine/Component/Collider.h"
-#include "../../CLGEngine/Component/Render.h"
+#include "../../CLGEngine/Component/BlockRenderer.h"
 #include "../GameManager.h"
 
 class LevelTrigger
 : public CLGEngine::Entity {
 private:
     CLGEngine::Collider* _col;
-    CLGEngine::Renderer* _rend;
+    CLGEngine::BlockRenderer* _rend;
 public:
     GameManager* gm;
-    LevelTrigger(CLGEngine::CORE::Vector2<int> position, std::string levelName);
+    LevelTrigger(CLGEngine::Vector2<int> position, std::string levelName);
     ~LevelTrigger();
     void Update();
 };

@@ -1,4 +1,5 @@
 namespace CLGEngine {
+/// @brief Provides quick access to color combinations for the Command Line 
 namespace Color{
 
     #define BLUE 0x0001

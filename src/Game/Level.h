@@ -11,7 +11,7 @@ private:
 public:
     std::string name;
     TileMap* tileMap;
-    CLGEngine::CORE::Vector2<int> offset;
+    CLGEngine::Vector2<int> offset;
     Level();
     ~Level();
 };

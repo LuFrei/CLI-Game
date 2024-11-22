@@ -1,7 +1,7 @@
 #pragma once
-
 namespace CLGEngine {
-	namespace ASCII{
+/// @brief Provides quick access to several ASCII codes
+namespace ASCII{
 #define ASCII_VERTICAL_BAR 179
 #define ASCII_HORIZONTAL_BAR 196
 #define ASCII_CORNER_NE 191
