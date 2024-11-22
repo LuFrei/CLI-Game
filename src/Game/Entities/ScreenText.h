@@ -10,7 +10,7 @@ class ScreenText
 private:
 public:
     CLGEngine::TextRenderer* _text;
-    ScreenText(CLGEngine::CORE::Vector2<int> position);
+    ScreenText(CLGEngine::Vector2<int> position);
     ~ScreenText();
     void Update() {};
     void SetText(std::string text);

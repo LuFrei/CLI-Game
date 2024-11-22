@@ -66,7 +66,7 @@ void Screen::ClearScreenData() {
 void Screen::Draw() {
 
 	// TODO: All of this logic should idealy be taken out and each component shoul take care of it;
-	//		Renderer should add the blocks to the screen. TileMapRenderer should interpret Chars to CHAR_INFO. TextREnderer as well. 
+	//		Renderer should add the blocks to the screen. TileMapRenderer should interpret Chars to CHAR_INFO. TextRenderer as well. 
 	std::vector<TextRenderer*> textElems = TextRenderer::GetTextPool();
  
 	ClearScreenData();
@@ -108,16 +108,16 @@ void Screen::Draw() {
 
 	for (Block* block : _renderQueue) {
 		// is this block ever going going to show up in the screen?
-		if (block->rect->position.x >= _width
-			|| block->rect->position.y >= _height
-			|| block->rect->position.x + block->rect->size.x < 0
-			|| block->rect->position.y + block->rect->size.y < 0)
+		if (block->rect.position.x >= _width
+			|| block->rect.position.y >= _height
+			|| block->rect.position.x + block->rect.size.x < 0
+			|| block->rect.position.y + block->rect.size.y < 0)
 		{ continue; }
 
-		for (int h = 0; h < block->rect->size.y; h++) {
-			for (int w = 0; w < block->rect->size.x; w++) {
-				int cellX = block->rect->position.x + w;
-				int cellY = block->rect->position.y + h;
+		for (int h = 0; h < block->rect.size.y; h++) {
+			for (int w = 0; w < block->rect.size.x; w++) {
+				int cellX = block->rect.position.x + w;
+				int cellY = block->rect.position.y + h;
 
 				if (this->_squareCells) {
 					cellX *= 2;
@@ -132,11 +132,14 @@ void Screen::Draw() {
 					continue;
 				}
 
+
+				int cellIdx = _width * cellY + cellX;
+				int dataIdx = block->rect.size.x * h + w;
 				if (this->_squareCells) {
-					_data[_width * cellY + cellX] = block->material;
-					_data[_width * cellY + cellX +1] = block->material;
+					_data[cellIdx] = block->dataArr[dataIdx];
+					_data[cellIdx + 1] = block->dataArr[dataIdx];
 				} else {
-					_data[_width * cellY + cellX] = block->material;
+					_data[cellIdx] = block->dataArr[dataIdx];
 				}
 			}
 		}
@@ -148,7 +151,7 @@ void Screen::Draw() {
 
 	// Text Render pseudo
 	for(TextRenderer* textEl : textElems){
-		CORE::Vector2<int> cursorPos = textEl->position;
+		Vector2<int> cursorPos = textEl->position;
 		if (this->_squareCells) {
 			cursorPos.x *= 2;
 		}

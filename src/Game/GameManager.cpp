@@ -22,7 +22,7 @@ GameManager::~GameManager(){
 }
 
 void GameManager::SetLevel(int idx){
-    CLGEngine::CORE::Vector2<int> lastEnd = _level->offset + _level->endPos;
+    CLGEngine::Vector2<int> lastEnd = _level->offset + _level->endPos;
 
     _currLevelIdx = idx;
     _level->SetMap(Maps::list[_currLevelIdx]);
@@ -39,16 +39,16 @@ int GameManager::GetCurrentLevelIdx(){
 }
 
 
-void GameManager::AddSubscriber(IObserver* o){
+void GameManager::AddSubscriber(CLGEngine::IObserver* o){
     _subscribers.emplace_front(o);
 }
 
-void GameManager::RemoveSubscriber(IObserver* o){
+void GameManager::RemoveSubscriber(CLGEngine::IObserver* o){
     _subscribers.remove(o);
 }
 
 void GameManager::Notify(){
-    for(IObserver* o : _subscribers){
+    for(CLGEngine::IObserver* o : _subscribers){
         o->OnNotify();
     }
 }

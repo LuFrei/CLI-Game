@@ -5,7 +5,7 @@
 #include "../../CLGEngine/CORE/Vector2.h"
 #include "../../CLGEngine/Component/Collider.h"
 #include "../../CLGEngine/Entity.h"
-#include "../../CLGEngine/Component/Render.h"
+#include "../../CLGEngine/Component/BlockRenderer.h"
 
 
 class Character : public CLGEngine::Entity {
@@ -14,13 +14,13 @@ private:
 	bool _grounded;
 	float _groundLevel;
 	TileMap* _tileMap;
-	CLGEngine::CORE::Vector2<float> _position;
+	CLGEngine::Vector2<float> _position;
 	CLGEngine::Collider* _col;
-	CLGEngine::Renderer* _rend;
+	CLGEngine::BlockRenderer* _rend;
 	void AdjustRectAsNeeded();
 public:
 	GameManager* gm;
-	Character(CLGEngine::CORE::Vector2<float> startPosition);
+	Character(CLGEngine::Vector2<float> startPosition);
 	~Character();
 	void Update();
 

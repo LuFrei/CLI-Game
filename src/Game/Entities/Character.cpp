@@ -11,21 +11,20 @@ const int jumpHeight = 4;
 const int jumpSpeed = 10;
 int vertMomentum = 0;
 
-using namespace CLGEngine;
-
 CHAR_INFO charMat = {
     ' ', BACKGROUND_BLUE
 };
 
-Character::Character(CORE::Vector2<float> startPosition)
+Character::Character(CLGEngine::Vector2<float> startPosition)
             : Entity(startPosition.x, startPosition.y, 1, 1)
             , _speed(10)
             , _position({startPosition.x + 0.5f, startPosition.y + 0.5f})
 {
     name = "player";
-    _col = new Collider(this);
-    _rend = new CLGEngine::Renderer(this, charMat);
+    _col = new CLGEngine::Collider(this);
+    _rend = new CLGEngine::BlockRenderer(this, charMat);
     AddSubscriber(_col);
+    AddSubscriber(_rend);
 }
 
 Character::~Character(){
@@ -67,7 +66,7 @@ void AdjustMomentum(int direction){
 bool jumping = 0;
 void Character::Update(){
 
-    CORE::Vector2<float> belowCell = {std::floor(_position.x), std::floor(_position.y + 0.5f)};
+    CLGEngine::Vector2<float> belowCell = {std::floor(_position.x), std::floor(_position.y + 0.5f)};
     _grounded = _tileMap->GetTile(belowCell) == '#';
     
     if(_grounded){ 
@@ -84,13 +83,13 @@ void Character::Update(){
 
 
     int direction = 0; //1 = right; -1 = left
-    if (Input::Input::GetKeyPressed(Input::KeyCode::Left) || Input::Input::GetKeyPressed(Input::KeyCode::Comma)) {
+    if (CLGEngine::Input::Input::GetKeyPressed(CLGEngine::Input::KeyCode::Left) || CLGEngine::Input::Input::GetKeyPressed(CLGEngine::Input::KeyCode::Comma)) {
         direction += -1;
     }
-    if (Input::Input::GetKeyPressed(Input::KeyCode::Right) || Input::Input::GetKeyPressed(Input::KeyCode::Period)) {
+    if (CLGEngine::Input::Input::GetKeyPressed(CLGEngine::Input::KeyCode::Right) || CLGEngine::Input::Input::GetKeyPressed(CLGEngine::Input::KeyCode::Period)) {
         direction += 1;
     }
-    if (Input::Input::GetKeyPressed(Input::KeyCode::Space) && _grounded){
+    if (CLGEngine::Input::Input::GetKeyPressed(CLGEngine::Input::KeyCode::Space) && _grounded){
         jumping = 1;
     }
     if(jumping){
@@ -109,16 +108,16 @@ void Character::Update(){
     }
 
     //!! Level Swap test 
-    if(Input::Input::GetKeyPressed(Input::KeyCode::Alpha1)) {
+    if(CLGEngine::Input::Input::GetKeyPressed(CLGEngine::Input::KeyCode::Alpha1)) {
         _tileMap->SetMap(Maps::list[0]);
     }
-    if(Input::Input::GetKeyPressed(Input::KeyCode::Alpha2)) {
+    if(CLGEngine::Input::Input::GetKeyPressed(CLGEngine::Input::KeyCode::Alpha2)) {
         _tileMap->SetMap(Maps::list[1]);
     }
-    if(Input::Input::GetKeyPressed(Input::KeyCode::Alpha3)) {
+    if(CLGEngine::Input::Input::GetKeyPressed(CLGEngine::Input::KeyCode::Alpha3)) {
         _tileMap->SetMap(Maps::list[2]);
     }
-    if(Input::Input::GetKeyPressed(Input::KeyCode::Alpha4)) {
+    if(CLGEngine::Input::Input::GetKeyPressed(CLGEngine::Input::KeyCode::Alpha4)) {
         _tileMap->SetMap(Maps::list[3]);
     }
 }
@@ -138,7 +137,7 @@ void Character::Move(float momentum) {
         AdjustRectAsNeeded();
         return;
     }
-    CORE::Vector2<float> nextCell = {(float)nextX , std::floor(_position.y)};
+    CLGEngine::Vector2<float> nextCell = {(float)nextX , std::floor(_position.y)};
     if(_tileMap->GetTile(nextCell) != '#'){
         _position += {momentum * _speed * CLGEngine::Time::deltaTime, 0};
         AdjustRectAsNeeded();
@@ -150,10 +149,10 @@ void Character::Jump(){
         vertMomentum = 1;
     }
 
-    CORE::Vector2<float> offSet = {0, -vertMomentum * jumpSpeed * CLGEngine::Time::deltaTime};
-    CORE::Vector2<float> nextPos = _position + offSet;
+    CLGEngine::Vector2<float> offSet = {0, -vertMomentum * jumpSpeed * CLGEngine::Time::deltaTime};
+    CLGEngine::Vector2<float> nextPos = _position + offSet;
 
-    CORE::Vector2<float> nextCell = {std::floor(nextPos.x), std::floor(nextPos.y)};
+    CLGEngine::Vector2<float> nextCell = {std::floor(nextPos.x), std::floor(nextPos.y)};
     if((_tileMap->GetTile(nextCell) == '#' || _position.y <= _groundLevel - jumpHeight) 
         && vertMomentum == 1)
     {
@@ -166,7 +165,7 @@ void Character::Jump(){
 }
 
 void Character::AdjustRectAsNeeded() {
-    CORE::Vector2<float> posFloored = {std::floor(_position.x), std::floor(_position.y)};
+    CLGEngine::Vector2<float> posFloored = {std::floor(_position.x), std::floor(_position.y)};
     if(posFloored == rect.position){
         return;
     }

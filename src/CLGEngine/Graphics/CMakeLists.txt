@@ -1,1 +1,1 @@
-add_library(Graphics TextRenderer.cpp Screen.cpp ASCII.h)
+add_library(Graphics TextRenderer.cpp Screen.cpp Block.cpp ASCII.h)

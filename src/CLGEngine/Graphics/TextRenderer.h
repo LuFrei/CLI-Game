@@ -13,7 +13,7 @@ public:
     std::string string;
     int charPerLine = 20; //x
     int lineLimit = 0; //y
-    CLGEngine::CORE::Vector2<int> position;
+    Vector2<int> position;
     TextRenderer(std::string text);
     ~TextRenderer();
 };

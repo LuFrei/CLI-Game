@@ -24,12 +24,10 @@ TileMap::TileMap(MapData data)
             int x = i % size.x;
             endPos = {x, y};
         }
-
-
     }
 }
 
-wchar_t TileMap::GetTile(CLGEngine::CORE::Vector2<float> coords){
+wchar_t TileMap::GetTile(CLGEngine::Vector2<float> coords){
     int x = std::floor(coords.x - offset.x);
     int y = std::floor(coords.y - offset.y);
     if (x < 0 || x >= size.x || y < 0 || y >= size.y){
