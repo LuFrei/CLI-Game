@@ -145,29 +145,29 @@ void Screen::Draw() {
 		}
 	}
 
-	if(textElems.size() == 0){
-		throw "this shouldn't be empty.";
-	}
+	// if(textElems.size() == 0){
+	// 	throw "this shouldn't be empty.";
+	// }
 
-	// Text Render pseudo
-	for(TextRenderer* textEl : textElems){
-		Vector2<int> cursorPos = textEl->position;
-		if (this->_squareCells) {
-			cursorPos.x *= 2;
-		}
-		for(int i = 0; i < textEl->string.length(); i++){
-			_data[_width * cursorPos.y + cursorPos.x].Char.AsciiChar = textEl->string[i];
+	// // Text Render pseudo
+	// for(TextRenderer* textEl : textElems){
+	// 	Vector2<int> cursorPos = textEl->position;
+	// 	if (this->_squareCells) {
+	// 		cursorPos.x *= 2;
+	// 	}
+	// 	for(int i = 0; i < textEl->string.length(); i++){
+	// 		_data[_width * cursorPos.y + cursorPos.x].Char.AsciiChar = textEl->string[i];
 
-			cursorPos.x++;
-			if(cursorPos.x >= (textEl->position.x * 2) + textEl->charPerLine){
-				cursorPos.x = textEl->position.x * 2; //TODO: Mmodularize `*2`
-				cursorPos.y++;
-				if(textEl->lineLimit != 0 && cursorPos.y >= textEl->lineLimit){
-					continue;
-				}
-			}
-		}
-	}
+	// 		cursorPos.x++;
+	// 		if(cursorPos.x >= (textEl->position.x * 2) + textEl->charPerLine){
+	// 			cursorPos.x = textEl->position.x * 2; //TODO: Mmodularize `*2`
+	// 			cursorPos.y++;
+	// 			if(textEl->lineLimit != 0 && cursorPos.y >= textEl->lineLimit){
+	// 				continue;
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 	WriteConsoleOutputA(cOutBuffer, _data, { (short)_width , (short)_height }, { 0, 0 }, &bounds);
 }
