@@ -2,11 +2,11 @@
 
 #include <vector>
 #include <Windows.h>
-#include "Component.h"
-#include "../CORE/IObserver.h"
-#include "../CORE/Vector2.h"
-#include "../Game.h"
-#include "../Graphics/Screen.h" // Game includes screen... slgihtly redudant
+#include "../Component.h"
+#include "../../CORE/IObserver.h"
+#include "../../CORE/Vector2.h"
+#include "../../Game.h"
+#include "../../Graphics/Screen.h" // Game includes screen... slgihtly redudant
 
 // We can store all created instances to update every cycle
 namespace CLGEngine {

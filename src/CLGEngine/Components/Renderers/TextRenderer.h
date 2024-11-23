@@ -2,7 +2,8 @@
 
 #include <string>
 #include <vector>
-#include "../CORE/Vector2.h"
+#include "Renderer.h"
+#include "../../CORE/Vector2.h"
 
 namespace CLGEngine {
 class TextRenderer{

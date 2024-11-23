@@ -1,7 +1,6 @@
 #include "Screen.h"
 
 #include "ASCII.h" 
-#include "TextRenderer.h"
 #include "../CORE/Vector2.h"
 
 namespace CLGEngine {
@@ -65,9 +64,9 @@ void Screen::ClearScreenData() {
 
 void Screen::Draw() {
 
-	// TODO: All of this logic should idealy be taken out and each component shoul take care of it;
-	//		Renderer should add the blocks to the screen. TileMapRenderer should interpret Chars to CHAR_INFO. TextRenderer as well. 
-	std::vector<TextRenderer*> textElems = TextRenderer::GetTextPool();
+	// // TODO: All of this logic should idealy be taken out and each component shoul take care of it;
+	// // 		Renderer should add the blocks to the screen. TileMapRenderer should interpret Chars to CHAR_INFO. TextRenderer as well. 
+	// std::vector<TextRenderer*> textElems = TextRenderer::GetTextPool();
  
 	ClearScreenData();
 

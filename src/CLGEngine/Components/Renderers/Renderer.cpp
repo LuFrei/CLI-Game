@@ -4,8 +4,8 @@
 #include <Windows.h>
 #include <wincon.h>
 
-#include "Render.h"
-#include "../Graphics/ASCII.h"
+#include "Renderer.h"
+#include "../../Graphics/ASCII.h"
 
 namespace CLGEngine {
 
