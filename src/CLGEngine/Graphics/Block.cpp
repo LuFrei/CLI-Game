@@ -8,7 +8,7 @@ CHAR_INFO defaultMaterial = {
 };
 
 Block::Block(Vector2<int> size) {
-    rect = {{0,0}, {(float)size.x, (float)size.y}}; //TODO: Some pooint find out how to add custom explicit/ implicit converstions.
+    rect = {{0,0}, (Vector2<float>)size}; //TODO: Some pooint find out how to add custom explicit/ implicit converstions.
     dataArr = new CHAR_INFO[size.x * size.y];
     Fill(defaultMaterial);
 }
@@ -27,5 +27,15 @@ void Block::Fill(CHAR_INFO material){
     for(int i = 0; i < (rect.size.x * rect.size.y); i++){
         dataArr[i] = material;
     }
+}
+
+// NOTE: Make new empty one w/ new size. Fill with Defalu,mat, and have Each Renderer handle howt o refill arr.
+// Some RendererTypes may have their own Resize, some may not need it. If they do, thye should call this Resize FIRST
+void Block::Resize(Vector2<int> size){
+    rect.size = (Vector2<float>)size;
+
+    delete dataArr; // This shouldn't be null, but check here if ther's an error.
+    dataArr = new CHAR_INFO[size.x * size.y];
+    Fill(defaultMaterial);
 }
 }
