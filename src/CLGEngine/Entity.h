@@ -20,7 +20,7 @@ class Entity : public ISubject {
 public:
 	/// @brief name that can be used to identify an instance.
 	std::string name = "unnamed";
-	Rect rect; //May have to set as protected later for Component Rework.
+	Rect rect;
 	Entity(float x, float y, float width, float height);
 	~Entity();
 	virtual void Update() = 0;

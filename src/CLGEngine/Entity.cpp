@@ -16,8 +16,7 @@ namespace CLGEngine {
 
 #pragma region Transform
 	void Entity::Translate(Vector2<float> direction) {
-		rect.position.x += direction.x;
-		rect.position.y += direction.y;
+		rect.position += direction;
 		Notify();
 	}
 
@@ -33,7 +32,7 @@ namespace CLGEngine {
 #pragma endregion
 
 #pragma region Event
-// TODO: Will it make more ense to send this to ISubject itself?
+// TODO: Will it make more ense to send `this` to ISubject itself?
 	void Entity::AddSubscriber(IObserver* o) {
 		_observers.emplace_front(o);
 	}
