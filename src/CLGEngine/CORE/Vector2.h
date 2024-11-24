@@ -38,8 +38,9 @@ struct Vector2 {
 	float dot(Vector2 factor) {
 		return (factor.x * x) + (factor.y * y);
 	}
-	//TODO: would be nice to find a way to make type casting work on this.
-	// Something in the lines of (float)Vector2<int>.
-	// For now: explicitly create a new temp Vector2 with type casted vars.
+
+	
+	explicit operator Vector2<int>() const {return {(int)x, (int)y};}
+	explicit operator Vector2<float>() const {return {(float)x, (float)y};}
 };
 }
