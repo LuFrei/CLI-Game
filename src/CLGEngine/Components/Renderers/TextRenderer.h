@@ -6,16 +6,17 @@
 #include "../../CORE/Vector2.h"
 
 namespace CLGEngine {
-class TextRenderer{
+class TextRenderer
+: public Renderer{
 private:
-    static std::vector<TextRenderer*> _textPool;
+    std::string _text;
 public:
-    static std::vector<TextRenderer*> GetTextPool() {return _textPool;};
-    std::string string;
-    int charPerLine = 20; //x
-    int lineLimit = 0; //y
-    Vector2<int> position;
-    TextRenderer(std::string text);
+    bool autoSize = false;
+
+    TextRenderer(Entity* ent, std::string text);
     ~TextRenderer();
+
+    void SetText(std::string text);
+    std::string GetText() {return _text;}
 };
 };
