@@ -18,12 +18,16 @@ class Renderer :
 	public IObserver {
 private:
 	Screen* _screen;
+protected:
+	bool _squareCells;
 public:
 	Block block;
 	CHAR_INFO material;
 
 	Renderer(Entity* ent);
 	~Renderer();
+
+	void SetSquareCells(bool isSquare);
 
 	void OnNotify() override;
 };

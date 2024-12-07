@@ -118,10 +118,6 @@ void Screen::Draw() {
 				int cellX = block->rect.position.x + w;
 				int cellY = block->rect.position.y + h;
 
-				if (this->_squareCells) {
-					cellX *= 2;
-				}
-
 				// Skip if this PART of the block is outside screen's bounds.
 				if (cellX < 0
 					|| cellX >= _width
@@ -134,12 +130,7 @@ void Screen::Draw() {
 
 				int cellIdx = _width * cellY + cellX;
 				int dataIdx = block->rect.size.x * h + w;
-				if (this->_squareCells) {
-					_data[cellIdx] = block->dataArr[dataIdx];
-					_data[cellIdx + 1] = block->dataArr[dataIdx];
-				} else {
-					_data[cellIdx] = block->dataArr[dataIdx];
-				}
+				_data[cellIdx] = block->dataArr[dataIdx];
 			}
 		}
 	}

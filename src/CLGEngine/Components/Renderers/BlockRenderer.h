@@ -8,8 +8,9 @@ namespace CLGEngine {
     private:
     public:
         BlockRenderer(CLGEngine::Entity* ent, CHAR_INFO& material);
-        // ~BlockRenderer();
+        BlockRenderer(CLGEngine::Entity* ent, CHAR_INFO& material, bool isSquare);
 
+        // ~BlockRenderer();
         // TODO: make Resize func
     };
     
