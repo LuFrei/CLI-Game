@@ -22,5 +22,6 @@ public:
     /// @brief Fills the Block ractangle with a single CHAR_INFO
     /// @param material CHAR_INFO to fill the Block with.
     void Fill(CHAR_INFO material);
+    void Resize(Vector2<int> size);
 };
 }

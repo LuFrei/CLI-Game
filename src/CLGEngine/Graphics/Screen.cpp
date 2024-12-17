@@ -1,7 +1,6 @@
 #include "Screen.h"
 
 #include "ASCII.h" 
-#include "TextRenderer.h"
 #include "../CORE/Vector2.h"
 
 namespace CLGEngine {
@@ -65,9 +64,9 @@ void Screen::ClearScreenData() {
 
 void Screen::Draw() {
 
-	// TODO: All of this logic should idealy be taken out and each component shoul take care of it;
-	//		Renderer should add the blocks to the screen. TileMapRenderer should interpret Chars to CHAR_INFO. TextRenderer as well. 
-	std::vector<TextRenderer*> textElems = TextRenderer::GetTextPool();
+	// // TODO: All of this logic should idealy be taken out and each component shoul take care of it;
+	// // 		Renderer should add the blocks to the screen. TileMapRenderer should interpret Chars to CHAR_INFO. TextRenderer as well. 
+	// std::vector<TextRenderer*> textElems = TextRenderer::GetTextPool();
  
 	ClearScreenData();
 
@@ -119,10 +118,6 @@ void Screen::Draw() {
 				int cellX = block->rect.position.x + w;
 				int cellY = block->rect.position.y + h;
 
-				if (this->_squareCells) {
-					cellX *= 2;
-				}
-
 				// Skip if this PART of the block is outside screen's bounds.
 				if (cellX < 0
 					|| cellX >= _width
@@ -135,39 +130,34 @@ void Screen::Draw() {
 
 				int cellIdx = _width * cellY + cellX;
 				int dataIdx = block->rect.size.x * h + w;
-				if (this->_squareCells) {
-					_data[cellIdx] = block->dataArr[dataIdx];
-					_data[cellIdx + 1] = block->dataArr[dataIdx];
-				} else {
-					_data[cellIdx] = block->dataArr[dataIdx];
-				}
+				_data[cellIdx] = block->dataArr[dataIdx];
 			}
 		}
 	}
 
-	if(textElems.size() == 0){
-		throw "this shouldn't be empty.";
-	}
+	// if(textElems.size() == 0){
+	// 	throw "this shouldn't be empty.";
+	// }
 
-	// Text Render pseudo
-	for(TextRenderer* textEl : textElems){
-		Vector2<int> cursorPos = textEl->position;
-		if (this->_squareCells) {
-			cursorPos.x *= 2;
-		}
-		for(int i = 0; i < textEl->string.length(); i++){
-			_data[_width * cursorPos.y + cursorPos.x].Char.AsciiChar = textEl->string[i];
+	// // Text Render pseudo
+	// for(TextRenderer* textEl : textElems){
+	// 	Vector2<int> cursorPos = textEl->position;
+	// 	if (this->_squareCells) {
+	// 		cursorPos.x *= 2;
+	// 	}
+	// 	for(int i = 0; i < textEl->string.length(); i++){
+	// 		_data[_width * cursorPos.y + cursorPos.x].Char.AsciiChar = textEl->string[i];
 
-			cursorPos.x++;
-			if(cursorPos.x >= (textEl->position.x * 2) + textEl->charPerLine){
-				cursorPos.x = textEl->position.x * 2; //TODO: Mmodularize `*2`
-				cursorPos.y++;
-				if(textEl->lineLimit != 0 && cursorPos.y >= textEl->lineLimit){
-					continue;
-				}
-			}
-		}
-	}
+	// 		cursorPos.x++;
+	// 		if(cursorPos.x >= (textEl->position.x * 2) + textEl->charPerLine){
+	// 			cursorPos.x = textEl->position.x * 2; //TODO: Mmodularize `*2`
+	// 			cursorPos.y++;
+	// 			if(textEl->lineLimit != 0 && cursorPos.y >= textEl->lineLimit){
+	// 				continue;
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 	WriteConsoleOutputA(cOutBuffer, _data, { (short)_width , (short)_height }, { 0, 0 }, &bounds);
 }

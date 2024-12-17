@@ -17,11 +17,11 @@ private:
 	int _height;
 
 	CHAR_INFO* _data;
-
-	bool _squareCells;
 	
 	// TODO: Remove this
 	TileMap* tileMap;
+	
+	bool _squareCells; // TODO: Remove this once TileMap renderer is implemented
 
 	void ClearScreenData();
 	std::vector<Block*> _renderQueue; //RenderCache? We are less going through a queue and more storing a cache of blocks...
@@ -29,7 +29,7 @@ public:
 
 	Screen(int width, int height);
 
-	void SetSquareCells(bool isSquare);
+	void SetSquareCells(bool isSquare); // TODO: Remove this once TileMap renderer is implemented
 
 	void Draw();
 

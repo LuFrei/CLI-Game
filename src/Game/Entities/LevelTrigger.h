@@ -3,8 +3,8 @@
 #include <string>
 #include "../../CLGEngine/Entity.h"
 #include "../../CLGEngine/CORE/Vector2.h"
-#include "../../CLGEngine/Component/Collider.h"
-#include "../../CLGEngine/Component/BlockRenderer.h"
+#include "../../CLGEngine/Components/Collider.h"
+#include "../../CLGEngine/Components/Renderers/BlockRenderer.h"
 #include "../GameManager.h"
 
 class LevelTrigger

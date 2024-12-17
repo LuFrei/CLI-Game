@@ -1,7 +1,7 @@
 #pragma once
 #include "../../CLGEngine/Entity.h"
-#include "../../CLGEngine/Component/BlockRenderer.h"
-#include "../../CLGEngine/Component/Collider.h"
+#include "../../CLGEngine/Components/Renderers/BlockRenderer.h"
+#include "../../CLGEngine/Components/Collider.h"
 
 class Wall : public CLGEngine::Entity {
 private:
