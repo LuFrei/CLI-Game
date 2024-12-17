@@ -27,7 +27,9 @@ void TextRenderer::SetText(std::string text){
 
     // Full Text Wrap, cut off on limit
     for(int i = 0; i < capacity; i++){
-        block.dataArr[i].Char.AsciiChar = text[i];
+        CHAR_INFO c = {text[i], WHITE};
+        block.dataArr[i] = c;
+
     }
 }
 };
