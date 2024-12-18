@@ -20,6 +20,8 @@ private:
 	Screen* _screen;
 protected:
 	bool _squareCells;
+
+	void CreateNewBlock(Rect rect);
 public:
 	Block block;
 	CHAR_INFO material;
