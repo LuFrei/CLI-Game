@@ -54,7 +54,11 @@ void Screen::ClearScreenData() {
 
 		CHAR_INFO texture;
 		texture.Char.AsciiChar = asciiSymbol;
-		texture.Attributes = 0 | FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY;
+		texture.Attributes = 0 
+							 | FOREGROUND_RED 
+							 | FOREGROUND_BLUE 
+							 | FOREGROUND_GREEN 
+							 | FOREGROUND_INTENSITY;
 
 		_data[i] = texture;
 	}
@@ -63,47 +67,7 @@ void Screen::ClearScreenData() {
 
 
 void Screen::Draw() {
-
-	// // TODO: All of this logic should idealy be taken out and each component shoul take care of it;
-	// // 		Renderer should add the blocks to the screen. TileMapRenderer should interpret Chars to CHAR_INFO. TextRenderer as well. 
-	// std::vector<TextRenderer*> textElems = TextRenderer::GetTextPool();
- 
 	ClearScreenData();
-
-	// // TODO Move this to a tilemap renderer 
-	// // 		that sends results to renderQueue.
-	// // !! We aren't checking for overflows here!
-	for(int y = tileMap->offset.y; y < tileMap->size.y + tileMap->offset.y; y++){
-		for(int x = tileMap->offset.x; x < tileMap->size.x + tileMap->offset.x; x++){
-			int xCell = x;
-			if (this->_squareCells) {
-				xCell *= 2;
-			}
-			// check over flow
-			if(xCell >= _width || y >= _height){
-				continue;
-			}
-			wchar_t character = tileMap->GetTile({(float)x, (float)y});
-			int idx = _width * y + xCell;
-			if(character == '#'){
-				unsigned short whiteBG = BACKGROUND_GREEN | BACKGROUND_BLUE | BACKGROUND_RED | BACKGROUND_INTENSITY;
-				if (this->_squareCells) {
-					_data[idx] = {' ', whiteBG};
-					_data[idx +1] = {' ', whiteBG};
-				} else {
-					_data[idx] = {' ', whiteBG};
-				}
-			} else if (character == '*' || character == 'e'){
-				unsigned short yellowBG = BACKGROUND_GREEN | BACKGROUND_RED;
-				if (this->_squareCells) {
-					_data[idx] = {' ', yellowBG};
-					_data[idx +1] = {' ', yellowBG};
-				} else {
-					_data[idx] = {' ', yellowBG};
-				}
-			}
-		}
-	}
 
 	for (Block* block : _renderQueue) {
 		// is this block ever going going to show up in the screen?
@@ -135,31 +99,13 @@ void Screen::Draw() {
 		}
 	}
 
-	// if(textElems.size() == 0){
-	// 	throw "this shouldn't be empty.";
-	// }
-
-	// // Text Render pseudo
-	// for(TextRenderer* textEl : textElems){
-	// 	Vector2<int> cursorPos = textEl->position;
-	// 	if (this->_squareCells) {
-	// 		cursorPos.x *= 2;
-	// 	}
-	// 	for(int i = 0; i < textEl->string.length(); i++){
-	// 		_data[_width * cursorPos.y + cursorPos.x].Char.AsciiChar = textEl->string[i];
-
-	// 		cursorPos.x++;
-	// 		if(cursorPos.x >= (textEl->position.x * 2) + textEl->charPerLine){
-	// 			cursorPos.x = textEl->position.x * 2; //TODO: Mmodularize `*2`
-	// 			cursorPos.y++;
-	// 			if(textEl->lineLimit != 0 && cursorPos.y >= textEl->lineLimit){
-	// 				continue;
-	// 			}
-	// 		}
-	// 	}
-	// }
-
-	WriteConsoleOutputA(cOutBuffer, _data, { (short)_width , (short)_height }, { 0, 0 }, &bounds);
+	WriteConsoleOutputA(
+		cOutBuffer, 
+		_data, 
+		{ (short)_width , (short)_height },
+		{ 0, 0 },
+		&bounds
+	);
 }
 
 void Screen::SetSquareCells(bool isSquare) {
