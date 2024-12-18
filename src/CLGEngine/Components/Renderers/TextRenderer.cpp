@@ -16,7 +16,7 @@ void TextRenderer::SetText(std::string text){
     _text = text; 
     float capacity = entity->rect.size.x * entity->rect.size.y;
     float textSize = text.size();
-    // BUG: It only shrinks, not stretch.
+
     if(textSize < capacity){
         capacity = text.size();
         block.Resize({(int)capacity, 1}); // TODO: calculate y
