@@ -36,6 +36,6 @@ void Block::Resize(Vector2<int> size){
 
     delete dataArr; // This shouldn't be null, but check here if ther's an error.
     dataArr = new CHAR_INFO[size.x * size.y];
-    Fill(defaultMaterial);
+    Fill(defaultMaterial); // Do we want this here??
 }
 }

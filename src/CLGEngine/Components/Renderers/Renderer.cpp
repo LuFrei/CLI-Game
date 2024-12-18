@@ -11,13 +11,18 @@ namespace CLGEngine {
 
 Renderer::Renderer(CLGEngine::Entity* ent)
 : Component(ent) 
-, _screen(Game::GetGameInstance()->mainWindow.screen) 
-, block(Block(ent->rect)){
+, _screen(Game::GetGameInstance()->mainWindow.screen)
+, block (Block(ent->rect)) {
 	_screen->AddToRenderQueue(&block);
 }
 
 Renderer::~Renderer() {
 	_screen->RemoveFromRenderQueue(&block);
+}
+
+
+void Renderer:: CreateNewBlock(Rect rect){
+	block = Block(rect);
 }
 
 // Warn: if we - for whatever reason - need to change this at runtime,
