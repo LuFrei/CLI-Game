@@ -10,6 +10,8 @@ class TileMap {
 private:
     std::vector<CHAR_INFO> _map;
 public:
+    // TODO: It's time I start thinking about moving 
+    //      all of this into a game-specific script...
     CLGEngine::Vector2<int> size;
     CLGEngine::Vector2<int> endPos;
     CLGEngine::Vector2<int> startPos;
