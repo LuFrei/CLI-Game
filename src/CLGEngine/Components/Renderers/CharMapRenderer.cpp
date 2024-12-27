@@ -16,7 +16,10 @@ CharMapRenderer::CharMapRenderer(Entity* ent, TileMap& charMap, bool isSquare)
 // For THIS, we will set the block based on charMap size
 void CharMapRenderer::SetCharMap(TileMap& charMap){
 	_charMap = &charMap; // Do we even need this?
-	block.Resize((Vector2<int>)charMap.size);
+
+	// TODO: IU really really really hate this. We need a bmore elegant way to do Square cells maybe higher in the chain..
+	int width = _squareCells ? charMap.size.x * 2 : charMap.size.x;
+	block.Resize({width, (int)charMap.size.y});
 	// block.SetRect({(Vector2<float>)charMap.size, (Vector2<float>)charMap.offset});
 	int idx = 0;
     for(int y = charMap.offset.y; y < charMap.size.y + charMap.offset.y; y++){
@@ -25,7 +28,7 @@ void CharMapRenderer::SetCharMap(TileMap& charMap){
 			if (this->_squareCells) {
 				xCell *= 2;
 			}
-			wchar_t character = charMap.GetTile({(float)x, (float)y});
+			wchar_t character = charMap.GetTile({x, y});
 			if(character == '#'){
 				unsigned short whiteBG = BACKGROUND_GREEN 
 										 | BACKGROUND_BLUE 
@@ -45,9 +48,16 @@ void CharMapRenderer::SetCharMap(TileMap& charMap){
 				} else {
 					block.dataArr[idx] = {' ', yellowBG};
 				}
+			} else {
+				if (this->_squareCells) {
+					block.dataArr[idx] = {' ', 0};
+					block.dataArr[idx +1] = {' ', 0};
+				} else {
+					block.dataArr[idx] = {' ', 0};
+				}
 			}
 
-            idx++;
+            idx = _squareCells ? idx + 2 : idx + 1;
 		}
 	}
 }
