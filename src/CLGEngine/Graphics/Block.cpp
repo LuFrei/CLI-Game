@@ -38,4 +38,9 @@ void Block::Resize(Vector2<int> size){
     dataArr = new CHAR_INFO[size.x * size.y];
     Fill(defaultMaterial); // Do we want this here??
 }
+
+void Block::SetRect(Rect newRect){
+    Resize((Vector2<int>)newRect.size); // Why do we need int?
+    rect.position = newRect.position;
+}
 }
