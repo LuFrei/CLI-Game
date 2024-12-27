@@ -29,8 +29,12 @@ void GameManager::SetLevel(int idx){
 
     _currLevelIdx = idx;
     _level->SetMap(Maps::list[_currLevelIdx]);
-
+    
     _level->offset = lastEnd - _level->startPos; // maybe this can part of SetMap?
+    
+    // TODO: This should eventually be INSIDE the renderer once we clean up TileMap's purpose
+    _levelRenderer->SetCharMap(*_level);
+
 }
 
 TileMap* GameManager::GetLevelTileMap(){

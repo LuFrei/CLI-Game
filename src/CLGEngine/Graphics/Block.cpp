@@ -25,10 +25,15 @@ void Block::Fill(CHAR_INFO material){
 
 // NOTE: Make new empty one w/ new size. Fill with Defalu,mat, and have Each Renderer handle howt o refill arr.
 // Some RendererTypes may have their own Resize, some may not need it. If they do, thye should call this Resize FIRST
-void Block::Resize(Vector2<int> size){
+void Block::Resize(Vector2<int> size){ // If we are to make this multipurpose for CLRendering and GL Rendering, we should turn this into a float
     rect.size = (Vector2<float>)size;
 
     delete dataArr; // This shouldn't be null, but check here if ther's an error.
     dataArr = new CHAR_INFO[size.x * size.y];
+}
+
+void Block::SetRect(Rect newRect){
+    Resize((Vector2<int>)newRect.size);
+    rect.position = newRect.position;
 }
 }

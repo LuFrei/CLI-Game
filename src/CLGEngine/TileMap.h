@@ -6,6 +6,11 @@
 #include "CORE/Vector2.h"
 #include "MapData.h"
 
+
+// !TODO: REFINE THIS CLASS!!
+//          This class is a mess. We call it TileMap, 
+//          but it's built more like a specialized 2D Mapping classs.
+
 class TileMap {
 private:
     std::vector<CHAR_INFO> _map;

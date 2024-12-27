@@ -19,8 +19,8 @@ void CharMapRenderer::SetCharMap(TileMap& charMap){
 
 	// TODO: IU really really really hate this. We need a bmore elegant way to do Square cells maybe higher in the chain..
 	int width = _squareCells ? charMap.size.x * 2 : charMap.size.x;
-	block.Resize({width, (int)charMap.size.y});
-	// block.SetRect({(Vector2<float>)charMap.size, (Vector2<float>)charMap.offset});
+	float xPos =  _squareCells ? charMap.offset.x * 2 : charMap.offset.x;
+	block.SetRect({{xPos, (float)charMap.offset.y}, {(float)width, (float)charMap.size.y}});
 	int idx = 0;
     for(int y = charMap.offset.y; y < charMap.size.y + charMap.offset.y; y++){
 		for(int x = charMap.offset.x; x < charMap.size.x + charMap.offset.x; x++){
