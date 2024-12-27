@@ -67,7 +67,7 @@ bool jumping = 0;
 void Character::Update(){
 
     CLGEngine::Vector2<float> belowCell = {std::floor(_position.x), std::floor(_position.y + 0.5f)};
-    _grounded = _tileMap->GetTile(belowCell) == '#';
+    _grounded = _tileMap->GetTile((CLGEngine::Vector2<int>)belowCell) == '#';
     
     if(_grounded){ 
         _groundLevel = belowCell.y;
@@ -101,7 +101,7 @@ void Character::Update(){
     }
     _col->ClearHit();
 
-    char tileValue = _tileMap->GetTile({std::floor(_position.x), std::floor(_position.y)});
+    char tileValue = _tileMap->GetTile({(int)std::floor(_position.x), (int)std::floor(_position.y)});
 
     if(tileValue == '*' || tileValue == 'e'){
         gm->SetLevel(gm->GetCurrentLevelIdx()+1);
@@ -138,7 +138,7 @@ void Character::Move(float momentum) {
         return;
     }
     CLGEngine::Vector2<float> nextCell = {(float)nextX , std::floor(_position.y)};
-    if(_tileMap->GetTile(nextCell) != '#'){
+    if(_tileMap->GetTile((CLGEngine::Vector2<int>)nextCell) != '#'){
         _position += {momentum * _speed * CLGEngine::Time::deltaTime, 0};
         AdjustRectAsNeeded();
     }
@@ -153,7 +153,7 @@ void Character::Jump(){
     CLGEngine::Vector2<float> nextPos = _position + offSet;
 
     CLGEngine::Vector2<float> nextCell = {std::floor(nextPos.x), std::floor(nextPos.y)};
-    if((_tileMap->GetTile(nextCell) == '#' || _position.y <= _groundLevel - jumpHeight) 
+    if((_tileMap->GetTile((CLGEngine::Vector2<int>)nextCell) == '#' || _position.y <= _groundLevel - jumpHeight) 
         && vertMomentum == 1)
     {
         vertMomentum = -1;
