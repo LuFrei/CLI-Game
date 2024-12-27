@@ -1,1 +1,1 @@
-add_library(Renderers Renderer.cpp TextRenderer.cpp BlockRenderer.cpp)
+add_library(Renderers Renderer.cpp TextRenderer.cpp BlockRenderer.cpp CharMapRenderer.cpp)

@@ -23,5 +23,6 @@ public:
     /// @param material CHAR_INFO to fill the Block with.
     void Fill(CHAR_INFO material);
     void Resize(Vector2<int> size);
+    void SetRect(Rect newRect);
 };
 }

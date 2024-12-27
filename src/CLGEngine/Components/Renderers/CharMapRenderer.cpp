@@ -7,21 +7,25 @@ CharMapRenderer::CharMapRenderer(Entity* ent, TileMap& charMap)
 }
 
 CharMapRenderer::CharMapRenderer(Entity* ent, TileMap& charMap, bool isSquare)
-: Renderer(ent) {
+: Renderer(ent){
     SetSquareCells(isSquare);
-    int idx = 0;
+	SetCharMap(charMap);
+}
+
+// ! Block is set to 0,0 0,0 cuz of entity!
+// For THIS, we will set the block based on charMap size
+void CharMapRenderer::SetCharMap(TileMap& charMap){
+	_charMap = &charMap; // Do we even need this?
+	block.Resize((Vector2<int>)charMap.size);
+	// block.SetRect({(Vector2<float>)charMap.size, (Vector2<float>)charMap.offset});
+	int idx = 0;
     for(int y = charMap.offset.y; y < charMap.size.y + charMap.offset.y; y++){
 		for(int x = charMap.offset.x; x < charMap.size.x + charMap.offset.x; x++){
 			int xCell = x;
 			if (this->_squareCells) {
 				xCell *= 2;
 			}
-			// check over flow
-			// if(xCell >= _width || y >= _height){
-			// 	continue;
-			// }
 			wchar_t character = charMap.GetTile({(float)x, (float)y});
-			// int idx = _width * y + xCell;
 			if(character == '#'){
 				unsigned short whiteBG = BACKGROUND_GREEN 
 										 | BACKGROUND_BLUE 
