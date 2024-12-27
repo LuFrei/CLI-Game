@@ -7,21 +7,28 @@ CharMapRenderer::CharMapRenderer(Entity* ent, TileMap& charMap)
 }
 
 CharMapRenderer::CharMapRenderer(Entity* ent, TileMap& charMap, bool isSquare)
-: Renderer(ent) {
+: Renderer(ent){
     SetSquareCells(isSquare);
-    int idx = 0;
+	SetCharMap(charMap);
+}
+
+// ! Block is set to 0,0 0,0 cuz of entity!
+// For THIS, we will set the block based on charMap size
+void CharMapRenderer::SetCharMap(TileMap& charMap){
+	_charMap = &charMap; // Do we even need this?
+
+	// TODO: IU really really really hate this. We need a bmore elegant way to do Square cells maybe higher in the chain..
+	int width = _squareCells ? charMap.size.x * 2 : charMap.size.x;
+	float xPos =  _squareCells ? charMap.offset.x * 2 : charMap.offset.x;
+	block.SetRect({{xPos, (float)charMap.offset.y}, {(float)width, (float)charMap.size.y}});
+	int idx = 0;
     for(int y = charMap.offset.y; y < charMap.size.y + charMap.offset.y; y++){
 		for(int x = charMap.offset.x; x < charMap.size.x + charMap.offset.x; x++){
 			int xCell = x;
 			if (this->_squareCells) {
 				xCell *= 2;
 			}
-			// check over flow
-			// if(xCell >= _width || y >= _height){
-			// 	continue;
-			// }
-			wchar_t character = charMap.GetTile({(float)x, (float)y});
-			// int idx = _width * y + xCell;
+			wchar_t character = charMap.GetTile({x, y});
 			if(character == '#'){
 				unsigned short whiteBG = BACKGROUND_GREEN 
 										 | BACKGROUND_BLUE 
@@ -41,9 +48,16 @@ CharMapRenderer::CharMapRenderer(Entity* ent, TileMap& charMap, bool isSquare)
 				} else {
 					block.dataArr[idx] = {' ', yellowBG};
 				}
+			} else {
+				if (this->_squareCells) {
+					block.dataArr[idx] = {' ', 0};
+					block.dataArr[idx +1] = {' ', 0};
+				} else {
+					block.dataArr[idx] = {' ', 0};
+				}
 			}
 
-            idx++;
+            idx = _squareCells ? idx + 2 : idx + 1;
 		}
 	}
 }

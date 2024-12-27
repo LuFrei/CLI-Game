@@ -2,7 +2,8 @@
 
 GameManager* GameManager::_instance = nullptr;
 GameManager::GameManager()
-: _levels(new Maps())
+: CLGEngine::Entity(0,0,0,0)
+, _levels(new Maps())
 , _currLevelIdx(0){
     try{
         if(_instance != nullptr){
@@ -13,11 +14,13 @@ GameManager::GameManager()
 
     _instance = this;
     _level = new TileMap(Maps::list[_currLevelIdx]);
+    _levelRenderer = new CLGEngine::CharMapRenderer(this, *_level, true);
 }
 
 GameManager::~GameManager(){
     delete _level;
     delete _levels;
+    delete _levelRenderer;
     _instance = nullptr;
 }
 
@@ -26,8 +29,12 @@ void GameManager::SetLevel(int idx){
 
     _currLevelIdx = idx;
     _level->SetMap(Maps::list[_currLevelIdx]);
-
+    
     _level->offset = lastEnd - _level->startPos; // maybe this can part of SetMap?
+    
+    // TODO: This should eventually be INSIDE the renderer once we clean up TileMap's purpose
+    _levelRenderer->SetCharMap(*_level);
+
 }
 
 TileMap* GameManager::GetLevelTileMap(){

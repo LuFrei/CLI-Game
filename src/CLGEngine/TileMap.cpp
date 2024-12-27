@@ -27,9 +27,9 @@ TileMap::TileMap(MapData data)
     }
 }
 
-wchar_t TileMap::GetTile(CLGEngine::Vector2<float> coords){
-    int x = std::floor(coords.x - offset.x);
-    int y = std::floor(coords.y - offset.y);
+wchar_t TileMap::GetTile(CLGEngine::Vector2<int> coords){
+    int x = coords.x - offset.x;
+    int y = coords.y - offset.y;
     if (x < 0 || x >= size.x || y < 0 || y >= size.y){
         return ' ';
     }
