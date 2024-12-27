@@ -2,7 +2,8 @@
 
 GameManager* GameManager::_instance = nullptr;
 GameManager::GameManager()
-: _levels(new Maps())
+: CLGEngine::Entity(0,0,0,0)
+, _levels(new Maps())
 , _currLevelIdx(0){
     try{
         if(_instance != nullptr){
@@ -13,11 +14,13 @@ GameManager::GameManager()
 
     _instance = this;
     _level = new TileMap(Maps::list[_currLevelIdx]);
+    _levelRenderer = new CLGEngine::CharMapRenderer(this, *_level, true);
 }
 
 GameManager::~GameManager(){
     delete _level;
     delete _levels;
+    delete _levelRenderer;
     _instance = nullptr;
 }
 
