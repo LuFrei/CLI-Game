@@ -2,21 +2,15 @@
 #include "ASCII.h"
 
 namespace CLGEngine{
-CHAR_INFO defaultMaterial = {
-	ASCII_SHADE1,
-	BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY | FOREGROUND_BLUE | FOREGROUND_RED
-};
 
 Block::Block(Vector2<int> size) {
     rect = {{0,0}, (Vector2<float>)size}; //TODO: Some pooint find out how to add custom explicit/ implicit converstions.
     dataArr = new CHAR_INFO[size.x * size.y];
-    Fill(defaultMaterial);
 }
 
 Block::Block(Rect rect) {
     this->rect = rect;
     dataArr = new CHAR_INFO[rect.size.x * rect.size.y];
-    Fill(defaultMaterial);
 }
 
 Block::~Block(){
@@ -36,11 +30,5 @@ void Block::Resize(Vector2<int> size){
 
     delete dataArr; // This shouldn't be null, but check here if ther's an error.
     dataArr = new CHAR_INFO[size.x * size.y];
-    Fill(defaultMaterial); // Do we want this here??
-}
-
-void Block::SetRect(Rect newRect){
-    Resize((Vector2<int>)newRect.size); // Why do we need int?
-    rect.position = newRect.position;
 }
 }
