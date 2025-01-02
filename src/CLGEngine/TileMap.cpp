@@ -58,3 +58,7 @@ void TileMap::SetMap(MapData data){
         }
     }
 }
+
+void TileMap::SetDefinitions(std::map<char, CHAR_INFO> newDefs){
+    definitions = newDefs;
+}
