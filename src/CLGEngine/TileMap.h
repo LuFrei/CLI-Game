@@ -30,5 +30,5 @@ public:
     TileMap(MapData data);
     wchar_t GetTile(CLGEngine::Vector2<int> coords);
     void SetMap(MapData map);
-    void SetDefinitions(std::map<char, CHAR_INFO> newDefs);
+    void SetDefinitions(std::map<char, CHAR_INFO> newDefs); // definitions is public, this is a bit redundant.
 };
