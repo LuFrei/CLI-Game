@@ -15,8 +15,6 @@ CharMapRenderer::CharMapRenderer(Entity* ent, TileMap& charMap, bool isSquare)
 // ! Block is set to 0,0 0,0 cuz of entity!
 // For THIS, we will set the block based on charMap size
 void CharMapRenderer::SetCharMap(TileMap& charMap){
-	_charMap = &charMap; // Do we even need this?
-
 	// TODO: IU really really really hate this. We need a bmore elegant way to do Square cells maybe higher in the chain..
 	int width = _squareCells ? charMap.size.x * 2 : charMap.size.x;
 	float xPos =  _squareCells ? charMap.offset.x * 2 : charMap.offset.x;
@@ -29,37 +27,14 @@ void CharMapRenderer::SetCharMap(TileMap& charMap){
 				xCell *= 2;
 			}
 			wchar_t character = charMap.GetTile({x, y});
-			if(character == '#'){
-				unsigned short whiteBG = BACKGROUND_GREEN 
-										 | BACKGROUND_BLUE 
-										 | BACKGROUND_RED 
-										 | BACKGROUND_INTENSITY;
-				if (this->_squareCells) {
-					block.dataArr[idx] = {' ', whiteBG};
-					block.dataArr[idx +1] = {' ', whiteBG};
-				} else {
-					block.dataArr[idx] = {' ', whiteBG};
-				}
-			} else if (character == '*' || character == 'e'){
-				unsigned short yellowBG = BACKGROUND_GREEN | BACKGROUND_RED;
-				if (this->_squareCells) {
-					block.dataArr[idx] = {' ', yellowBG};
-					block.dataArr[idx +1] = {' ', yellowBG};
-				} else {
-					block.dataArr[idx] = {' ', yellowBG};
-				}
+			if (this->_squareCells) {
+				block.dataArr[idx] = charMap.definitions[character];
+				block.dataArr[idx +1] = charMap.definitions[character];
 			} else {
-				if (this->_squareCells) {
-					block.dataArr[idx] = {' ', 0};
-					block.dataArr[idx +1] = {' ', 0};
-				} else {
-					block.dataArr[idx] = {' ', 0};
-				}
+				block.dataArr[idx] = charMap.definitions[character];
 			}
-
             idx = _squareCells ? idx + 2 : idx + 1;
 		}
 	}
 }
-
 }

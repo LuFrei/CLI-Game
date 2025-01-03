@@ -14,6 +14,15 @@ GameManager::GameManager()
 
     _instance = this;
     _level = new TileMap(Maps::list[_currLevelIdx]);
+    _level->SetDefinitions({
+        {'#', {' ', BACKGROUND_GREEN 
+                    | BACKGROUND_BLUE 
+                    | BACKGROUND_RED 
+                    | BACKGROUND_INTENSITY}},
+        {'*', {' ', BACKGROUND_GREEN | BACKGROUND_RED}},
+        {'e', {' ', BACKGROUND_GREEN | BACKGROUND_RED}},
+        {' ', {' ', 0}}
+    });
     _levelRenderer = new CLGEngine::CharMapRenderer(this, *_level, true);
 }
 
@@ -29,7 +38,7 @@ void GameManager::SetLevel(int idx){
 
     _currLevelIdx = idx;
     _level->SetMap(Maps::list[_currLevelIdx]);
-    
+
     _level->offset = lastEnd - _level->startPos; // maybe this can part of SetMap?
     
     // TODO: This should eventually be INSIDE the renderer once we clean up TileMap's purpose
