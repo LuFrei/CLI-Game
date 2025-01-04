@@ -5,6 +5,7 @@
 #include "Game/Entities/Character.h"
 #include "Game/Entities/ScreenText.h"
 #include "Game/Entities/Wall.h"
+#include "Game/Entities/Door.h"
 #include "Game/Maps.h"
 #include "Game/Entities/LevelTrigger.h"
 #include "Game/GameManager.h"
@@ -26,13 +27,48 @@ int main()
     ScreenText* mapNameText = new ScreenText({20, 0});
     instructionalText->SetText("[SpaceBar]  [<][>]");
 
-    
-    
+    Door* door = new Door(
+        {
+            {29, 19}, // pos
+            {1, 4}  // size
+        },
+        DoorCode::Blue
+    );
+    Door* door1 = new Door(
+        {
+            {31, 19}, // pos
+            {1, 4}  // size
+        },
+        DoorCode::Blue,
+        true
+    );
+    Door* door2 = new Door(
+        {
+            {33, 19}, // pos
+            {1, 4}  // size
+        },
+        DoorCode::Red,
+        false
+    );
+    Door* door3 = new Door(
+        {
+            {35, 19}, // pos
+            {1, 4}  // size
+        },
+        DoorCode::Red,
+        true
+    );
+
+
     game.mainWindow.screen->SetTileMap(gm->GetLevelTileMap()); // TODO: TileMap Renderer
 
     game.Play();
     
     // TODO: Make an auto Entitiy cleaner.
+    delete door;
+    delete door1;
+    delete door2;
+    delete door3;
     delete player;
     delete instructionalText;
     delete mapNameText;
