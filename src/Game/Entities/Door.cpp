@@ -28,9 +28,10 @@ Door::Door(CLGEngine::Rect rect, DoorCode code, bool isOpen)
 , _code(code)
 , _isOpen(isOpen){
     // !!! If failing check if DoorCode reduces to an int here or above!
+    short intensity = isOpen ? OPEN_INTENSITY : CLOSED_INTENSITY;
     CHAR_INFO doorGfxData = {
         isOpen ? OPEN_TEXTURE : CLOSED_TEXTURE,
-        CODE_COLORS[code] | isOpen ? OPEN_INTENSITY : CLOSED_INTENSITY 
+        CODE_COLORS[code] | intensity
     };
 
     // TODO(1): Implement deactivating Collider 
