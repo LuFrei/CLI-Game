@@ -15,6 +15,12 @@ struct Bounds
         bottom;
 };
 
+// TODO: Make collision checks engine-level intiation.
+//      Look into making a playloop that checks Collisions, similar
+//      to how we are doing Draw().
+
+/// @brief Adds a collision box to entity.
+// ->!! Right now: Entity must initiate collisison check.
 class Collider : 
     public Component,
     public IObserver

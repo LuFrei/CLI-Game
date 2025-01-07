@@ -65,7 +65,11 @@ void AdjustMomentum(int direction){
 
 bool jumping = 0;
 void Character::Update(){
-
+#pragma region Custom TileMap Collision
+// TODO: Look at what is going on here.
+//      Quick Look - It's only checking TileMap
+//      Make sure Collision is working
+//      Ideally IN SIDE OF THE COLLISION!!
     CLGEngine::Vector2<float> belowCell = {std::floor(_position.x), std::floor(_position.y + 0.5f)};
     _grounded = _tileMap->GetTile((CLGEngine::Vector2<int>)belowCell) == '#';
     
@@ -80,7 +84,13 @@ void Character::Update(){
         }
     }
     AdjustRectAsNeeded();
+#pragma endregion
 
+#pragma region Entity Collision - Component
+
+
+
+#pragma endregion
 
     int direction = 0; //1 = right; -1 = left
     if (CLGEngine::Input::Input::GetKeyPressed(CLGEngine::Input::KeyCode::Left) || CLGEngine::Input::Input::GetKeyPressed(CLGEngine::Input::KeyCode::Comma)) {

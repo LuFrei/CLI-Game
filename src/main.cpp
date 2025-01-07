@@ -29,31 +29,31 @@ int main()
 
     Door* door = new Door(
         {
-            {29, 19}, // pos
-            {1, 4}  // size
+            {29, 21}, // pos
+            {1, 2}  // size
         },
         DoorCode::Blue
     );
     Door* door1 = new Door(
         {
-            {31, 19}, // pos
-            {1, 4}  // size
+            {31, 21}, // pos
+            {1, 2}  // size
         },
         DoorCode::Blue,
         true
     );
     Door* door2 = new Door(
         {
-            {33, 19}, // pos
-            {1, 4}  // size
+            {33, 21}, // pos
+            {1, 2}  // size
         },
         DoorCode::Red,
         false
     );
     Door* door3 = new Door(
         {
-            {35, 19}, // pos
-            {1, 4}  // size
+            {35, 21}, // pos
+            {1, 2}  // size
         },
         DoorCode::Red,
         true
