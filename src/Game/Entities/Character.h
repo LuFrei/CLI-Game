@@ -14,10 +14,10 @@ private:
 	bool _grounded;
 	float _groundLevel;
 	TileMap* _tileMap;
-	CLGEngine::Vector2<float> _position;
+	CLGEngine::Vector2<float> _position; // TODO(?): use Entity's rect
 	CLGEngine::Collider* _col;
 	CLGEngine::BlockRenderer* _rend;
-	void AdjustRectAsNeeded();
+	void SnapRectToGrid();
 public:
 	GameManager* gm;
 	Character(CLGEngine::Vector2<float> startPosition);
