@@ -40,6 +40,7 @@ public:
     void OnNotify();
     
     // Main Logic
+    Collider* CheckCollisionPoint(Vector2<float> point);
     bool CheckCollision();
     bool CastCollider(Rect rect, Collider** hit);
     Collider* GetHit(){return _hit;};
