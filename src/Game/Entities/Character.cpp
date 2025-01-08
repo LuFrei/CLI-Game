@@ -66,8 +66,9 @@ void AdjustMomentum(int direction){
 bool jumping = 0;
 void Character::Update(){
 #pragma region Jump/Gravity Logic
-    CLGEngine::Vector2<float> belowCell = {std::floor(_position.x), std::floor(_position.y + 0.5f)};
-    _grounded = _tileMap->GetTile((CLGEngine::Vector2<int>)belowCell) == '#';
+    CLGEngine::Vector2<float> belowCell = {_position.x, _position.y + 0.5f};
+    CLGEngine::Collider* hit = _col->CheckCollisionPoint(belowCell);
+    _grounded = _tileMap->GetTile((CLGEngine::Vector2<int>)belowCell) == '#' || hit != nullptr;
     
     if(_grounded){ 
         _groundLevel = belowCell.y;
@@ -80,15 +81,6 @@ void Character::Update(){
         }
     }
     SnapRectToGrid();
-#pragma endregion
-
-#pragma region Entity Collision - Component
-
-// if(CLGEngine::Collider* hit = _col->CheckCollisionPoint(_position)){
-//     // Find last direction of travel
-//     // Set player position to the center of the cell opposite of travel direction.  
-// }
-
 #pragma endregion
 
     int direction = 0; //1 = right; -1 = left
@@ -135,6 +127,7 @@ void Character::Move(float momentum) {
 
     float nextXPosition = _position.x + momentum; 
 
+    // TODO: Collisison should be universal. maybe on a Physics Engine update.
     CLGEngine::Vector2<float> nextCell = {nextXPosition, _position.y};
     CLGEngine::Collider* hit = _col->CheckCollisionPoint(nextCell);
     if(_tileMap->GetTile((CLGEngine::Vector2<int>)nextCell) != '#' && hit == nullptr){
@@ -151,8 +144,12 @@ void Character::Jump(){
     CLGEngine::Vector2<float> offSet = {0, -vertMomentum * jumpSpeed * CLGEngine::Time::deltaTime};
     CLGEngine::Vector2<float> nextPos = _position + offSet;
 
-    CLGEngine::Vector2<float> nextCell = {std::floor(nextPos.x), std::floor(nextPos.y)};
-    if((_tileMap->GetTile((CLGEngine::Vector2<int>)nextCell) == '#' || _position.y <= _groundLevel - jumpHeight) 
+    CLGEngine::Vector2<float> nextCell = {nextPos.x, nextPos.y};
+    CLGEngine::Collider* hit = _col->CheckCollisionPoint(nextCell);
+    if((_tileMap->GetTile((CLGEngine::Vector2<int>)nextCell) == '#'
+        || hit != nullptr
+        || _position.y <= _groundLevel - jumpHeight
+        ) 
         && vertMomentum == 1)
     {
         vertMomentum = -1;
