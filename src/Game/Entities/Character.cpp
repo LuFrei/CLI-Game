@@ -65,9 +65,10 @@ void AdjustMomentum(int direction){
 
 bool jumping = 0;
 void Character::Update(){
-
-    CLGEngine::Vector2<float> belowCell = {std::floor(_position.x), std::floor(_position.y + 0.5f)};
-    _grounded = _tileMap->GetTile((CLGEngine::Vector2<int>)belowCell) == '#';
+#pragma region Jump/Gravity Logic
+    CLGEngine::Vector2<float> belowCell = {_position.x, _position.y + 0.5f};
+    CLGEngine::Collider* hit = _col->CheckCollisionPoint(belowCell);
+    _grounded = _tileMap->GetTile((CLGEngine::Vector2<int>)belowCell) == '#' || hit != nullptr;
     
     if(_grounded){ 
         _groundLevel = belowCell.y;
@@ -79,8 +80,8 @@ void Character::Update(){
             _position += {0, jumpSpeed * CLGEngine::Time::deltaTime};
         }
     }
-    AdjustRectAsNeeded();
-
+    SnapRectToGrid();
+#pragma endregion
 
     int direction = 0; //1 = right; -1 = left
     if (CLGEngine::Input::Input::GetKeyPressed(CLGEngine::Input::KeyCode::Left) || CLGEngine::Input::Input::GetKeyPressed(CLGEngine::Input::KeyCode::Comma)) {
@@ -124,23 +125,14 @@ void Character::Update(){
 
 void Character::Move(float momentum) {
 
-    int nextX = momentum > 0 
-          ? std::floor(_position.x) + 1
-          : std::floor(_position.x) - 1;
+    float nextXPosition = _position.x + momentum; 
 
-    // TODO: MAke a Rect for TileMap to identify bounds  it emcompases in the world
-    if(_position.x < _tileMap->offset.x
-    || _position.x > _tileMap->size.x + _tileMap->offset.x
-    || _position.y < _tileMap->offset.y
-    || _position.y > _tileMap->size.y + _tileMap->offset.y) {
+    // TODO: Collisison should be universal. maybe on a Physics Engine update.
+    CLGEngine::Vector2<float> nextCell = {nextXPosition, _position.y};
+    CLGEngine::Collider* hit = _col->CheckCollisionPoint(nextCell);
+    if(_tileMap->GetTile((CLGEngine::Vector2<int>)nextCell) != '#' && hit == nullptr){
         _position += {momentum * _speed * CLGEngine::Time::deltaTime, 0};
-        AdjustRectAsNeeded();
-        return;
-    }
-    CLGEngine::Vector2<float> nextCell = {(float)nextX , std::floor(_position.y)};
-    if(_tileMap->GetTile((CLGEngine::Vector2<int>)nextCell) != '#'){
-        _position += {momentum * _speed * CLGEngine::Time::deltaTime, 0};
-        AdjustRectAsNeeded();
+        SnapRectToGrid();
     }
 }
 
@@ -152,8 +144,12 @@ void Character::Jump(){
     CLGEngine::Vector2<float> offSet = {0, -vertMomentum * jumpSpeed * CLGEngine::Time::deltaTime};
     CLGEngine::Vector2<float> nextPos = _position + offSet;
 
-    CLGEngine::Vector2<float> nextCell = {std::floor(nextPos.x), std::floor(nextPos.y)};
-    if((_tileMap->GetTile((CLGEngine::Vector2<int>)nextCell) == '#' || _position.y <= _groundLevel - jumpHeight) 
+    CLGEngine::Vector2<float> nextCell = {nextPos.x, nextPos.y};
+    CLGEngine::Collider* hit = _col->CheckCollisionPoint(nextCell);
+    if((_tileMap->GetTile((CLGEngine::Vector2<int>)nextCell) == '#'
+        || hit != nullptr
+        || _position.y <= _groundLevel - jumpHeight
+        ) 
         && vertMomentum == 1)
     {
         vertMomentum = -1;
@@ -164,7 +160,7 @@ void Character::Jump(){
     SetPosition({std::floor(_position.x), std::floor(_position.y)});
 }
 
-void Character::AdjustRectAsNeeded() {
+void Character::SnapRectToGrid() {
     CLGEngine::Vector2<float> posFloored = {std::floor(_position.x), std::floor(_position.y)};
     if(posFloored == rect.position){
         return;

@@ -83,6 +83,27 @@ bool Collider::CheckCollision(){
     return false;
 }
 
+// TODO: split this into PointCollider when polishing physics.
+
+Collider* Collider::CheckCollisionPoint(Vector2<float> point){
+    for(Collider* col : activeColliders){
+        if(point.x >= col->bounds.right
+          || point.x <= col->bounds.left 
+          || point.y <= col->bounds.top
+          || point.y >= col->bounds.bottom
+          || col == this)
+        {
+            continue;
+        }
+        _hit = col;
+        col->_hit = this;
+        // TODO: If this works better than bool above,
+        //       Copy this in CheckCollision() for consistency.
+        return _hit;
+    }
+    return nullptr;
+}
+
 // What if Collider is like RigidBody. And evberything has a collider. but you only check for interaction with a collider on.
 
 bool Collider::CastCollider(Rect rect, Collider** hit){
