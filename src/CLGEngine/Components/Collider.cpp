@@ -47,7 +47,8 @@ Collider::Collider(CLGEngine::Entity* ent):
     bounds({
         GetBoundsFromRect(ent->rect)
     }),
-    isSolid(true)
+    isSolid(true),
+    _isActive(true)
 {
     activeColliders.push_back(this);
 }
@@ -64,6 +65,20 @@ void Collider::UpdateBounds() {
         entity->rect.position.x + entity->rect.size.x,
         entity->rect.position.y + entity->rect.size.y
     };
+}
+
+// NOTE: This will make the activeCollider array order unpredictable
+void Collider::SetActive(bool isActive){
+    if(_isActive == isActive){
+        return;
+    }
+    _isActive = isActive;
+    if(!isActive){
+        int idx = FindColliderIdx(this);
+        activeColliders.erase(activeColliders.begin() + idx);
+    } else {
+        activeColliders.push_back(this);
+    }
 }
 
 bool Collider::CheckCollision(){
