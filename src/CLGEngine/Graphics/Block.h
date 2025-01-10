@@ -8,12 +8,10 @@ namespace CLGEngine{
 /// @brief Represents the 2D data that will be displayed on screen
 class Block{
 private:
-    // TODO: See if I can make this more efficient by using a 
-    //       pointer to an array we can dynamically size on construction.
+    int _z;
 public:
     Rect rect;
-    int z;
-    CHAR_INFO* dataArr; //ask GPT if i can do what i was doingbefore with std::arrays
+    CHAR_INFO* dataArr;
 
     Block(Vector2<int> size);
     Block(Rect rect);
@@ -24,5 +22,6 @@ public:
     void Fill(CHAR_INFO material);
     void Resize(Vector2<int> size);
     void SetRect(Rect newRect);
+    void SetLayer(int layer);
 };
 }
