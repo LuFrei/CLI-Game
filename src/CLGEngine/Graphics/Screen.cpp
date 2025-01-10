@@ -12,7 +12,6 @@ HANDLE cOutBuffer;
 Screen::Screen(int width, int height) {
 	this->_width = width;
 	this->_height = height;
-	this->_squareCells = false;
 
 	_data = new CHAR_INFO[width * height];
 	bounds = { 0, 0, (short)width, (short)height };
@@ -106,9 +105,5 @@ void Screen::Draw() {
 		{ 0, 0 },
 		&bounds
 	);
-}
-
-void Screen::SetSquareCells(bool isSquare) {
-	this->_squareCells = isSquare;
 }
 }

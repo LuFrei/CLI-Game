@@ -18,7 +18,6 @@ Renderer::Renderer(CLGEngine::Entity* ent)
 : Component(ent) 
 , _screen(Game::GetGameInstance()->mainWindow.screen)
 , block (Block(ent->rect)) {
-	// block.Fill(defaultMaterial);
 	_screen->AddToRenderQueue(&block);
 }
 

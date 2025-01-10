@@ -2,6 +2,7 @@
 
 #include <Windows.h>
 #include <vector>
+#include <map>
 #include "Block.h"
 #include "../TileMap.h"
 #include "../CORE/Rect.h"
@@ -20,8 +21,6 @@ private:
 	
 	// TODO: Remove this
 	TileMap* tileMap;
-	
-	bool _squareCells; // TODO: Remove this once TileMap renderer is implemented
 
 	void ClearScreenData();
 	std::vector<Block*> _renderQueue; //RenderCache? We are less going through a queue and more storing a cache of blocks...
