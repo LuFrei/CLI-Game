@@ -8,9 +8,9 @@ namespace CLGEngine{
 /// @brief Represents the 2D data that will be displayed on screen
 class Block{
 private:
-    int _z;
 public:
     Rect rect;
+    int z;
     CHAR_INFO* dataArr;
 
     Block(Vector2<int> size);

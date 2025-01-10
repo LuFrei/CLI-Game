@@ -19,7 +19,7 @@ private:
 	CHAR_INFO* _data;
 
 	void ClearScreenData();
-	std::vector<Block*> _renderQueue; //RenderCache? We are less going through a queue and more storing a cache of blocks...
+	std::map<int, std::vector<Block*>> _renderQueue; //RenderCache? We are less going through a queue and more storing a cache of blocks...
 public:
 
 	Screen(int width, int height);

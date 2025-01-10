@@ -32,14 +32,17 @@ Screen::Screen(int width, int height) {
 }
 
 void Screen::AddToRenderQueue(Block* block){
-	_renderQueue.push_back(block);
+	_renderQueue[block->z].push_back(block);
+	
+	// _renderQueue.insert({block->z, block});
 }
 
 void Screen::RemoveFromRenderQueue(Block* block){
-	_renderQueue.erase(
+	std::vector<Block*> blockList = _renderQueue[block->z];
+	blockList.erase(
 		std::find(
-			_renderQueue.begin(),
-			_renderQueue.end(),
+			blockList.begin(),
+			blockList.end(),
 			block
 	));
 }
@@ -67,33 +70,35 @@ void Screen::ClearScreenData() {
 
 void Screen::Draw() {
 	ClearScreenData();
+	for(std::pair<int, std::vector<Block*>> queue : _renderQueue){
+		std::vector<Block*> blocks = queue.second;
+		for (Block* block : blocks) {
+			// is this block ever going going to show up in the screen?
+			if (block->rect.position.x >= _width
+				|| block->rect.position.y >= _height
+				|| block->rect.position.x + block->rect.size.x < 0
+				|| block->rect.position.y + block->rect.size.y < 0)
+			{ continue; }
 
-	for (Block* block : _renderQueue) {
-		// is this block ever going going to show up in the screen?
-		if (block->rect.position.x >= _width
-			|| block->rect.position.y >= _height
-			|| block->rect.position.x + block->rect.size.x < 0
-			|| block->rect.position.y + block->rect.size.y < 0)
-		{ continue; }
+			for (int h = 0; h < block->rect.size.y; h++) {
+				for (int w = 0; w < block->rect.size.x; w++) {
+					int cellX = block->rect.position.x + w;
+					int cellY = block->rect.position.y + h;
 
-		for (int h = 0; h < block->rect.size.y; h++) {
-			for (int w = 0; w < block->rect.size.x; w++) {
-				int cellX = block->rect.position.x + w;
-				int cellY = block->rect.position.y + h;
+					// Skip if this PART of the block is outside screen's bounds.
+					if (cellX < 0
+						|| cellX >= _width
+						|| cellY < 0
+						|| cellY >= _height)
+					{
+						continue;
+					}
 
-				// Skip if this PART of the block is outside screen's bounds.
-				if (cellX < 0
-					|| cellX >= _width
-					|| cellY < 0
-					|| cellY >= _height)
-				{
-					continue;
+
+					int cellIdx = _width * cellY + cellX;
+					int dataIdx = block->rect.size.x * h + w;
+					_data[cellIdx] = block->dataArr[dataIdx];
 				}
-
-
-				int cellIdx = _width * cellY + cellX;
-				int dataIdx = block->rect.size.x * h + w;
-				_data[cellIdx] = block->dataArr[dataIdx];
 			}
 		}
 	}

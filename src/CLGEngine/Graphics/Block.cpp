@@ -38,7 +38,6 @@ void Block::SetRect(Rect newRect){
 }
 
 void Block::SetLayer(int layer){
-    _z = layer;
-    
+    z = layer;
 }
 }
