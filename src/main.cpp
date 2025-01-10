@@ -59,9 +59,6 @@ int main()
         true
     );
 
-
-    game.mainWindow.screen->SetTileMap(gm->GetLevelTileMap()); // TODO: TileMap Renderer
-
     game.Play();
     
     // TODO: Make an auto Entitiy cleaner.
