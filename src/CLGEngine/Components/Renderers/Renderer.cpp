@@ -25,6 +25,15 @@ Renderer::~Renderer() {
 	_screen->RemoveFromRenderQueue(&block);
 }
 
+void Renderer::z(int z){
+	_screen->RemoveFromRenderQueue(&block);
+	// The way we do it now we use the block.z 
+	//	to identify what layer to add in in the queue.
+	//	We need to fix this up later.
+	block.z(z);
+	_z = z;
+	_screen->AddToRenderQueue(&block);
+}
 
 void Renderer:: CreateNewBlock(Rect rect){
 	block = Block(rect);
