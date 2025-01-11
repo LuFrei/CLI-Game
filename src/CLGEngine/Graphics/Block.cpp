@@ -36,8 +36,4 @@ void Block::SetRect(Rect newRect){
     Resize((Vector2<int>)newRect.size);
     rect.position = newRect.position;
 }
-
-void Block::SetLayer(int layer){
-    z = layer;
-}
 }
