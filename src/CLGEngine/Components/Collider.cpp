@@ -2,34 +2,12 @@
 
 #include <cmath>
 #include <vector>
+#include <map>
 
 namespace CLGEngine{
 
-std::vector<Collider*> activeColliders; // TODO: Replace with Quad Tree.
+std::map<int, Collider*> activeColliders; // TODO: Replace with Quad Tree.
 int counter = 0;
-
-int FindColliderIdx(Collider* col){
-    int min = 0;
-    int max = activeColliders.size();
-    int diff = max-min;
-
-    while(diff > 2) {
-        int idx = min+(diff/2);
-        if(activeColliders[idx] == col){
-            return idx;
-        }
-    }
-
-    // Doing a simple loop cuz i cant be bothered right now.
-    while(min <= max){
-        if(activeColliders[min] == col){
-            return min;
-        }
-        min++;
-    }
-
-    return -1;
-}
 
 // TODO: Maybe a good funciton to put INSIDE of Rect?
 Bounds GetBoundsFromRect(Rect rect){
@@ -43,18 +21,20 @@ Bounds GetBoundsFromRect(Rect rect){
 
 Collider::Collider(CLGEngine::Entity* ent):
     Component(ent),
+    _id(counter),
     _hit(nullptr),
     bounds({
         GetBoundsFromRect(ent->rect)
     }),
-    isSolid(true)
+    isSolid(true),
+    _isActive(true)
 {
-    activeColliders.push_back(this);
+    activeColliders.insert({_id, this});
+    counter++;
 }
 
 Collider::~Collider(){
-    int idx = FindColliderIdx(this); //TODO : Handle if idx = -1
-    activeColliders.erase(activeColliders.begin() + idx);
+    activeColliders.erase(_id);
 }
 
 void Collider::UpdateBounds() {
@@ -66,8 +46,21 @@ void Collider::UpdateBounds() {
     };
 }
 
+void Collider::SetActive(bool isActive){
+    if(_isActive == isActive){
+        return;
+    }
+    _isActive = isActive;
+    if(!isActive){
+        activeColliders.erase(_id);
+    } else {
+        activeColliders.insert({_id, this});
+    }
+}
+
 bool Collider::CheckCollision(){
-    for(Collider* col : activeColliders){
+    for(std::pair<int, Collider*> pair : activeColliders){
+        Collider* col = pair.second;
         if(bounds.left >= col->bounds.right
           || bounds.right <= col->bounds.left 
           || bounds.bottom <= col->bounds.top
@@ -86,7 +79,8 @@ bool Collider::CheckCollision(){
 // TODO: split this into PointCollider when polishing physics.
 
 Collider* Collider::CheckCollisionPoint(Vector2<float> point){
-    for(Collider* col : activeColliders){
+    for(std::pair<int, Collider*> pair : activeColliders){
+        Collider* col = pair.second;
         if(point.x >= col->bounds.right
           || point.x <= col->bounds.left 
           || point.y <= col->bounds.top
@@ -110,7 +104,8 @@ bool Collider::CastCollider(Rect rect, Collider** hit){
     // TODO(?): Make bounds a part of Rect? We seem to be using them a lot together...
     // Create bounds for Rect
     Bounds rectBounds = GetBoundsFromRect(rect);
-    for(Collider* col : activeColliders){
+    for(std::pair<int, Collider*> pair : activeColliders){
+        Collider* col = pair.second;
         // Check other Entities
         if(rectBounds.left >= col->bounds.right
           || rectBounds.right <= col->bounds.left 

@@ -9,7 +9,6 @@ namespace CORE {
         h_window = GetConsoleWindow();
         GetWindowRect(h_window, &windowRect);
         screen = new CLGEngine::Screen(120, 30);
-        screen->SetSquareCells(true);
 
         position = { windowRect.left , windowRect.top };
         size = { 

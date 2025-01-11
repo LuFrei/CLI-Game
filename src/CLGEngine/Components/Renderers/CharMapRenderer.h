@@ -2,6 +2,7 @@
 
 #include <map>
 #include <array>
+#include "../../TileMap.h"
 
 namespace CLGEngine{
 /// @brief Creates a graphical block using an array of characters.

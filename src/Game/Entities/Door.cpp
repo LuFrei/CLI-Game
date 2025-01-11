@@ -34,10 +34,10 @@ Door::Door(CLGEngine::Rect rect, DoorCode code, bool isOpen)
         CODE_COLORS[code] | intensity
     };
 
-    // TODO(1): Implement deactivating Collider 
 
+    _col->SetActive(!isOpen);
     _blocRend = new CLGEngine::BlockRenderer(this, doorGfxData, true);
-
+    _blocRend->z(0);
 }
 
 Door::Door(CLGEngine::Rect rect, DoorCode code)
@@ -51,7 +51,7 @@ void Door::Open(){
         CODE_COLORS[_code] | OPEN_INTENSITY 
     };
     // TODO(2): Add functionality to change material in BlockRenderer
-    // TODO(1)
+    _col->SetActive(false);
 }
 
 void Door::Close(){
@@ -62,5 +62,5 @@ void Door::Close(){
         CODE_COLORS[_code] | CLOSED_INTENSITY 
     };
     // TODO(2)
-    // TODO(1)
+    _col->SetActive(true);
 }

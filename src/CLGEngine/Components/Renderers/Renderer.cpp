@@ -18,7 +18,6 @@ Renderer::Renderer(CLGEngine::Entity* ent)
 : Component(ent) 
 , _screen(Game::GetGameInstance()->mainWindow.screen)
 , block (Block(ent->rect)) {
-	// block.Fill(defaultMaterial);
 	_screen->AddToRenderQueue(&block);
 }
 
@@ -26,6 +25,15 @@ Renderer::~Renderer() {
 	_screen->RemoveFromRenderQueue(&block);
 }
 
+void Renderer::z(int z){
+	_screen->RemoveFromRenderQueue(&block);
+	// The way we do it now we use the block.z 
+	//	to identify what layer to add in in the queue.
+	//	We need to fix this up later.
+	block.z(z);
+	_z = z;
+	_screen->AddToRenderQueue(&block);
+}
 
 void Renderer:: CreateNewBlock(Rect rect){
 	block = Block(rect);

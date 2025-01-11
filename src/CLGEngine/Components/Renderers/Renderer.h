@@ -18,6 +18,7 @@ class Renderer :
 	public IObserver {
 private:
 	Screen* _screen;
+	int _z;
 protected:
 	bool _squareCells;
 
@@ -25,6 +26,8 @@ protected:
 public:
 	Block block;
 	CHAR_INFO material;
+	void z(int z);
+	int z() {return _z;}
 
 	Renderer(Entity* ent);
 	~Renderer();

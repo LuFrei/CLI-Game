@@ -29,7 +29,14 @@ private:
     int _id;
     Collider* _hit;
     void UpdateBounds();
+    bool _isActive;
 public:
+
+    // TODO: Second part is a lie, we don't have an auto-phsycial interaciton system.
+    //          But we should, Make it.
+    
+    /// @brief Determines if the object is solid. 
+    /// Non-solid objects still emit hit events, but don't effect physical interactions.
     bool isSolid;
     Bounds bounds;
 
@@ -39,6 +46,8 @@ public:
     //IObserver
     void OnNotify();
     
+    void SetActive(bool isActive);
+
     // Main Logic
     Collider* CheckCollisionPoint(Vector2<float> point);
     bool CheckCollision();

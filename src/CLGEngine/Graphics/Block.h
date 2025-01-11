@@ -8,16 +8,19 @@ namespace CLGEngine{
 /// @brief Represents the 2D data that will be displayed on screen
 class Block{
 private:
-    // TODO: See if I can make this more efficient by using a 
-    //       pointer to an array we can dynamically size on construction.
+    // TODO: Probably remove Z from here.
+    // right now we use this z to find what layer to add Block to in Screen.AddToRenderQueue.
+    int _z; 
 public:
     Rect rect;
-    int z;
-    CHAR_INFO* dataArr; //ask GPT if i can do what i was doingbefore with std::arrays
+    CHAR_INFO* dataArr;
 
     Block(Vector2<int> size);
     Block(Rect rect);
     ~Block();
+
+    void z(int z){_z = z;}
+    int z(){return _z;}
 
     /// @brief Fills the Block ractangle with a single CHAR_INFO
     /// @param material CHAR_INFO to fill the Block with.
