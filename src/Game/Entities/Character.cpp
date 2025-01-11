@@ -23,6 +23,7 @@ Character::Character(CLGEngine::Vector2<float> startPosition)
     name = "player";
     _col = new CLGEngine::Collider(this);
     _rend = new CLGEngine::BlockRenderer(this, charMat, true);
+    _rend->z(1);
     AddSubscriber(_col);
     AddSubscriber(_rend);
 }

@@ -34,10 +34,10 @@ Door::Door(CLGEngine::Rect rect, DoorCode code, bool isOpen)
         CODE_COLORS[code] | intensity
     };
 
-    _col->SetActive(!isOpen);
-    
-    _blocRend = new CLGEngine::BlockRenderer(this, doorGfxData, true);
 
+    _col->SetActive(!isOpen);
+    _blocRend = new CLGEngine::BlockRenderer(this, doorGfxData, true);
+    _blocRend->z(0);
 }
 
 Door::Door(CLGEngine::Rect rect, DoorCode code)
