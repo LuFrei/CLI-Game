@@ -32,13 +32,11 @@ Screen::Screen(int width, int height) {
 }
 
 void Screen::AddToRenderQueue(Block* block){
-	_renderQueue[block->z].push_back(block);
-	
-	// _renderQueue.insert({block->z, block});
+	_renderQueue[block->z()].push_back(block);
 }
 
 void Screen::RemoveFromRenderQueue(Block* block){
-	std::vector<Block*> blockList = _renderQueue[block->z];
+	std::vector<Block*> blockList = _renderQueue[block->z()];
 	blockList.erase(
 		std::find(
 			blockList.begin(),
@@ -71,8 +69,7 @@ void Screen::ClearScreenData() {
 void Screen::Draw() {
 	ClearScreenData();
 	for(std::pair<int, std::vector<Block*>> queue : _renderQueue){
-		std::vector<Block*> blocks = queue.second;
-		for (Block* block : blocks) {
+		for (Block* block : queue.second) {
 			// is this block ever going going to show up in the screen?
 			if (block->rect.position.x >= _width
 				|| block->rect.position.y >= _height
