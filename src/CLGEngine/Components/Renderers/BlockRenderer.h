@@ -10,8 +10,7 @@ namespace CLGEngine {
         BlockRenderer(Entity* ent, CHAR_INFO& material);
         BlockRenderer(Entity* ent, CHAR_INFO& material, bool isSquare);
 
-        // ~BlockRenderer();
-        // TODO: make Resize func
+        void SetMaterial(CHAR_INFO& material);
     };
     
 }
