@@ -18,7 +18,7 @@ LevelTrigger::~LevelTrigger(){
 }
 
 void LevelTrigger::Update(){
-    if(CLGEngine::Collider* hit = _col->GetHit()){
+    if(CLGEngine::Collider* hit = _col->hit()){
         if(hit->entity->name == "player"){ 
             gm->SetLevel(gm->GetCurrentLevelIdx() + 1);
         }

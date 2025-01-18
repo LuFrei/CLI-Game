@@ -6,6 +6,7 @@
 #include "Game/Entities/ScreenText.h"
 #include "Game/Entities/Wall.h"
 #include "Game/Entities/Door.h"
+#include "Game/Entities/Switch.h"
 #include "Game/Maps.h"
 #include "Game/Entities/LevelTrigger.h"
 #include "Game/GameManager.h"
@@ -59,9 +60,17 @@ int main()
         true
     );
 
+    Switch* redSwitch = new Switch({door, door1});
+    Switch* blueSwitch = new Switch({door2, door3});
+
+    redSwitch->SetPosition({25, 23});
+    blueSwitch->SetPosition({22, 23});
+
     game.Play();
     
     // TODO: Make an auto Entitiy cleaner.
+    delete blueSwitch;
+    delete redSwitch;
     delete door;
     delete door1;
     delete door2;
