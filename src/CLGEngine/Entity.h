@@ -23,12 +23,16 @@ public:
 	Rect rect;
 	Entity(float x, float y, float width, float height);
 	~Entity();
-	virtual void Update() = 0;
+	virtual void Update() { };
 
 	// Transform
 	void Translate(Vector2<float> direction);
 	void SetPosition(Vector2<float> newPosition);
 	void Scale(float x, float y);
+
+// Component helpers
+public:
+	virtual void OnCollision(Entity* hit) { } // We can't reference Collider because we'd ahve a include loop.
 
 // ISubject
 public:
