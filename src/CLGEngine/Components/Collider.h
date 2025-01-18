@@ -52,7 +52,7 @@ public:
     Collider* CheckCollisionPoint(Vector2<float> point);
     bool CheckCollision();
     bool CastCollider(Rect rect, Collider** hit);
-    Collider* GetHit(){return _hit;};
+    Collider* hit(){return _hit;};
     // Temp func for current refactor. call inthe end of caller's Update()
     void ClearHit();
 };
