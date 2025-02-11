@@ -28,6 +28,7 @@ public:
     */
     Door(CLGEngine::Rect rect, DoorCode code, bool isOpen);
     Door(CLGEngine::Rect rect, DoorCode code);
+    ~Door();
 
     void Update() {};
 

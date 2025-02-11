@@ -16,6 +16,7 @@ private:
 public:
 
     Switch(std::vector<Door*> doors);
+    ~Switch();
     
     void Update();
     void OnCollision(CLGEngine::Entity* hit);

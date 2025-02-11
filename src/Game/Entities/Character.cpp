@@ -163,7 +163,7 @@ void Character::Jump(){
 
 void Character::SnapRectToGrid() {
     CLGEngine::Vector2<float> posFloored = {std::floor(_position.x), std::floor(_position.y)};
-    if(posFloored == rect.position){
+    if(posFloored == rect().position){
         return;
     }
     SetPosition(posFloored);

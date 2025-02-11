@@ -32,7 +32,9 @@ public:
 private:
 	Rect _rect;
 public:
-	Rect* rect(){return &_rect;}
+	// Returning a pointer here defeats the purpose of a getter.
+	// TODO: Return VALUE
+	Rect rect(){return _rect;}
 	
 	void Translate(Vector2<float> direction);
 	void SetPosition(Vector2<float> newPosition);

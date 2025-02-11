@@ -24,7 +24,7 @@ struct Bounds
 class Collider : 
     public Component,
     public IObserver
-    {
+{
 private:
     int _id;
     Collider* _hit;
@@ -44,7 +44,7 @@ public:
     ~Collider();
 
     //IObserver
-    void OnNotify();
+    void OnNotify(Event e);
     
     void SetActive(bool isActive);
 

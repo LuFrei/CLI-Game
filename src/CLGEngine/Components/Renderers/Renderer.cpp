@@ -17,7 +17,7 @@ CHAR_INFO defaultMaterial = {
 Renderer::Renderer(CLGEngine::Entity* ent)
 : Component(ent) 
 , _screen(Game::GetGameInstance()->mainWindow.screen)
-, block (Block(*ent->rect())) {
+, block (Block(ent->rect())) {
 	ent->AddSubscriber(this);
 	_screen->AddToRenderQueue(&block);
 }
@@ -52,7 +52,7 @@ void Renderer::SetSquareCells(bool isSquare){
 void Renderer::OnNotify(Event e) {
 	switch(e){
 		case Event::Moved:
-			block.rect.position = entity->rect()->position;
+			block.rect.position = entity->rect().position;
 			if(_squareCells) {
 				block.rect.position.x *= 2;
 			}

@@ -60,17 +60,18 @@ int main()
         true
     );
 
-    Switch* redSwitch = new Switch({door, door1});
-    Switch* blueSwitch = new Switch({door2, door3});
+    Switch* blueSwitch = new Switch({door, door1});
+    Switch* redSwitch = new Switch({door2, door3});
 
-    redSwitch->SetPosition({2, 2});
-    blueSwitch->rect.position = {22, 23};
+    blueSwitch->SetPosition({10, 2});
+    redSwitch->rect().position = {3, 3}; // This SHOULD do nothing AFTER we fix the getter
+    // NOTE: This is not VISUALLY changing, but it IS changing the data. 
 
     game.Play();
     
     // TODO: Make an auto Entitiy cleaner.
-    delete blueSwitch;
     delete redSwitch;
+    delete blueSwitch;
     delete door;
     delete door1;
     delete door2;
