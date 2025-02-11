@@ -35,6 +35,11 @@ Switch::Switch(std::vector<Door*> doors)
     );
 }
 
+Switch::~Switch(){
+    delete _col;
+    delete _rend;
+}
+
 void Switch::Update(){
 
 }
