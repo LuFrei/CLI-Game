@@ -64,7 +64,7 @@ void GameManager::RemoveSubscriber(CLGEngine::IObserver* o){
 }
 
 void GameManager::Notify(){
-    for(CLGEngine::IObserver* o : _subscribers){
-        o->OnNotify();
-    }
+    // for(CLGEngine::IObserver* o : _subscribers){
+    //     o->OnNotify();
+    // }
 }

@@ -6,6 +6,7 @@
 #include "Game/Entities/ScreenText.h"
 #include "Game/Entities/Wall.h"
 #include "Game/Entities/Door.h"
+#include "Game/Entities/Switch.h"
 #include "Game/Maps.h"
 #include "Game/Entities/LevelTrigger.h"
 #include "Game/GameManager.h"
@@ -59,9 +60,18 @@ int main()
         true
     );
 
+    Switch* blueSwitch = new Switch({door, door1});
+    Switch* redSwitch = new Switch({door2, door3});
+
+    blueSwitch->SetPosition({10, 2});
+    redSwitch->rect().position = {3, 3}; // This SHOULD do nothing AFTER we fix the getter
+    // NOTE: This is not VISUALLY changing, but it IS changing the data. 
+
     game.Play();
     
     // TODO: Make an auto Entitiy cleaner.
+    delete redSwitch;
+    delete blueSwitch;
     delete door;
     delete door1;
     delete door2;

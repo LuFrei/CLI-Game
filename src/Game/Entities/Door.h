@@ -17,6 +17,8 @@ private:
     CLGEngine::BlockRenderer* _blocRend;
     bool _isOpen;
 public:
+    int code(){return _code;}
+    int isOpen(){return _isOpen;}
 
     /* @brief Doors for the game.
 
@@ -26,6 +28,7 @@ public:
     */
     Door(CLGEngine::Rect rect, DoorCode code, bool isOpen);
     Door(CLGEngine::Rect rect, DoorCode code);
+    ~Door();
 
     void Update() {};
 

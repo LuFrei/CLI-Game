@@ -5,7 +5,7 @@
 namespace CLGEngine {
 
 	Entity::Entity(float x, float y, float width,float height)
-		   : rect({x, y, width, height})
+		   : _rect({x, y, width, height})
 	{
 		EntityManager::AddEntity(this);
 	}
@@ -16,18 +16,18 @@ namespace CLGEngine {
 
 #pragma region Transform
 	void Entity::Translate(Vector2<float> direction) {
-		rect.position += direction;
-		Notify();
+		_rect.position += direction;
+		Notify(Event::Moved);
 	}
 
 	void Entity::SetPosition(Vector2<float> newPos){
-		rect.position = newPos;
-		Notify();
+		_rect.position = newPos;
+		Notify(Event::Moved);
 	}
 
 	void Entity::Scale(float x, float y) {
-		this->rect.size.x *= x;
-		this->rect.size.y *= y;
+		this->_rect.size.x *= x;
+		this->_rect.size.y *= y;
 	}
 #pragma endregion
 
@@ -41,9 +41,9 @@ namespace CLGEngine {
 		_observers.remove(o);
 	}
 
-	void Entity::Notify() {
+	void Entity::Notify(Event e) {
 		for(IObserver* o : _observers){
-			o->OnNotify();
+			o->OnNotify(e);
 		}
 	}
 

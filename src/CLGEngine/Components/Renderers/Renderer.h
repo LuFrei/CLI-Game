@@ -34,6 +34,6 @@ public:
 
 	void SetSquareCells(bool isSquare);
 
-	void OnNotify() override;
+	void OnNotify(Event e);
 };
 }

@@ -43,6 +43,11 @@ Door::Door(CLGEngine::Rect rect, DoorCode code, bool isOpen)
 Door::Door(CLGEngine::Rect rect, DoorCode code)
 : Door(rect, code, false) {}
 
+Door::~Door(){
+    delete _col;
+    delete _blocRend;
+}
+
 void Door::Open(){
     _isOpen = true;
     // Investigate: Worth keeping a persistent CHAR_INFO and only changing color & texture?

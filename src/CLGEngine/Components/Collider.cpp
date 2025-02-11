@@ -24,7 +24,7 @@ Collider::Collider(CLGEngine::Entity* ent):
     _id(counter),
     _hit(nullptr),
     bounds({
-        GetBoundsFromRect(ent->rect)
+        GetBoundsFromRect(ent->rect())
     }),
     isSolid(true),
     _isActive(true)
@@ -39,10 +39,10 @@ Collider::~Collider(){
 
 void Collider::UpdateBounds() {
     bounds = {
-        entity->rect.position.x,
-        entity->rect.position.y,
-        entity->rect.position.x + entity->rect.size.x,
-        entity->rect.position.y + entity->rect.size.y
+        entity->rect().position.x,
+        entity->rect().position.y,
+        entity->rect().position.x + entity->rect().size.x,
+        entity->rect().position.y + entity->rect().size.y
     };
 }
 
@@ -127,7 +127,7 @@ void Collider::ClearHit(){
 }
 
 #pragma region IObserver
-void Collider::OnNotify(){
+void Collider::OnNotify(Event e){
     UpdateBounds();
     CheckCollision();
 }

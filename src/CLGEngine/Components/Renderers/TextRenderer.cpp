@@ -14,7 +14,7 @@ TextRenderer::~TextRenderer(){
 
 void TextRenderer::SetText(std::string text){
     _text = text; 
-    float capacity = entity->rect.size.x * entity->rect.size.y;
+    float capacity = entity->rect().size.x * entity->rect().size.y;
     float textSize = text.size();
 
     if(textSize < capacity){
