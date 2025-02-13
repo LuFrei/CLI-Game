@@ -63,9 +63,8 @@ int main()
     Switch* blueSwitch = new Switch({door, door1});
     Switch* redSwitch = new Switch({door2, door3});
 
-    blueSwitch->SetPosition({10, 2});
-    redSwitch->rect().position = {3, 3}; // This SHOULD do nothing AFTER we fix the getter
-    // NOTE: This is not VISUALLY changing, but it IS changing the data. 
+    blueSwitch->SetPosition({27, 22});
+    redSwitch->SetPosition({35, 22});
 
     game.Play();
     
