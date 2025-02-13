@@ -26,6 +26,9 @@ public:
 	std::string name = "unnamed";
 	Entity(float x, float y, float width, float height);
 	~Entity();
+	// TODO: Figure out do we NEED `virtual` here? 
+	//		Update() MUST be callable,
+	//		BUT is optional.
 	virtual void Update() { };
 
 // Transform
@@ -42,7 +45,8 @@ public:
 
 // Component helpers
 public:
-	virtual void OnCollision(Entity* hit) { } // We can't reference Collider because we'd ahve a include loop.
+	// TODO: Find a way to reference Collider here.
+	virtual void OnCollision(Entity* hit) { }
 
 // ISubject
 public:

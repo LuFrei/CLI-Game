@@ -24,12 +24,9 @@ Character::Character(CLGEngine::Vector2<float> startPosition)
     _col = new CLGEngine::Collider(this);
     _rend = new CLGEngine::BlockRenderer(this, charMat, true);
     _rend->z(1);
-    AddSubscriber(_col);
-    AddSubscriber(_rend);
 }
 
 Character::~Character(){
-    RemoveSubscriber(_col);
     delete _col;
     delete _rend;
 }
@@ -101,7 +98,6 @@ void Character::Update(){
         AdjustMomentum(direction);
         Move(momentum);
     }
-    _col->ClearHit();
 
     char tileValue = _tileMap->GetTile({(int)std::floor(_position.x), (int)std::floor(_position.y)});
 

@@ -9,6 +9,11 @@ namespace CLGEngine{
 std::map<int, Collider*> activeColliders; // TODO: Replace with Quad Tree.
 int counter = 0;
 
+void Collider::BroadcastHit(Collider* hit){
+    hit->entity->OnCollision(this->entity);
+    this->entity->OnCollision(hit->entity);
+}
+
 // TODO: Maybe a good funciton to put INSIDE of Rect?
 Bounds GetBoundsFromRect(Rect rect){
     return {
@@ -22,18 +27,19 @@ Bounds GetBoundsFromRect(Rect rect){
 Collider::Collider(CLGEngine::Entity* ent):
     Component(ent),
     _id(counter),
-    _hit(nullptr),
     bounds({
         GetBoundsFromRect(ent->rect())
     }),
     isSolid(true),
     _isActive(true)
 {
+    ent->AddSubscriber(this); // TODO: see if i can move this to Component
     activeColliders.insert({_id, this});
     counter++;
 }
 
 Collider::~Collider(){
+    entity->RemoveSubscriber(this);
     activeColliders.erase(_id);
 }
 
@@ -69,8 +75,8 @@ bool Collider::CheckCollision(){
         {
             continue;
         }
-        _hit = col;
-        col->_hit = this;
+
+        BroadcastHit(col);
         return true;
     }
     return false;
@@ -89,11 +95,9 @@ Collider* Collider::CheckCollisionPoint(Vector2<float> point){
         {
             continue;
         }
-        _hit = col;
-        col->_hit = this;
-        // TODO: If this works better than bool above,
-        //       Copy this in CheckCollision() for consistency.
-        return _hit;
+
+        BroadcastHit(col);
+        return col;
     }
     return nullptr;
 }
@@ -115,15 +119,11 @@ bool Collider::CastCollider(Rect rect, Collider** hit){
         {
             continue;
         }
-        *hit = col;
-        _hit = col;
+
+        BroadcastHit(col);
         return true;
     }
     return false;
-}
-
-void Collider::ClearHit(){
-    _hit = nullptr;
 }
 
 #pragma region IObserver

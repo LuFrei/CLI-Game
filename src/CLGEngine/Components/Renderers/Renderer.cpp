@@ -18,12 +18,12 @@ Renderer::Renderer(CLGEngine::Entity* ent)
 : Component(ent) 
 , _screen(Game::GetGameInstance()->mainWindow.screen)
 , block (Block(ent->rect())) {
-	ent->AddSubscriber(this);
+	ent->AddSubscriber(this); // TODO: see if i can move this to Component
 	_screen->AddToRenderQueue(&block);
 }
 
 Renderer::~Renderer() {
-	entity->RemoveSubscriber(this);
+	entity->RemoveSubscriber(this); 
 	_screen->RemoveFromRenderQueue(&block);
 }
 

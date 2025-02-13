@@ -17,12 +17,8 @@ LevelTrigger::~LevelTrigger(){
     delete _rend;
 }
 
-void LevelTrigger::Update(){
-    if(CLGEngine::Collider* hit = _col->hit()){
-        if(hit->entity->name == "player"){ 
-            gm->SetLevel(gm->GetCurrentLevelIdx() + 1);
-        }
+void LevelTrigger::OnCollision(CLGEngine::Entity* hit){
+    if(hit->name == "player"){ 
+        gm->SetLevel(gm->GetCurrentLevelIdx() + 1);
     }
-
-    _col->ClearHit(); //TODO: really need to make this automatic...
 }
