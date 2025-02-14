@@ -32,11 +32,11 @@ public:
 private:
 	Rect _rect;
 public:
-	// Returning a pointer here defeats the purpose of a getter.
-	// TODO: Return VALUE
+	/// @brief returns a copy of the Entity's Rect.
 	Rect rect(){return _rect;}
-	
+	/// @brief Adds to the "position" of the Entity's Rect.
 	void Translate(Vector2<float> direction);
+	/// @brief Sets the "position" parameter of the Entity's Rect.
 	void SetPosition(Vector2<float> newPosition);
 	void Scale(float x, float y);
 
