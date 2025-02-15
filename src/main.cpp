@@ -64,7 +64,7 @@ int main()
     Switch* redSwitch = new Switch({door2, door3});
 
     blueSwitch->SetPosition({27, 22});
-    redSwitch->SetPosition({35, 22});
+    redSwitch->SetPosition({23, 22});
 
     game.Play();
     

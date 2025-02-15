@@ -21,7 +21,6 @@ public:
     
     void Update();
     void OnCollisionStart(CLGEngine::Entity* hit);
-    void OnCollisionEnd(CLGEngine::Entity* hit);
 
     void Activate();
 };

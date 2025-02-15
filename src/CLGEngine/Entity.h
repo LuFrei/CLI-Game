@@ -45,7 +45,8 @@ public:
 
 // Component helpers
 public:
-	// TODO: Find a way to reference Collider here.
+	// TODO: See if Colldider can be referenced here.
+	//		Can we use tempaltes???
 	virtual void OnCollision(Entity* hit) { }
 	virtual void OnCollisionStart(Entity* hit) { }
 	virtual void OnCollisionEnd(Entity* hit) { }

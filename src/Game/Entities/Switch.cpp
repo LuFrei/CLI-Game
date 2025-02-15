@@ -57,7 +57,3 @@ void Switch::Activate(){
 void Switch::OnCollisionStart(CLGEngine::Entity* hit){
     Activate();
 }
-
-void Switch::OnCollisionEnd(CLGEngine::Entity* hit){
-    Activate();
-}
