@@ -81,7 +81,7 @@ void Character::Update(){
     SnapRectToGrid();
 #pragma endregion
 
-    int direction = 0; //1 = right; -1 = left
+    int direction = 0;
     if (CLGEngine::Input::Input::GetKeyPressed(CLGEngine::Input::KeyCode::Left) || CLGEngine::Input::Input::GetKeyPressed(CLGEngine::Input::KeyCode::Comma)) {
         direction += -1;
     }

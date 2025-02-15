@@ -55,7 +55,8 @@ void Door::Open(){
         OPEN_TEXTURE,
         CODE_COLORS[_code] | OPEN_INTENSITY 
     };
-    // TODO(2): Add functionality to change material in BlockRenderer
+
+    _blocRend->SetMaterial(doorGfxData);
     _col->SetActive(false);
 }
 
@@ -66,6 +67,7 @@ void Door::Close(){
         CLOSED_TEXTURE,
         CODE_COLORS[_code] | CLOSED_INTENSITY 
     };
-    // TODO(2)
+
+    _blocRend->SetMaterial(doorGfxData);
     _col->SetActive(true);
 }

@@ -30,6 +30,8 @@ private:
     void UpdateBounds();
     void BroadcastHit(Collider* hit);
     bool _isActive;
+    /// @brief The last and current collider this collider collided with.
+    Collider* _lastCurrentlyCollided;
 public:
 
     // TODO: Second part is a lie, we don't have an auto-phsycial interaciton system.

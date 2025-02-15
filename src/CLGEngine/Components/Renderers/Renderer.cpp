@@ -23,7 +23,7 @@ Renderer::Renderer(CLGEngine::Entity* ent)
 }
 
 Renderer::~Renderer() {
-	entity->RemoveSubscriber(this); 
+	entity->RemoveSubscriber(this);
 	_screen->RemoveFromRenderQueue(&block);
 }
 
