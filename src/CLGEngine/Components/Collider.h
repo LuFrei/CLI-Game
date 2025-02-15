@@ -27,9 +27,11 @@ class Collider :
 {
 private:
     int _id;
-    Collider* _hit;
     void UpdateBounds();
+    void BroadcastHit(bool wasHit, Collider* hit);
     bool _isActive;
+    /// @brief The last and current collider this collider collided with.
+    std::vector<Collider*> _hitColliders;
 public:
 
     // TODO: Second part is a lie, we don't have an auto-phsycial interaciton system.
@@ -50,10 +52,7 @@ public:
 
     // Main Logic
     Collider* CheckCollisionPoint(Vector2<float> point);
-    bool CheckCollision();
+    void CheckCollision();
     bool CastCollider(Rect rect, Collider** hit);
-    Collider* hit(){return _hit;};
-    // Temp func for current refactor. call inthe end of caller's Update()
-    void ClearHit();
 };
 }

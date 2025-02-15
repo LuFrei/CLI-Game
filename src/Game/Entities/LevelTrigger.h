@@ -17,4 +17,5 @@ public:
     LevelTrigger(CLGEngine::Vector2<int> position, std::string levelName);
     ~LevelTrigger();
     void Update();
+    void OnCollision(CLGEngine::Entity* hit);
 };
