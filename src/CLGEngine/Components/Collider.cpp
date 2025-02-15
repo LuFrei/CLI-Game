@@ -9,9 +9,27 @@ namespace CLGEngine{
 std::map<int, Collider*> activeColliders; // TODO: Replace with Quad Tree.
 int counter = 0;
 
-void Collider::BroadcastHit(Collider* hit){
-    hit->entity->OnCollision(this->entity);
-    this->entity->OnCollision(hit->entity);
+// Should be the best 
+void Collider::BroadcastHit(bool wasHit, Collider* hit){
+    auto colIt = std::find(_hitColliders.begin(), _hitColliders.end(), hit);
+    bool inList = colIt != _hitColliders.end();
+    if(!inList && wasHit){
+        hit->entity->OnCollisionStart(this->entity);
+        this->entity->OnCollisionStart(hit->entity);
+        _hitColliders.push_back(hit);
+    }
+    // constant braodcast
+    if(inList && wasHit){
+        hit->entity->OnCollision(this->entity);
+        this->entity->OnCollision(hit->entity);
+    }
+    // End broadcast (how do we do this?)
+    // We need to trigger this when we DONT BroadcastHit..
+    if(inList && !wasHit){
+        hit->entity->OnCollisionEnd(this->entity);
+        this->entity->OnCollisionEnd(hit->entity);
+        _hitColliders.erase(colIt);
+    }
 }
 
 // TODO: Maybe a good funciton to put INSIDE of Rect?
@@ -64,8 +82,9 @@ void Collider::SetActive(bool isActive){
     }
 }
 
-bool Collider::CheckCollision(){
+void Collider::CheckCollision(){
     for(std::pair<int, Collider*> pair : activeColliders){
+        bool collision = true;
         Collider* col = pair.second;
         if(bounds.left >= col->bounds.right
           || bounds.right <= col->bounds.left 
@@ -73,14 +92,14 @@ bool Collider::CheckCollision(){
           || bounds.top >= col->bounds.bottom
           || col == this)
         {
-            continue;
+            collision = false;
         }
 
-        BroadcastHit(col);
-        return true;
+        BroadcastHit(collision, col);
     }
-    return false;
 }
+
+
 
 // TODO: split this into PointCollider when polishing physics.
 
@@ -96,7 +115,7 @@ Collider* Collider::CheckCollisionPoint(Vector2<float> point){
             continue;
         }
 
-        BroadcastHit(col);
+        BroadcastHit(true, col);
         return col;
     }
     return nullptr;
@@ -120,7 +139,7 @@ bool Collider::CastCollider(Rect rect, Collider** hit){
             continue;
         }
 
-        BroadcastHit(col);
+        BroadcastHit(true, col);
         return true;
     }
     return false;

@@ -47,6 +47,9 @@ public:
 public:
 	// TODO: Find a way to reference Collider here.
 	virtual void OnCollision(Entity* hit) { }
+	virtual void OnCollisionStart(Entity* hit) { }
+	virtual void OnCollisionEnd(Entity* hit) { }
+	
 
 // ISubject
 public:

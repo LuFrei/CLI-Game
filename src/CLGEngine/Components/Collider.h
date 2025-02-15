@@ -28,10 +28,10 @@ class Collider :
 private:
     int _id;
     void UpdateBounds();
-    void BroadcastHit(Collider* hit);
+    void BroadcastHit(bool wasHit, Collider* hit);
     bool _isActive;
     /// @brief The last and current collider this collider collided with.
-    Collider* _lastCurrentlyCollided;
+    std::vector<Collider*> _hitColliders;
 public:
 
     // TODO: Second part is a lie, we don't have an auto-phsycial interaciton system.
@@ -52,7 +52,7 @@ public:
 
     // Main Logic
     Collider* CheckCollisionPoint(Vector2<float> point);
-    bool CheckCollision();
+    void CheckCollision();
     bool CastCollider(Rect rect, Collider** hit);
 };
 }

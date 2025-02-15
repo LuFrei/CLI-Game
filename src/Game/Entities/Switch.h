@@ -12,6 +12,7 @@ private:
     CLGEngine::Collider* _col;
     CLGEngine::BlockRenderer* _rend;
     std::vector<Door*> _doors;
+    bool _active;
     short _color;
 public:
 
@@ -19,7 +20,8 @@ public:
     ~Switch();
     
     void Update();
-    void OnCollision(CLGEngine::Entity* hit);
+    void OnCollisionStart(CLGEngine::Entity* hit);
+    void OnCollisionEnd(CLGEngine::Entity* hit);
 
     void Activate();
 };
