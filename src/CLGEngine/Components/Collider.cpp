@@ -23,8 +23,7 @@ void Collider::BroadcastHit(bool wasHit, Collider* hit){
         hit->entity->OnCollision(this->entity);
         this->entity->OnCollision(hit->entity);
     }
-    // End broadcast (how do we do this?)
-    // We need to trigger this when we DONT BroadcastHit..
+    // End broadcast 
     if(inList && !wasHit){
         hit->entity->OnCollisionEnd(this->entity);
         this->entity->OnCollisionEnd(hit->entity);

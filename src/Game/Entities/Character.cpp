@@ -66,7 +66,10 @@ void Character::Update(){
 #pragma region Jump/Gravity Logic
     CLGEngine::Vector2<float> belowCell = {_position.x, _position.y + 0.5f};
     CLGEngine::Collider* hit = _col->CheckCollisionPoint(belowCell);
-    _grounded = _tileMap->GetTile((CLGEngine::Vector2<int>)belowCell) == '#' || hit != nullptr;
+    bool solidGround = 
+        (hit == nullptr) ? 
+        false : hit->isSolid;  
+    _grounded = _tileMap->GetTile((CLGEngine::Vector2<int>)belowCell) == '#' || solidGround;
     
     if(_grounded){ 
         _groundLevel = belowCell.y;
