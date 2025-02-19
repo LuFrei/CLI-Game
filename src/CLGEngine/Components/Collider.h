@@ -30,13 +30,10 @@ private:
     void UpdateBounds();
     void BroadcastHit(bool wasHit, Collider* hit);
     bool _isActive;
+    
     /// @brief The last and current collider this collider collided with.
     std::vector<Collider*> _hitColliders;
 public:
-
-    // TODO: Second part is a lie, we don't have an auto-phsycial interaciton system.
-    //          But we should, Make it.
-    
     /// @brief Determines if the object is solid. 
     /// Non-solid objects still emit hit events, but don't effect physical interactions.
     bool isSolid;

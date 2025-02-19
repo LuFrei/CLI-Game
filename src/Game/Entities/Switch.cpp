@@ -26,6 +26,7 @@ Switch::Switch(std::vector<Door*> doors)
             throw;
         }
     }
+    _col->isSolid = false;
     _doors = doors;
     _color = CODE_COLORS[code];
     material.Attributes |= CODE_COLORS[code];
