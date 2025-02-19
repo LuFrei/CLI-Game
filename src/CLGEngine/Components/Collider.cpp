@@ -111,6 +111,7 @@ Collider* Collider::CheckCollisionPoint(Vector2<float> point){
           || point.y >= col->bounds.bottom
           || col == this)
         {
+            BroadcastHit(false, col);
             continue;
         }
 

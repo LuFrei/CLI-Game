@@ -130,7 +130,10 @@ void Character::Move(float momentum) {
     // TODO: Collisison should be universal. maybe on a Physics Engine update.
     CLGEngine::Vector2<float> nextCell = {nextXPosition, _position.y};
     CLGEngine::Collider* hit = _col->CheckCollisionPoint(nextCell);
-    if(_tileMap->GetTile((CLGEngine::Vector2<int>)nextCell) != '#' && hit == nullptr){
+    bool solidObject = 
+        (hit == nullptr) ? 
+        false : hit->isSolid;
+    if(_tileMap->GetTile((CLGEngine::Vector2<int>)nextCell) != '#' && !solidObject){
         _position += {momentum * _speed * CLGEngine::Time::deltaTime, 0};
         SnapRectToGrid();
     }
@@ -146,8 +149,11 @@ void Character::Jump(){
 
     CLGEngine::Vector2<float> nextCell = {nextPos.x, nextPos.y};
     CLGEngine::Collider* hit = _col->CheckCollisionPoint(nextCell);
+    bool solidObject = 
+        (hit == nullptr) ? 
+        false : hit->isSolid;
     if((_tileMap->GetTile((CLGEngine::Vector2<int>)nextCell) == '#'
-        || hit != nullptr
+        || solidObject
         || _position.y <= _groundLevel - jumpHeight
         ) 
         && vertMomentum == 1)
