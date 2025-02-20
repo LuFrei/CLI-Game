@@ -6,7 +6,7 @@
 #include "../../CLGEngine/Components/Renderers/BlockRenderer.h"
 #include "Door.h"
 
-class Switch
+class Button
 : public CLGEngine::Entity {
 private:
     CLGEngine::Collider* _col;
@@ -16,10 +16,9 @@ private:
     short _color;
 public:
 
-    Switch(std::vector<Door*> doors);
-    ~Switch();
-    
-    void Update();
+    Button(std::vector<Door*> doors);
+    ~Button();
+
     void OnCollisionStart(CLGEngine::Entity* hit);
 
     void Activate();
