@@ -98,11 +98,7 @@ void Collider::CheckCollision(){
     }
 }
 
-
-
-// TODO: split this into PointCollider when polishing physics.
-
-Collider* Collider::CheckCollisionPoint(Vector2<float> point){
+Collider* Collider::CheckCollisionAtPoint(Vector2<float> point){
     for(std::pair<int, Collider*> pair : activeColliders){
         Collider* col = pair.second;
         if(point.x >= col->bounds.right
@@ -111,11 +107,11 @@ Collider* Collider::CheckCollisionPoint(Vector2<float> point){
           || point.y >= col->bounds.bottom
           || col == this)
         {
-            BroadcastHit(false, col);
+            // BroadcastHit(false, col);
             continue;
         }
 
-        BroadcastHit(true, col);
+        // BroadcastHit(true, col);
         return col;
     }
     return nullptr;

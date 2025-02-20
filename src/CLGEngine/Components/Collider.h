@@ -20,7 +20,6 @@ struct Bounds
 //      to how we are doing Draw().
 
 /// @brief Adds a collision box to entity.
-// ->!! Right now: Entity must initiate collisison check.
 class Collider : 
     public Component,
     public IObserver
@@ -33,6 +32,8 @@ private:
     
     /// @brief The last and current collider this collider collided with.
     std::vector<Collider*> _hitColliders;
+    
+    void CheckCollision();
 public:
     /// @brief Determines if the object is solid. 
     /// Non-solid objects still emit hit events, but don't effect physical interactions.
@@ -47,9 +48,10 @@ public:
     
     void SetActive(bool isActive);
 
-    // Main Logic
-    Collider* CheckCollisionPoint(Vector2<float> point);
-    void CheckCollision();
+    /// @brief Use this to manually check if a collider is currently a coordinate point.
+    /// @param point point in space you want to check collision
+    /// @return First collider it overlaps. `nullptr` is no collider hit.
+    Collider* CheckCollisionAtPoint(Vector2<float> point);
     bool CastCollider(Rect rect, Collider** hit);
 };
 }

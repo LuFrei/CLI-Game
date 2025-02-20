@@ -65,7 +65,7 @@ bool jumping = 0;
 void Character::Update(){
 #pragma region Jump/Gravity Logic
     CLGEngine::Vector2<float> belowCell = {_position.x, _position.y + 0.5f};
-    CLGEngine::Collider* hit = _col->CheckCollisionPoint(belowCell);
+    CLGEngine::Collider* hit = _col->CheckCollisionAtPoint(belowCell);
     bool solidGround = 
         (hit == nullptr) ? 
         false : hit->isSolid;  
@@ -129,7 +129,7 @@ void Character::Move(float momentum) {
 
     // TODO: Collisison should be universal. maybe on a Physics Engine update.
     CLGEngine::Vector2<float> nextCell = {nextXPosition, _position.y};
-    CLGEngine::Collider* hit = _col->CheckCollisionPoint(nextCell);
+    CLGEngine::Collider* hit = _col->CheckCollisionAtPoint(nextCell);
     bool solidObject = 
         (hit == nullptr) ? 
         false : hit->isSolid;
@@ -148,7 +148,7 @@ void Character::Jump(){
     CLGEngine::Vector2<float> nextPos = _position + offSet;
 
     CLGEngine::Vector2<float> nextCell = {nextPos.x, nextPos.y};
-    CLGEngine::Collider* hit = _col->CheckCollisionPoint(nextCell);
+    CLGEngine::Collider* hit = _col->CheckCollisionAtPoint(nextCell);
     bool solidObject = 
         (hit == nullptr) ? 
         false : hit->isSolid;
