@@ -1,4 +1,4 @@
-#include "Switch.h"
+#include "Button.h"
 
 #include <array>
 
@@ -16,7 +16,7 @@ CHAR_INFO material = {
     FOREGROUND_INTENSITY
 };
 
-Switch::Switch(std::vector<Door*> doors)
+Button::Button(std::vector<Door*> doors)
 : CLGEngine::Entity({0, 0, 1, 1})
 , _col(new CLGEngine::Collider(this)){
     int code = doors[0]->code();
@@ -36,16 +36,12 @@ Switch::Switch(std::vector<Door*> doors)
     );
 }
 
-Switch::~Switch(){
+Button::~Button(){
     delete _col;
     delete _rend;
 }
 
-void Switch::Update(){
-
-}
-
-void Switch::Activate(){
+void Button::Activate(){
     for(Door* door : _doors){
         if(door->isOpen()){
             door->Close();
@@ -55,6 +51,6 @@ void Switch::Activate(){
     }
 }
 
-void Switch::OnCollisionStart(CLGEngine::Entity* hit){
+void Button::OnCollisionStart(CLGEngine::Entity* hit){
     Activate();
 }

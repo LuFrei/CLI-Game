@@ -6,7 +6,7 @@
 #include "Game/Entities/ScreenText.h"
 #include "Game/Entities/Wall.h"
 #include "Game/Entities/Door.h"
-#include "Game/Entities/Switch.h"
+#include "Game/Entities/Button.h"
 #include "Game/Maps.h"
 #include "Game/Entities/LevelTrigger.h"
 #include "Game/GameManager.h"
@@ -60,8 +60,8 @@ int main()
         true
     );
 
-    Switch* blueSwitch = new Switch({door, door1});
-    Switch* redSwitch = new Switch({door2, door3});
+    Button* blueSwitch = new Button({door, door1});
+    Button* redSwitch = new Button({door2, door3});
 
     blueSwitch->SetPosition({27, 22});
     redSwitch->SetPosition({23, 22});
