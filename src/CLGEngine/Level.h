@@ -10,7 +10,8 @@
 
 !!- Should we skip this type and just do a level datafile using JSON or XML?
   - Just need a way to translate in LevelManager when Adding or reading.
-
+  - THEIMPROTANT QUESTION HERE IS:
+  "is JSON/XML translation as-needed slow enough where we need to store the data first some otherway?"
 */
 
 class Level{
