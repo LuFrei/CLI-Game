@@ -6,6 +6,13 @@
 #include "../CLGEngine/TileMap.h"
 #include "../CLGEngine/CORE/Vector2.h"
 
+/* Level will hold imp
+
+!!- Should we skip this type and just do a level datafile using JSON or XML?
+  - Just need a way to translate in LevelManager when Adding or reading.
+
+*/
+
 class Level{
 private:
 public:

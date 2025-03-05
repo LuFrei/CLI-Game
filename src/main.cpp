@@ -1,4 +1,4 @@
-#include "CLGEngine/Entity.h"
+ #include "CLGEngine/Entity.h"
 #include "CLGEngine/Game.h"
 #include "CLGEngine/TileMap.h"
 
@@ -16,8 +16,18 @@ using namespace CLGEngine;
 int main()
 {
     Game game = Game();
-//TODO: REMINDER! Lets write everything in main 
-// - as simple as posisble. THEN, we move into modularization
+
+    /*Level Setup
+    * Have levels in a folder.
+    * Load levels from directory into Level queue
+    
+    LevelManager.AddLevelToQueue(<path/to/levels>);
+
+    * LevelManager should have direct access to entity manager to create and destroy
+    
+    * TileMap will be 1 value in each level.
+    */
+
     GameManager* gm = new GameManager();
 
     Character* player = new Character({25, 21});
