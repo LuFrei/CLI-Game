@@ -125,12 +125,29 @@ MapData easyDoesIt = {
    #####"
 };
 
+MapData ohChute = {
+    4, 11,
+"\
+#s #\
+#  #\
+#  #\
+#  #\
+#  #\
+#  #\
+#  #\
+#  #\
+#  #\
+#  #\
+#e*#"
+};
+
 
 Maps* Maps::_instance;
 const MapData Maps::list[MAX_LEVELS]= {
         titleMap,
         babyHops,
         easyDoesIt,
+        ohChute,
         tallJumps,
         map01
     };

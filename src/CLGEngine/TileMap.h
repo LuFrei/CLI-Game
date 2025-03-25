@@ -23,8 +23,7 @@ public:
     CLGEngine::Vector2<int> endPos;
     CLGEngine::Vector2<int> startPos;
     
-    // We currently need this to grab global Tile location. 
-    //   Will have to set from GameManager for now.
+    // TODO: offset should be handled by the LevelManager
     CLGEngine::Vector2<int> offset = {0, 0}; 
 
     TileMap(MapData data);
