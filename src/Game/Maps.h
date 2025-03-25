@@ -4,7 +4,7 @@
 #include <string>
 #include "../CLGEngine/MapData.h"
 
-const int MAX_LEVELS = 5; 
+const int MAX_LEVELS = 6; 
 
 // This can literally just be a part of Game Manager...
 class Maps{

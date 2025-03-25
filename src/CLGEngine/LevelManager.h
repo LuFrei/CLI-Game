@@ -20,8 +20,8 @@ class LevelManager {
 private:
     std::vector<Level*> _levels;
 public:
-    static SetLevel(Level* lvl);
-    static AddLevel(Level* lvl);
-    static AddLevels(std::vector<Level*> lvls);
-    static RemoveLevel(Level* lvl);
-}
+    static void SetLevel(Level* lvl);
+    static void AddLevel(Level* lvl);
+    static void AddLevels(std::vector<Level*> lvls);
+    static void RemoveLevel(Level* lvl);
+};
