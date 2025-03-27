@@ -1,3 +1,5 @@
+#pragma once
+
 namespace CLGEngine {
 /// @brief Provides quick access to color combinations for the Command Line 
 namespace Color{
