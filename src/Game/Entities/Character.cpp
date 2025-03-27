@@ -18,7 +18,7 @@ CHAR_INFO charMat = {
 Character::Character(CLGEngine::Vector2<float> startPosition)
             : Entity(startPosition.x, startPosition.y, 1, 1)
             , _speed(10)
-            , _position({startPosition.x + 0.5f, startPosition.y + 0.5f})
+            , _position({startPosition.x + 0.5f, startPosition.y + 0.5f}) // shouldnt y be -0.5?
 {
     name = "player";
     _col = new CLGEngine::Collider(this);
@@ -64,7 +64,7 @@ void AdjustMomentum(int direction){
 bool jumping = 0;
 void Character::Update(){
 #pragma region Jump/Gravity Logic
-    CLGEngine::Vector2<float> belowCell = {_position.x, _position.y + 0.5f};
+    CLGEngine::Vector2<float> belowCell = {_position.x, _position.y + 0.5f};        // This
     CLGEngine::Collider* hit = _col->CheckCollisionAtPoint(belowCell);
     bool solidGround = 
         (hit == nullptr) ? 
@@ -73,7 +73,7 @@ void Character::Update(){
     
     if(_grounded){ 
         _groundLevel = belowCell.y;
-        _position.y = _groundLevel - 0.5;
+        _position.y = _groundLevel - 0.5;                                           // Plus this may cancel each other out...
         jumping = 0;
         vertMomentum = 0;
     } else {
