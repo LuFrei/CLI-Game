@@ -1,3 +1,3 @@
-add_library(Debugger
+add_library(Debugging
     Debugger.cpp
 )

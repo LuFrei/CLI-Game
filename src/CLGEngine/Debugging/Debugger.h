@@ -11,4 +11,4 @@ public:
     Debugger();
     void AddToWatchList(std::string name, int* value);
     void DrawList();
-}
+};

@@ -13,7 +13,7 @@ private:
 public:
     static Game* GetGameInstance() {return _instance;};
     
-    CLGEngine::CORE::ConsoleWindow mainWindow;
+    CORE::ConsoleWindow* mainWindow;
     Game();
     ~Game();
     void Play();

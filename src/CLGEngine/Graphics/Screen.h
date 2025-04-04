@@ -28,5 +28,6 @@ public:
 
 	void AddToRenderQueue(Block* block);
 	void RemoveFromRenderQueue(Block* block);
+	void Resize(int nW, int nH);
 };
 }

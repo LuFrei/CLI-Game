@@ -7,7 +7,7 @@ namespace CLGEngine{
 Game* Game::_instance = nullptr;
 
 Game::Game()
-: mainWindow(){
+: mainWindow(CORE::ConsoleWindow::GetMainWindow()){
     try{
         if(_instance != nullptr){
             throw "a Game object already exists.";
@@ -20,6 +20,7 @@ Game::Game()
 
 Game::~Game(){
     _instance = nullptr;
+    delete mainWindow;
 }
 
 void Game::Play() {
@@ -30,7 +31,7 @@ void Game::Play() {
 
         CLGEngine::EntityManager::UpdateEntities();
 
-        mainWindow.screen->Draw();
+        mainWindow->screen->Draw();
     }
 }
 

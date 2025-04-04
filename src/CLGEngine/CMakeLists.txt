@@ -13,4 +13,10 @@ add_library(CLGEngine
 add_subdirectory(Graphics)
 add_subdirectory(CORE)
 add_subdirectory(Components)
-target_link_libraries(CLGEngine PUBLIC CORE Graphics Components)
+add_subdirectory(Debugging)
+target_link_libraries(CLGEngine PUBLIC 
+    CORE 
+    Graphics 
+    Components 
+    Debugging
+)

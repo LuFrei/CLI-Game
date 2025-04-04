@@ -17,13 +17,14 @@ Screen::Screen(int width, int height) {
 	bounds = { 0, 0, (short)width, (short)height };
 
 	// TODO: May need to create a new buffer everytime the screen resizes.
+	// Note: This is specific to console. worth renaming.
 	cOutBuffer = CreateConsoleScreenBuffer(
 		GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL
 	);
 
 	SetConsoleActiveScreenBuffer(cOutBuffer);
 
-	// Set curose invisible
+	// Set cursor invisible
 	// TODO(Stretch): Lets make this an option later.
 	CONSOLE_CURSOR_INFO cursorInfo;
 	GetConsoleCursorInfo(cOutBuffer, &cursorInfo);
@@ -45,7 +46,6 @@ void Screen::RemoveFromRenderQueue(Block* block){
 	));
 }
 
-
 void Screen::ClearScreenData() {
 	// Paint the border
 	for (int i = 0; i < _width * _height; i++) {
@@ -63,8 +63,6 @@ void Screen::ClearScreenData() {
 		_data[i] = texture;
 	}
 }
-
-
 
 void Screen::Draw() {
 	ClearScreenData();
@@ -107,5 +105,13 @@ void Screen::Draw() {
 		{ 0, 0 },
 		&bounds
 	);
+}
+
+void Screen::Resize(int nW, int nH){
+	this->_width = nW;
+	this->_height = nH;
+
+	_data = new CHAR_INFO[nW * nH];
+	bounds = { 0, 0, (short)nW, (short)nH };
 }
 }

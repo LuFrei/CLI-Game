@@ -10,6 +10,7 @@
 #include "Game/Maps.h"
 #include "Game/Entities/LevelTrigger.h"
 #include "Game/GameManager.h"
+#include "CLGEngine/CORE/ConsoleWindow.h"
 
 using namespace CLGEngine;
 
@@ -28,6 +29,10 @@ int main()
     * TileMap will be 1 value in each level.
     */
 
+    CORE::ConsoleWindow* newWindow = new CORE::ConsoleWindow();
+
+
+
     GameManager* gm = new GameManager();
 
     Character* player = new Character({25, 21});
@@ -41,6 +46,7 @@ int main()
     game.Play();
     
     // TODO: Make an auto Entitiy cleaner.
+    delete newWindow;
     delete player;
     delete instructionalText;
     delete mapNameText;
