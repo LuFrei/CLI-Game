@@ -9,19 +9,20 @@ namespace CORE {
 	/// @brief
 	/// Represents the main window the app is running on. 
 	/// Works as a glorified wrapper for HWND
-	class ConsoleWindow {
-	// Main Window (This is going to be messy...)
-	private:
-		/* Note on Main Window it is no different than any other created window, expect: 
-			- it's automatically created, therefore needs to be fetched.
-			- There can only be ONE
-			- We cannot delete it (i believe it shuts the program down)
-			- We cannot create it (its done for us)
-		*/	
-		static ConsoleWindow* _mainWindow; // Difference betwee nusing a ptr here?>
-		ConsoleWindow(HWND handle); // KEpeing this private for the sole purpose to create a CoinsoleWindow for the MainWindow
-	public:
-		static ConsoleWindow* GetMainWindow();
+	class MainWindow {
+	/*! Logic to be retired !*/
+	// // Main Window (This is going to be messy...)
+	// private:
+	// 	/* Note on Main Window it is no different than any other created window, expect: 
+	// 		- it's automatically created, therefore needs to be fetched.
+	// 		- There can only be ONE
+	// 		- We cannot delete it (i believe it shuts the program down)
+	// 		- We cannot create it (its done for us)
+	// 	*/	
+	// 	static MainWindow* _mainWindow; // Difference betwee nusing a ptr here?>
+	// 	MainWindow(HWND handle); // KEpeing this private for the sole purpose to create a CoinsoleWindow for the MainWindow
+	// public:
+	// 	static MainWindow* GetMainWindow();
 	
 	// Main Logic
 	public:
@@ -34,8 +35,9 @@ namespace CORE {
 		//		If changing in the future, check here.
 		CLGEngine::Screen* screen;
 
-		ConsoleWindow();
-		~ConsoleWindow();
+		MainWindow();
+		// /* testing purposes*/MainWindow(bool); //bool is irrelevant here.
+		~MainWindow();
 
 		/// @brief Move relative to current position in pixels.
 		/// @param distance pixel distance

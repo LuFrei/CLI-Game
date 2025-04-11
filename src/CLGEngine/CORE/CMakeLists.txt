@@ -1,1 +1,7 @@
-add_library(CORE ConsoleWindow.cpp Vector2.h IObserver.h ISubject.h)
+add_library(CORE 
+    MainWindow.cpp 
+    Vector2.h 
+    IObserver.h 
+    ISubject.h
+    Window.cpp
+)

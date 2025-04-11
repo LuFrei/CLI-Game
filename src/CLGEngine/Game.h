@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Graphics/Screen.h"
-#include "CORE/ConsoleWindow.h"
+#include "CORE/MainWindow.h"
 
 
 namespace CLGEngine{
@@ -13,7 +13,7 @@ private:
 public:
     static Game* GetGameInstance() {return _instance;};
     
-    CORE::ConsoleWindow* mainWindow;
+    CORE::MainWindow* mainWindow;
     Game();
     ~Game();
     void Play();

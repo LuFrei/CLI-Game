@@ -1,4 +1,4 @@
- #include "CLGEngine/Entity.h"
+#include "CLGEngine/Entity.h"
 #include "CLGEngine/Game.h"
 #include "CLGEngine/TileMap.h"
 
@@ -10,12 +10,18 @@
 #include "Game/Maps.h"
 #include "Game/Entities/LevelTrigger.h"
 #include "Game/GameManager.h"
-#include "CLGEngine/CORE/ConsoleWindow.h"
+#include "CLGEngine/CORE/MainWindow.h"
+#include "CLGEngine/CORE/Window.h"
 
 using namespace CLGEngine;
 
-int main()
+int main(int argc, char* argv[])
 {
+
+    if(argc != 1){
+        printf("Usage: %s [cmdline]\n", argv[0]);
+        return 1;
+    }
     Game game = Game();
 
     /*Level Setup
@@ -29,15 +35,34 @@ int main()
     * TileMap will be 1 value in each level.
     */
 
-    CORE::ConsoleWindow* newWindow = new CORE::ConsoleWindow();
+    // Window* newWindow = new Window();
 
+    PROCESS_INFORMATION ProcInfo;
+    STARTUPINFO StartInfo;
+    ZeroMemory(&ProcInfo, sizeof(ProcInfo));
+
+    if( !CreateProcess(
+        NULL,                    // App Name
+        argv[0],                 // CommandLine (??)
+        NULL,                    // Process Attributes
+        NULL,                    // ThreadAttributes
+        FALSE,                   // InheritHandles
+        CREATE_NEW_CONSOLE,      // CreationFlags
+        NULL,                    // Environment
+        NULL,                    // Curr Dir
+        &StartInfo,                    // Startup Info
+        &ProcInfo
+    )){
+        printf("Process failed: (%d).\n", GetLastError());
+        return 1;
+    }
 
 
     GameManager* gm = new GameManager();
 
     Character* player = new Character({25, 21});
     player->gm = gm;
-    player->AddTileMap(gm->GetLevelTileMap()); // MAke this internal. No need if we reference gm in Player.
+    player->AddTileMap(gm->GetLevelTileMap()); // Make this internal. No need if we reference gm in Player.
 
     ScreenText* instructionalText = new ScreenText({0, 29});
     ScreenText* mapNameText = new ScreenText({20, 0});
@@ -46,11 +71,15 @@ int main()
     game.Play();
     
     // TODO: Make an auto Entitiy cleaner.
-    delete newWindow;
+    // delete newWindow;
     delete player;
     delete instructionalText;
     delete mapNameText;
     delete gm;
+
+    CloseHandle(ProcInfo.hProcess);
+    CloseHandle(ProcInfo.hThread);
+    
 }
 
 

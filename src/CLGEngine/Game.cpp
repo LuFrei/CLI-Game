@@ -5,15 +5,17 @@
 
 namespace CLGEngine{
 Game* Game::_instance = nullptr;
+CORE::MainWindow* secondWindow;
 
 Game::Game()
-: mainWindow(CORE::ConsoleWindow::GetMainWindow()){
+: mainWindow(new CORE::MainWindow()){
     try{
         if(_instance != nullptr){
             throw "a Game object already exists.";
         }
     } catch(std::string) 
     { }
+
 
     _instance = this;
 }
