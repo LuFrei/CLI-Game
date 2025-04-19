@@ -15,6 +15,11 @@
 
 using namespace CLGEngine;
 
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam){
+    // Let's keep it empty for now.
+    return DefWindowProc(hwnd, uMsg, wParam, lParam);
+};
+
 int main(int argc, char* argv[])
 {
 
@@ -39,24 +44,51 @@ int main(int argc, char* argv[])
 
     PROCESS_INFORMATION ProcInfo;
     STARTUPINFO StartInfo;
+
+    // This is needed
+    ZeroMemory(&StartInfo, sizeof(StartInfo));
+    StartInfo.cb = sizeof(StartInfo);
     ZeroMemory(&ProcInfo, sizeof(ProcInfo));
 
-    if( !CreateProcess(
-        NULL,                    // App Name
-        argv[0],                 // CommandLine (??)
-        NULL,                    // Process Attributes
-        NULL,                    // ThreadAttributes
-        FALSE,                   // InheritHandles
-        CREATE_NEW_CONSOLE,      // CreationFlags
-        NULL,                    // Environment
-        NULL,                    // Curr Dir
-        &StartInfo,                    // Startup Info
-        &ProcInfo
-    )){
-        printf("Process failed: (%d).\n", GetLastError());
+    LPSTR CmdLine = GetCommandLine();
+
+    /* Setting up window class */
+
+    const wchar_t CLASS_NAME[] = L"Pop-out Debug Display";
+
+    WNDCLASS wndClass = {};
+
+    // Window Procedure written above, before main
+
+    // hInstance
+    HINSTANCE hInstance = GetModuleHandle(NULL);
+
+    wndClass.lpfnWndProc = WindowProc;  // forward dclr??
+    wndClass.hInstance = hInstance;     // wWinMain.hInstance????????
+    wndClass.lpszClassName = (LPCSTR)CLASS_NAME;
+
+    RegisterClass(&wndClass);
+
+    HWND newWindow = CreateWindowEx(    
+        /* ExStyle */       0,
+        /* ClassName */     (LPCSTR)CLASS_NAME,                  
+        /* Window Name */   (LPCSTR)L"Debugger",
+        /* Style */         WS_OVERLAPPEDWINDOW,
+        /* x */             CW_USEDEFAULT,
+        /* y */             CW_USEDEFAULT,
+        /* w */             CW_USEDEFAULT,
+        /* h */             CW_USEDEFAULT,
+        /* WndParent */     NULL,
+        /* Menu */          NULL,
+        /* Instance */      hInstance, // IS this same as before? wWinMain.hInstance??
+        /* Param */         NULL
+    );
+    if(newWindow == NULL){
+        printf("Window creation failed: (%d).\n", GetLastError());
         return 1;
     }
 
+    ShowWindow(newWindow, SW_SHOWNORMAL);
 
     GameManager* gm = new GameManager();
 
@@ -71,7 +103,7 @@ int main(int argc, char* argv[])
     game.Play();
     
     // TODO: Make an auto Entitiy cleaner.
-    // delete newWindow;
+    delete newWindow;
     delete player;
     delete instructionalText;
     delete mapNameText;
