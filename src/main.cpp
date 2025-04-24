@@ -15,6 +15,8 @@
 
 using namespace CLGEngine;
 
+#define SUB_PROCESS_PATH "SecondScreen.exe "
+
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam){
     // Let's keep it empty for now.
     return DefWindowProc(hwnd, uMsg, wParam, lParam);
@@ -42,53 +44,44 @@ int main(int argc, char* argv[])
 
     // Window* newWindow = new Window();
 
-    PROCESS_INFORMATION ProcInfo;
-    STARTUPINFO StartInfo;
+    PROCESS_INFORMATION procInfo;
+    STARTUPINFO startInfo;
 
     // This is needed
-    ZeroMemory(&StartInfo, sizeof(StartInfo));
-    StartInfo.cb = sizeof(StartInfo);
-    ZeroMemory(&ProcInfo, sizeof(ProcInfo));
+    ZeroMemory(&startInfo, sizeof(startInfo));
+    startInfo.cb = sizeof(startInfo);
+    ZeroMemory(&procInfo, sizeof(procInfo));
 
-    LPSTR CmdLine = GetCommandLine();
+    // DWORD buffSize = 40;
+    // TCHAR pBuffer[MAX_PATH] = {0};
 
-    /* Setting up window class */
+    // GetModuleFileName(NULL, pBuffer, MAX_PATH);
+    
+    char argZ[MAX_PATH] = "C:\\Dev\\Projects\\CLI-Game\\build\\Debug\\SecondScreen.exe";
+    // LPSTR argY = argv[0];
+    // LPSTR scndApp = L"SecondScreen.exe ";
+    // std::string lpCmdLn = "SecondScreen.exe " + argZ;
 
-    const wchar_t CLASS_NAME[] = L"Pop-out Debug Display";
+    // DWORD actualBuffSize = GetCurrentDirectory(buffSize, pBuffer);
+    // LPSTR secondScreenApp = (LPSTR)"SecondScreen"; //!! name the other app this
+    // std::string appDir = strcat(SUB_PROCESS_PATH, argv[0]);
 
-    WNDCLASS wndClass = {};
-
-    // Window Procedure written above, before main
-
-    // hInstance
-    HINSTANCE hInstance = GetModuleHandle(NULL);
-
-    wndClass.lpfnWndProc = WindowProc;  // forward dclr??
-    wndClass.hInstance = hInstance;     // wWinMain.hInstance????????
-    wndClass.lpszClassName = (LPCSTR)CLASS_NAME;
-
-    RegisterClass(&wndClass);
-
-    HWND newWindow = CreateWindowEx(    
-        /* ExStyle */       0,
-        /* ClassName */     (LPCSTR)CLASS_NAME,                  
-        /* Window Name */   (LPCSTR)L"Debugger",
-        /* Style */         WS_OVERLAPPEDWINDOW,
-        /* x */             CW_USEDEFAULT,
-        /* y */             CW_USEDEFAULT,
-        /* w */             CW_USEDEFAULT,
-        /* h */             CW_USEDEFAULT,
-        /* WndParent */     NULL,
-        /* Menu */          NULL,
-        /* Instance */      hInstance, // IS this same as before? wWinMain.hInstance??
-        /* Param */         NULL
-    );
-    if(newWindow == NULL){
-        printf("Window creation failed: (%d).\n", GetLastError());
+    if( !CreateProcess( NULL,                       // No module name (use command line)
+        (LPSTR)argZ,        // Command line
+        NULL,                                       // Process handle not inheritable
+        NULL,                                       // Thread handle not inheritable
+        FALSE,                                      // Set handle inheritance to FALSE
+        CREATE_NEW_CONSOLE,                                          // No creation flags
+        NULL,                                       // Environment
+        NULL,                                       // Use parent's starting directory 
+        &startInfo,                                 // Pointer to STARTUPINFO structure
+        &procInfo )                                 // Pointer to PROCESS_INFORMATION structure
+    )
+    {
+        printf( "CreateProcess failed (%d).\n", GetLastError() );
         return 1;
     }
 
-    ShowWindow(newWindow, SW_SHOWNORMAL);
 
     GameManager* gm = new GameManager();
 
@@ -97,21 +90,24 @@ int main(int argc, char* argv[])
     player->AddTileMap(gm->GetLevelTileMap()); // Make this internal. No need if we reference gm in Player.
 
     ScreenText* instructionalText = new ScreenText({0, 29});
-    ScreenText* mapNameText = new ScreenText({20, 0});
+    ScreenText* mapNameText = new ScreenText({40, 0});
     instructionalText->SetText("[SpaceBar]  [<][>]");
+    // TODO: Just testing, remove later
+    mapNameText->SetText(std::string(GetCommandLine()));
 
     game.Play();
     
     // TODO: Make an auto Entitiy cleaner.
-    delete newWindow;
+    // delete newWindow;
     delete player;
     delete instructionalText;
     delete mapNameText;
     delete gm;
 
-    CloseHandle(ProcInfo.hProcess);
-    CloseHandle(ProcInfo.hThread);
+    CloseHandle(procInfo.hProcess);
+    CloseHandle(procInfo.hThread);
     
+    return 0;
 }
 
 

@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(CLI-Game src/main.cpp)
+add_executable(SecondScreen subproc/main.cpp)
 add_subdirectory(src/CLGEngine)
 add_subdirectory(src/Game)
 target_link_libraries(CLI-Game PUBLIC CLGEngine Game)
