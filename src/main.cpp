@@ -13,6 +13,8 @@
 #include "CLGEngine/CORE/MainWindow.h"
 #include "CLGEngine/CORE/Window.h"
 
+#include <filesystem>
+
 using namespace CLGEngine;
 
 #define SUB_PROCESS_PATH "SecondScreen.exe "
@@ -42,7 +44,15 @@ int main(int argc, char* argv[])
     * TileMap will be 1 value in each level.
     */
 
-    // Window* newWindow = new Window();
+    TCHAR modFileNameOut[MAX_PATH] = {0};
+    
+    GetModuleFileName(NULL, modFileNameOut, MAX_PATH);
+
+    std::filesystem::path exePath = modFileNameOut;
+
+    std::filesystem::path appPath = exePath.parent_path();
+    appPath /= "SecondScreen.exe";
+
 
     PROCESS_INFORMATION procInfo;
     STARTUPINFO startInfo;
@@ -51,23 +61,17 @@ int main(int argc, char* argv[])
     ZeroMemory(&startInfo, sizeof(startInfo));
     startInfo.cb = sizeof(startInfo);
     ZeroMemory(&procInfo, sizeof(procInfo));
-
-    // DWORD buffSize = 40;
-    // TCHAR pBuffer[MAX_PATH] = {0};
-
-    // GetModuleFileName(NULL, pBuffer, MAX_PATH);
     
-    char argZ[MAX_PATH] = "C:\\Dev\\Projects\\CLI-Game\\build\\Debug\\SecondScreen.exe";
+
     // LPSTR argY = argv[0];
     // LPSTR scndApp = L"SecondScreen.exe ";
     // std::string lpCmdLn = "SecondScreen.exe " + argZ;
 
-    // DWORD actualBuffSize = GetCurrentDirectory(buffSize, pBuffer);
     // LPSTR secondScreenApp = (LPSTR)"SecondScreen"; //!! name the other app this
     // std::string appDir = strcat(SUB_PROCESS_PATH, argv[0]);
 
     if( !CreateProcess( NULL,                       // No module name (use command line)
-        (LPSTR)argZ,        // Command line
+        (LPSTR)appPath.string().c_str(),        // Command line
         NULL,                                       // Process handle not inheritable
         NULL,                                       // Thread handle not inheritable
         FALSE,                                      // Set handle inheritance to FALSE
