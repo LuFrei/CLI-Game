@@ -35,6 +35,8 @@ void Game::Play() {
 
         mainWindow->screen->Draw();
     }
+
+    //clean up
 }
 
 void Game::Exit(){

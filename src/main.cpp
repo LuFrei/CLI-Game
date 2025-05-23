@@ -24,28 +24,40 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam){
     return DefWindowProc(hwnd, uMsg, wParam, lParam);
 };
 
-int main(int argc, char* argv[])
-{
+Game game = Game();
 
-    if(argc != 1){
-        printf("Usage: %s [cmdline]\n", argv[0]);
-        return 1;
+GameManager* gm;
+Character* player;
+ScreenText* instructionalText;
+ScreenText* mapNameText;
+
+PROCESS_INFORMATION procInfo;
+STARTUPINFO startInfo;
+HANDLE hJob;
+
+inline void cleanup(){
+    delete instructionalText;
+    delete player;
+    delete mapNameText;
+    delete gm;
+
+    CloseHandle(procInfo.hProcess);
+    CloseHandle(procInfo.hThread);
+    CloseHandle(hJob);
+    
+
+    // About to see if there actually hit...
+    if(!TerminateJobObject(hJob, 0)){
+        printf( "Failed to termiante Job: (%d).\n", GetLastError() );
+    } else {
+        printf( "Job Terminated");
     }
-    Game game = Game();
 
-    /*Level Setup
-    * Have levels in a folder.
-    * Load levels from directory into Level queue
-    
-    LevelManager.AddLevelToQueue(<path/to/levels>);
+};
 
-    * LevelManager should have direct access to entity manager to create and destroy
-    
-    * TileMap will be 1 value in each level.
-    */
-
-    TCHAR modFileNameOut[MAX_PATH] = {0};
-    
+inline void MakeNewWindow(){
+    TCHAR modFileNameOut[MAX_PATH] = {0}; 
+        
     GetModuleFileName(NULL, modFileNameOut, MAX_PATH);
 
     std::filesystem::path exePath = modFileNameOut;
@@ -53,22 +65,9 @@ int main(int argc, char* argv[])
     std::filesystem::path appPath = exePath.parent_path();
     appPath /= "SecondScreen.exe";
 
-
-    PROCESS_INFORMATION procInfo;
-    STARTUPINFO startInfo;
-
-    // This is needed
     ZeroMemory(&startInfo, sizeof(startInfo));
     startInfo.cb = sizeof(startInfo);
     ZeroMemory(&procInfo, sizeof(procInfo));
-    
-
-    // LPSTR argY = argv[0];
-    // LPSTR scndApp = L"SecondScreen.exe ";
-    // std::string lpCmdLn = "SecondScreen.exe " + argZ;
-
-    // LPSTR secondScreenApp = (LPSTR)"SecondScreen"; //!! name the other app this
-    // std::string appDir = strcat(SUB_PROCESS_PATH, argv[0]);
 
     if( !CreateProcess( NULL,                       // No module name (use command line)
         (LPSTR)appPath.string().c_str(),        // Command line
@@ -83,35 +82,97 @@ int main(int argc, char* argv[])
     )
     {
         printf( "CreateProcess failed (%d).\n", GetLastError() );
-        return 1;
+        throw 1;
     }
+}
+
+BOOL WINAPI ConsoleHandler(DWORD signal) {
+    if (signal == CTRL_CLOSE_EVENT || 
+        signal == CTRL_C_EVENT ||
+        signal == CTRL_BREAK_EVENT) 
+    {    
+        
+        game.Exit(); // TODO: This is not actually waiting for the loop to exit
+        // TODO: make a way for the cleanup to run AFTER the game loop stops.
+        //       Be it it here in Main or in Game.
+        // cleanup();
+
+        if(!TerminateJobObject(hJob, 0)){
+            printf( "Failed to termiante Job: (%d).\n", GetLastError() );
+        } else {
+            printf( "Job Terminated");
+        }
+
+        printf("Exiting... cleaning up.\n");
+    }
+    return FALSE;
+}
+
+int main(int argc, char* argv[])
+{
+    try {
+        SetConsoleCtrlHandler(ConsoleHandler, TRUE);
+        hJob = CreateJobObject(NULL, "CLI-Game");
+        if( !AssignProcessToJobObject(hJob, GetCurrentProcess()))
+        {
+            printf( "Failed to assign process to Job: (%d).\n", GetLastError() );
+            return 1;
+        }
+
+        BOOL isInJob;
+
+        if(!IsProcessInJob(GetCurrentProcess(), hJob, &isInJob)){
+            printf( "Failed to check process in Job: (%d).\n", GetLastError() );
+            return 1;
+        }
+
+        if(isInJob){
+            printf("success!");
+        }
+
+        if(argc != 1){
+            printf("Usage: %s [cmdline]\n", argv[0]);
+            return 1;
+        }
+  
+
+        /*Level Setup
+        * Have levels in a folder.
+        * Load levels from directory into Level queue
+        
+        LevelManager.AddLevelToQueue(<path/to/levels>);
+
+        * LevelManager should have direct access to entity manager to create and destroy
+        
+        * TileMap will be 1 value in each level.
+        */
+
+        
+        MakeNewWindow();
 
 
-    GameManager* gm = new GameManager();
+        gm = new GameManager();
 
-    Character* player = new Character({25, 21});
-    player->gm = gm;
-    player->AddTileMap(gm->GetLevelTileMap()); // Make this internal. No need if we reference gm in Player.
+        player = new Character({25, 21});
+        player->gm = gm;
+        player->AddTileMap(gm->GetLevelTileMap()); // Make this internal. No need if we reference gm in Player.
 
-    ScreenText* instructionalText = new ScreenText({0, 29});
-    ScreenText* mapNameText = new ScreenText({40, 0});
-    instructionalText->SetText("[SpaceBar]  [<][>]");
-    // TODO: Just testing, remove later
-    mapNameText->SetText(std::string(GetCommandLine()));
+        instructionalText = new ScreenText({0, 29});
+        mapNameText = new ScreenText({40, 0});
+        instructionalText->SetText("[SpaceBar]  [<][>]");
+        // TODO: Just testing, remove later
+        mapNameText->SetText(std::string(GetCommandLine()));
 
-    game.Play();
-    
-    // TODO: Make an auto Entitiy cleaner.
-    // delete newWindow;
-    delete player;
-    delete instructionalText;
-    delete mapNameText;
-    delete gm;
+        game.Play();
 
-    CloseHandle(procInfo.hProcess);
-    CloseHandle(procInfo.hThread);
-    
-    return 0;
+        cleanup();
+
+        return 0;
+    } catch (int errCode) {
+        cleanup();
+        //TODO: handle errors.
+        return errCode;
+    }
 }
 
 
