@@ -12,8 +12,10 @@
 #include "Game/GameManager.h"
 #include "CLGEngine/CORE/MainWindow.h"
 #include "CLGEngine/CORE/Window.h"
+#include "../shared.h"
 
 #include <filesystem>
+#include <iostream>
 
 using namespace CLGEngine;
 
@@ -34,6 +36,8 @@ ScreenText* mapNameText;
 PROCESS_INFORMATION procInfo;
 STARTUPINFO startInfo;
 HANDLE hJob;
+HANDLE hFMO;
+
 
 inline void cleanup(){
     delete instructionalText;
@@ -44,6 +48,7 @@ inline void cleanup(){
     CloseHandle(procInfo.hProcess);
     CloseHandle(procInfo.hThread);
     CloseHandle(hJob);
+    CloseHandle(hFMO);
     
 
     // About to see if there actually hit...
@@ -111,27 +116,67 @@ BOOL WINAPI ConsoleHandler(DWORD signal) {
 int main(int argc, char* argv[])
 {
     try {
+        
+        //Setting up File MApping
+        struct Shared::PlayerData pData = {10, 13} ;
+
+        int sharedSize = sizeof(struct Shared::PlayerData);
+
+        std::cout << "pData set" << std::endl
+            << "  x Position: " << pData.xPlayerPos << std::endl
+            << "  y Position: " << pData.yPlayerPos << std::endl;
+        std::cout << "sharedPlayerData size: " << sharedSize << std::endl;
+
+        hFMO = CreateFileMapping(
+            INVALID_HANDLE_VALUE,
+            NULL,
+            PAGE_READWRITE,
+            0,
+            sharedSize,
+            "clgSharedData"
+        );
+
+        SYSTEM_INFO sysInfo;
+        GetSystemInfo(&sysInfo);
+
+        void* sharedData = MapViewOfFile(
+            hFMO,
+            FILE_MAP_ALL_ACCESS,
+            0,
+            0,
+            sharedSize
+        );
+
+        if(sharedData == nullptr){
+            printf( "View File mapping failed (%d).\n", GetLastError() );
+            return 1; 
+        }
+
+        //End File Mapping Setup
+
+        //Testing FMO data sharing
+        std::cout << "Check sub-proc before moving on" << std::endl;
+        std::cin.get();
+
+        *((Shared::PlayerData*)sharedData) = pData;
+
+        std::cout << "data set to FMO. Check sub-proc before moving on" << std::endl;
+        std::cin.get();
+
+        ((Shared::PlayerData*)sharedData)->xPlayerPos = 20;
+
+        std::cout << "Data changed. Check sub-proc before moving on" << std::endl;
+        std::cin.get();
+
+        //End Testing FMO data sharing
+
+
         SetConsoleCtrlHandler(ConsoleHandler, TRUE);
+
         hJob = CreateJobObject(NULL, "CLI-Game");
         if( !AssignProcessToJobObject(hJob, GetCurrentProcess()))
         {
             printf( "Failed to assign process to Job: (%d).\n", GetLastError() );
-            return 1;
-        }
-
-        BOOL isInJob;
-
-        if(!IsProcessInJob(GetCurrentProcess(), hJob, &isInJob)){
-            printf( "Failed to check process in Job: (%d).\n", GetLastError() );
-            return 1;
-        }
-
-        if(isInJob){
-            printf("success!");
-        }
-
-        if(argc != 1){
-            printf("Usage: %s [cmdline]\n", argv[0]);
             return 1;
         }
   

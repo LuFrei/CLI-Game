@@ -41,5 +41,6 @@ void Game::Play() {
 
 void Game::Exit(){
     running = false;
+    // Find a way to break the game loop
 }
 }

@@ -4,6 +4,7 @@ project(CLI-Game VERSION 0.0.1 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+add_library(Shared STATIC shared.h)
 add_executable(CLI-Game src/main.cpp)
 add_executable(SecondScreen subproc/main.cpp)
 add_subdirectory(src/CLGEngine)
