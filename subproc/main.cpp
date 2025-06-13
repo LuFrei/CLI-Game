@@ -4,8 +4,6 @@
 #include "../shared.h"
 
 int main(int argc, char* argv[]){
-    std::cout << "Second window works!" << std::endl;
-    std::cout << "Command Line: " << GetCommandLine() << std::endl;
     
     HANDLE hFMO = OpenFileMapping(
         FILE_MAP_READ,
@@ -23,7 +21,15 @@ int main(int argc, char* argv[]){
         0, //sysInfo.dwAllocationGranularity,
         0
     );
+    // extracting to avoid doing ((Shared::PlayerData*)sharedData) 20000 times
+    Shared::PlayerData* pData = (Shared::PlayerData*)sharedData;
 
+    while(true){
+        printf("Player X Position: %d\nPlayer Y Position: %d", 
+            pData->xPlayerPos, 
+            pData->yPlayerPos
+        );
+    }
 
 
     CloseHandle(hFMO);

@@ -122,11 +122,6 @@ int main(int argc, char* argv[])
 
         int sharedSize = sizeof(struct Shared::PlayerData);
 
-        std::cout << "pData set" << std::endl
-            << "  x Position: " << pData.xPlayerPos << std::endl
-            << "  y Position: " << pData.yPlayerPos << std::endl;
-        std::cout << "sharedPlayerData size: " << sharedSize << std::endl;
-
         hFMO = CreateFileMapping(
             INVALID_HANDLE_VALUE,
             NULL,
@@ -155,21 +150,9 @@ int main(int argc, char* argv[])
         //End File Mapping Setup
 
         //Testing FMO data sharing
-        std::cout << "Check sub-proc before moving on" << std::endl;
-        std::cin.get();
-
         *((Shared::PlayerData*)sharedData) = pData;
-
-        std::cout << "data set to FMO. Check sub-proc before moving on" << std::endl;
-        std::cin.get();
-
         ((Shared::PlayerData*)sharedData)->xPlayerPos = 20;
-
-        std::cout << "Data changed. Check sub-proc before moving on" << std::endl;
-        std::cin.get();
-
         //End Testing FMO data sharing
-
 
         SetConsoleCtrlHandler(ConsoleHandler, TRUE);
 
