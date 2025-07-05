@@ -1,9 +1,9 @@
+#define LIB_EXPORTS
 #include "Screen.h"
 
 #include "ASCII.h" 
-#include "../CORE/Vector2.h"
 
-namespace CLGEngine {
+namespace clr {
 SMALL_RECT bounds;
 HANDLE cOutBuffer;
 
@@ -17,13 +17,14 @@ Screen::Screen(int width, int height) {
 	bounds = { 0, 0, (short)width, (short)height };
 
 	// TODO: May need to create a new buffer everytime the screen resizes.
+	// Note: This is specific to console. worth renaming.
 	cOutBuffer = CreateConsoleScreenBuffer(
 		GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL
 	);
 
 	SetConsoleActiveScreenBuffer(cOutBuffer);
 
-	// Set curose invisible
+	// Set cursor invisible
 	// TODO(Stretch): Lets make this an option later.
 	CONSOLE_CURSOR_INFO cursorInfo;
 	GetConsoleCursorInfo(cOutBuffer, &cursorInfo);
@@ -45,7 +46,6 @@ void Screen::RemoveFromRenderQueue(Block* block){
 	));
 }
 
-
 void Screen::ClearScreenData() {
 	// Paint the border
 	for (int i = 0; i < _width * _height; i++) {
@@ -64,23 +64,21 @@ void Screen::ClearScreenData() {
 	}
 }
 
-
-
 void Screen::Draw() {
 	ClearScreenData();
 	for(std::pair<int, std::vector<Block*>> queue : _renderQueue){
 		for (Block* block : queue.second) {
 			// is this block ever going going to show up in the screen?
-			if (block->rect.position.x >= _width
-				|| block->rect.position.y >= _height
-				|| block->rect.position.x + block->rect.size.x < 0
-				|| block->rect.position.y + block->rect.size.y < 0)
+			if (block->rect.x >= _width
+				|| block->rect.y >= _height
+				|| block->rect.x + block->rect.width < 0
+				|| block->rect.y + block->rect.height < 0)
 			{ continue; }
 
-			for (int h = 0; h < block->rect.size.y; h++) {
-				for (int w = 0; w < block->rect.size.x; w++) {
-					int cellX = block->rect.position.x + w;
-					int cellY = block->rect.position.y + h;
+			for (int h = 0; h < block->rect.height; h++) {
+				for (int w = 0; w < block->rect.width; w++) {
+					int cellX = block->rect.x + w;
+					int cellY = block->rect.y + h;
 
 					// Skip if this PART of the block is outside screen's bounds.
 					if (cellX < 0
@@ -93,7 +91,7 @@ void Screen::Draw() {
 
 
 					int cellIdx = _width * cellY + cellX;
-					int dataIdx = block->rect.size.x * h + w;
+					int dataIdx = block->rect.width * h + w;
 					_data[cellIdx] = block->dataArr[dataIdx];
 				}
 			}
@@ -107,5 +105,13 @@ void Screen::Draw() {
 		{ 0, 0 },
 		&bounds
 	);
+}
+
+void Screen::Resize(int nW, int nH){
+	this->_width = nW;
+	this->_height = nH;
+
+	_data = new CHAR_INFO[nW * nH];
+	bounds = { 0, 0, (short)nW, (short)nH };
 }
 }

@@ -9,14 +9,14 @@ BlockRenderer::BlockRenderer(Entity* ent, CHAR_INFO& material)
 BlockRenderer::BlockRenderer(Entity* ent, CHAR_INFO& material, bool isSquare)
 : Renderer(ent){
     SetSquareCells(isSquare);
-    int dataSize = block.rect.size.x * block.rect.size.y;
+    int dataSize = block.rect.width * block.rect.height;
     for (int i = 0; i < dataSize; i++){
         block.dataArr[i] = material;
     }
 };
 
 void BlockRenderer::SetMaterial(CHAR_INFO& material){
-    int dataSize = block.rect.size.x * block.rect.size.y;
+    int dataSize = block.rect.width * block.rect.height;
     for (int i = 0; i < dataSize; i++){
         block.dataArr[i] = material;
     }

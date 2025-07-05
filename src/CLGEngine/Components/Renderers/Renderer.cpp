@@ -5,7 +5,6 @@
 #include <wincon.h>
 
 #include "Renderer.h"
-#include "../../Graphics/ASCII.h"
 
 
 namespace CLGEngine {
@@ -16,8 +15,14 @@ CHAR_INFO defaultMaterial = {
 
 Renderer::Renderer(CLGEngine::Entity* ent)
 : Component(ent) 
-, _screen(Game::GetGameInstance()->mainWindow.screen)
-, block (Block(ent->rect())) {
+, _screen(Game::GetGameInstance()->mainWindow->screen)
+, block (clr::Block({
+	(int)ent->rect().position.x, 
+	(int)ent->rect().position.y, 
+	(int)ent->rect().size.x, 
+	(int)ent->rect().size.y
+	})							// Kind of messy, TODO: need to sort out CLIG Rect and CLR Rect
+) {
 	ent->AddSubscriber(this); // TODO: see if i can move this to Component
 	_screen->AddToRenderQueue(&block);
 }
@@ -38,23 +43,25 @@ void Renderer::z(int z){
 }
 
 void Renderer:: CreateNewBlock(Rect rect){
-	block = Block(rect);
+	clr::Rect rectTranslation = {rect.position.x, rect.position.y, rect.size.x, rect.size.y};
+	block = clr::Block(rectTranslation);
 }
 
 // Warn: if we - for whatever reason - need to change this at runtime,
 //		 there may be some issues.
 void Renderer::SetSquareCells(bool isSquare){
 	_squareCells = true;
-	block.rect.size.x *= 2; // TODO Next: Just hard code Block to do Square cells.
-	block.rect.position.x *= 2;
+	block.rect.width *= 2; // TODO Next: Just hard code Block to do Square cells.
+	block.rect.x *= 2;
 }
 
 void Renderer::OnNotify(Event e) {
 	switch(e){
 		case Event::Moved:
-			block.rect.position = entity->rect().position;
+			block.rect.x = entity->rect().position.x;
+			block.rect.y = entity->rect().position.y;
 			if(_squareCells) {
-				block.rect.position.x *= 2;
+				block.rect.x *= 2;
 			}
 			break;
 	}

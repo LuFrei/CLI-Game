@@ -1,5 +1,5 @@
 #pragma once
-namespace CLGEngine {
+namespace clr {
 /// @brief Provides quick access to several ASCII codes
 namespace ASCII{
 #define ASCII_VERTICAL_BAR 179

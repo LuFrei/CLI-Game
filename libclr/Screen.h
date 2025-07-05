@@ -1,16 +1,16 @@
 #pragma once
 
+#include "export.h"
 #include <Windows.h>
 #include <vector>
 #include <map>
 #include "Block.h"
-#include "../CORE/Rect.h"
 
-namespace CLGEngine {
+namespace clr {
 
 /// @brief that represents the viewport into the virttual world; i.e. 
 /// the client's screen that renders the game.
-class Screen
+class LIB_API Screen
 {
 private:
 	int _width;
@@ -28,5 +28,6 @@ public:
 
 	void AddToRenderQueue(Block* block);
 	void RemoveFromRenderQueue(Block* block);
+	void Resize(int nW, int nH);
 };
 }

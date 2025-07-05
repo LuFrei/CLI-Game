@@ -5,9 +5,10 @@
 
 namespace CLGEngine{
 Game* Game::_instance = nullptr;
+CORE::MainWindow* secondWindow;
 
 Game::Game()
-: mainWindow(){
+: mainWindow(new CORE::MainWindow()){
     try{
         if(_instance != nullptr){
             throw "a Game object already exists.";
@@ -15,11 +16,13 @@ Game::Game()
     } catch(std::string) 
     { }
 
+
     _instance = this;
 }
 
 Game::~Game(){
     _instance = nullptr;
+    delete mainWindow;
 }
 
 void Game::Play() {
@@ -30,11 +33,14 @@ void Game::Play() {
 
         CLGEngine::EntityManager::UpdateEntities();
 
-        mainWindow.screen->Draw();
+        mainWindow->screen->Draw();
     }
+
+    //clean up
 }
 
 void Game::Exit(){
     running = false;
+    // Find a way to break the game loop
 }
 }
