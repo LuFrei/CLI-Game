@@ -16,6 +16,7 @@ public:
     Rect rect;
     CHAR_INFO* dataArr;
 
+    Block();
     Block(int width, int height);
     Block(Rect rect);
     ~Block();

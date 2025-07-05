@@ -4,6 +4,11 @@
 
 namespace clr{
 
+Block::Block(){
+    rect = {0,0, 1, 1}; //TODO: Some pooint find out how to add custom explicit/ implicit converstions.
+    dataArr = new CHAR_INFO[width * height];
+}
+    
 Block::Block(int width, int height) {
     rect = {0,0, width, height}; //TODO: Some pooint find out how to add custom explicit/ implicit converstions.
     dataArr = new CHAR_INFO[width * height];

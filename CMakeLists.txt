@@ -13,10 +13,11 @@ add_executable(SecondScreen subproc/main.cpp)
 include_directories(PUBLIC ./libclr)
 add_subdirectory(src/CLGEngine)
 add_subdirectory(src/Game)
-add_subdirectory(libclr)
+
+target_link_directories(${PROJECT_NAME} PUBLIC ./libclr/build/Debug)
 target_link_libraries(${PROJECT_NAME} PUBLIC CLGEngine Game libclr)
 
 add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND cp -u ${PROJECT_SOURCE_DIR}/build/libclr/Debug/libclr.dll ${CMAKE_BINARY_DIR}/Debug
+    COMMAND cp -u ${PROJECT_SOURCE_DIR}/libclr/build/Debug/libclr.dll ${CMAKE_BINARY_DIR}/Debug
 )

@@ -1,5 +1,10 @@
+cmake_minimum_required(VERSION 3.29)
+project(libclr VERSION 0.0.1 LANGUAGES C CXX)
 
-add_library(libclr SHARED
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+add_library(${PROJECT_NAME} SHARED
     ASCII.h
     Block.cpp
     Color.h
