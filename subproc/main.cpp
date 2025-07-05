@@ -26,11 +26,10 @@ int main(int argc, char* argv[]){
 
     while(true){
         printf("Player X Position: %d\nPlayer Y Position: %d", 
-            pData->xPlayerPos, 
-            pData->yPlayerPos
+            *(pData->xPlayerPos), 
+            *(pData->yPlayerPos)
         );
     }
-
 
     CloseHandle(hFMO);
     return 0;

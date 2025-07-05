@@ -10,13 +10,13 @@ add_library(CLGEngine
     TileMap.cpp
 )
 
-add_subdirectory(Graphics)
+# add_subdirectory(Graphics)
 add_subdirectory(CORE)
 add_subdirectory(Components)
 add_subdirectory(Debugging)
 target_link_libraries(CLGEngine PUBLIC 
     CORE 
-    Graphics 
+    # Graphics 
     Components 
     Debugging
 )

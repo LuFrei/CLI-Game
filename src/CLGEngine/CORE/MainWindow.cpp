@@ -7,7 +7,7 @@ namespace CORE {
 	MainWindow::MainWindow() {
         h_window = GetConsoleWindow();              // Hard coded to be the main window console.
         GetWindowRect(h_window, &windowRect);
-        screen = new CLGEngine::Screen(120, 30);
+        screen = new clr::Screen(120, 30);
 
         position = { windowRect.left , windowRect.top };
         size = { 

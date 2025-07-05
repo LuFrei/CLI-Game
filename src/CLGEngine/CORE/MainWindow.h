@@ -1,8 +1,8 @@
 #pragma once
 #include <Windows.h>
 #include <vector>
+#include "libclr.h"
 #include "Vector2.h"
-#include "../Graphics/Screen.h"
 
 namespace CLGEngine {
 namespace CORE {
@@ -33,7 +33,7 @@ namespace CORE {
 		Vector2<LONG> size;
 		// TODO: the distinciton of whtehr this is a console window should be in Screen
 		//		If changing in the future, check here.
-		CLGEngine::Screen* screen;
+		clr::Screen* screen;
 
 		MainWindow();
 		// /* testing purposes*/MainWindow(bool); //bool is irrelevant here.

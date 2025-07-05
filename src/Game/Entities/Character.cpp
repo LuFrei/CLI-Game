@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <cmath>
-#include "../../CLGEngine/Graphics/ASCII.h"
 #include "../../CLGEngine/Time.h"
 #include "../../CLGEngine/Input.h"
 #include "../Maps.h"

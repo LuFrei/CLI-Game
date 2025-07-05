@@ -2,11 +2,11 @@
 
 #include <vector>
 #include <Windows.h>
+#include "libclr.h"
 #include "../Component.h"
 #include "../../CORE/IObserver.h"
 #include "../../CORE/Vector2.h"
 #include "../../Game.h"
-#include "../../Graphics/Screen.h" // Game includes screen... slgihtly redudant
 
 // We can store all created instances to update every cycle
 namespace CLGEngine {
@@ -17,14 +17,14 @@ class Renderer :
 	public Component, 
 	public IObserver {
 private:
-	Screen* _screen;
+	clr::Screen* _screen;
 	int _z;
 protected:
 	bool _squareCells;
 
 	void CreateNewBlock(Rect rect);
 public:
-	Block block;
+	clr::Block block;
 	CHAR_INFO material;
 	void z(int z);
 	int z() {return _z;}

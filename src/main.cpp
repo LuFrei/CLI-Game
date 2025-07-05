@@ -116,9 +116,10 @@ BOOL WINAPI ConsoleHandler(DWORD signal) {
 int main(int argc, char* argv[])
 {
     try {
-        
+        int simulatedXPos = 10;
+        int simulatedYPos = 15;
         //Setting up File MApping
-        struct Shared::PlayerData pData = {10, 13} ;
+        struct Shared::PlayerData pData = {&simulatedXPos, &simulatedYPos};
 
         int sharedSize = sizeof(struct Shared::PlayerData);
 
@@ -151,7 +152,7 @@ int main(int argc, char* argv[])
 
         //Testing FMO data sharing
         *((Shared::PlayerData*)sharedData) = pData;
-        ((Shared::PlayerData*)sharedData)->xPlayerPos = 20;
+        simulatedXPos = 20;
         //End Testing FMO data sharing
 
         SetConsoleCtrlHandler(ConsoleHandler, TRUE);
@@ -192,7 +193,6 @@ int main(int argc, char* argv[])
         mapNameText->SetText(std::string(GetCommandLine()));
 
         game.Play();
-
         cleanup();
 
         return 0;

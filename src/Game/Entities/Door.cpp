@@ -1,7 +1,6 @@
 #include "Door.h"
 
 #include <array>
-#include "../../CLGEngine/Graphics/ASCII.h"
 
 const std::array<short, 5> CODE_COLORS= {
     FOREGROUND_RED,

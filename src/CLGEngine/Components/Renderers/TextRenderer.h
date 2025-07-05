@@ -2,9 +2,9 @@
 
 #include <string>
 #include <vector>
+#include "libclr.h" // Imports Color
 #include "Renderer.h"
 #include "../../CORE/Vector2.h"
-#include "../../Graphics/Color.h"
 
 namespace CLGEngine {
 class TextRenderer
@@ -14,9 +14,8 @@ private:
 public:
     bool autoSize = false;
 
-    // TODO: Make an actual Color Data Strusture.
-    unsigned short textColor = WHITE;
-    unsigned short backgroundColor = BLACK;
+    unsigned short textColor = WHITE;       // May need clr:: prefix
+    unsigned short backgroundColor = BLACK; // May need clr:: prefix
 
     TextRenderer(Entity* ent, std::string text);
     ~TextRenderer();
