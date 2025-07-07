@@ -8,6 +8,5 @@ add_library(${PROJECT_NAME} SHARED
     ASCII.h
     Block.cpp
     Color.h
-    Rect.h
     Screen.cpp
 )

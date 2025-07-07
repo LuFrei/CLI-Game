@@ -2,24 +2,27 @@
 
 #include "export.h"
 #include <windows.h>
-#include "Rect.h"
 
 namespace clr{
 
 /// @brief Represents the 2D data that will be displayed on screen
 class LIB_API Block{
 private:
+    int _width, _height;
     // TODO: Probably remove Z from here.
     // right now we use this z to find what layer to add Block to in Screen.AddToRenderQueue.
     int _z; 
 public:
-    Rect rect;
+    int x, y;
     CHAR_INFO* dataArr;
 
     Block();
     Block(int width, int height);
-    Block(Rect rect);
+    Block(int x, int y, int width, int height);
     ~Block();
+
+    int width() {return _width;}
+    int height() {return _height;}
 
     void z(int z){_z = z;}
     int z(){return _z;}
@@ -28,6 +31,6 @@ public:
     /// @param material CHAR_INFO to fill the Block with.
     void Fill(CHAR_INFO material);
     void Resize(int newWidth, int newHeight);
-    void SetRect(Rect newRect);
+    void Reposition(int newX, int newY);
 };
 }

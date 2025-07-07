@@ -1,5 +1,4 @@
 #include "ASCII.h"
 #include "Block.h"
 #include "Color.h"
-#include "Rect.h"
 #include "Screen.h"

@@ -69,16 +69,16 @@ void Screen::Draw() {
 	for(std::pair<int, std::vector<Block*>> queue : _renderQueue){
 		for (Block* block : queue.second) {
 			// is this block ever going going to show up in the screen?
-			if (block->rect.x >= _width
-				|| block->rect.y >= _height
-				|| block->rect.x + block->rect.width < 0
-				|| block->rect.y + block->rect.height < 0)
+			if (block->x >= _width
+				|| block->y >= _height
+				|| block->x + block->width() < 0
+				|| block->y + block->height() < 0)
 			{ continue; }
 
-			for (int h = 0; h < block->rect.height; h++) {
-				for (int w = 0; w < block->rect.width; w++) {
-					int cellX = block->rect.x + w;
-					int cellY = block->rect.y + h;
+			for (int h = 0; h < block->height(); h++) {
+				for (int w = 0; w < block->width(); w++) {
+					int cellX = block->x + w;
+					int cellY = block->y + h;
 
 					// Skip if this PART of the block is outside screen's bounds.
 					if (cellX < 0
@@ -91,7 +91,7 @@ void Screen::Draw() {
 
 
 					int cellIdx = _width * cellY + cellX;
-					int dataIdx = block->rect.width * h + w;
+					int dataIdx = block->width() * h + w;
 					_data[cellIdx] = block->dataArr[dataIdx];
 				}
 			}
