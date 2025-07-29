@@ -2,9 +2,11 @@
 #include <Windows.h>
 
 #include "../shared.h"
+#include "libclr.h"
 
 int main(int argc, char* argv[]){
-    std::cout << "IM ALIVE!" << std::endl;
+    clr::Screen* screen = new clr::Screen(120, 30);
+
     HANDLE hFMO = OpenFileMapping(
         FILE_MAP_READ,
         FALSE,
@@ -24,16 +26,19 @@ int main(int argc, char* argv[]){
     // extracting to avoid doing ((Shared::PlayerData*)sharedData) 20000 times
     Shared::PlayerData* pData = (Shared::PlayerData*)sharedData;
 
-    std::cout << "type of pData: " << pData->xPlayerPos;
-    while(true){
-        std::cout << "HELP" << std::endl; 
+    clr::Block* testSquare = new clr::Block(2, 4);
+    testSquare->Fill({'A', WHITE});
+    screen->AddToRenderQueue(testSquare);
+    screen->Draw();
 
+    while(true){
         printf("Player X Position: %d\nPlayer Y Position: %d", 
             pData->xPlayerPos, 
             pData->yPlayerPos
-        ); 
+        );
     }
 
     CloseHandle(hFMO);
+    delete screen;
     return 0;
 }

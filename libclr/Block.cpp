@@ -35,7 +35,7 @@ void Block::Fill(CHAR_INFO material){
     dataArr.clear();
     dataArr.resize(_width * _height);
     for(int i = 0; i < (_width * _height); i++){
-        dataArr.push_back(material);
+        dataArr[i] = material;
     }
 }
 
