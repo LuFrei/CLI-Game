@@ -119,7 +119,7 @@ int main(int argc, char* argv[])
         int simulatedXPos = 10;
         int simulatedYPos = 15;
         //Setting up File MApping
-        struct Shared::PlayerData pData = {&simulatedXPos, &simulatedYPos};
+        struct Shared::PlayerData pData = {simulatedXPos, simulatedYPos};
 
         int sharedSize = sizeof(struct Shared::PlayerData);
 

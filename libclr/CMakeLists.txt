@@ -9,4 +9,5 @@ add_library(${PROJECT_NAME} SHARED
     Block.cpp
     Color.h
     Screen.cpp
+    TextBlock.cpp
 )

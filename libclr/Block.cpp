@@ -17,16 +17,25 @@ Block::Block(int x, int y, int width, int height) {
     this->y = y;
     _width = width;
     _height = height;
-    dataArr = new CHAR_INFO[width * height];
+    dataArr.resize(width * height);
 }
 
 Block::~Block(){
-    delete dataArr;
+    // delete dataArr;
+}
+
+// Should cheack to make sure CHAR_INFO is <= sizeLimit
+// This does nothing.
+void Block::SetData(std::vector<CHAR_INFO> newData){
+    int sizeLimit = _width * _height;
+    dataArr = newData;
 }
 
 void Block::Fill(CHAR_INFO material){
+    dataArr.clear();
+    dataArr.resize(_width * _height);
     for(int i = 0; i < (_width * _height); i++){
-        dataArr[i] = material;
+        dataArr.push_back(material);
     }
 }
 
@@ -36,8 +45,10 @@ void Block::Resize(int newWidth, int newHeight){ // If we are to make this multi
     _width = newWidth;
     _height = newHeight;
 
-    delete dataArr; // This shouldn't be null, but check here if ther's an error.
-    dataArr = new CHAR_INFO[_width * _height];
+    // TODO: Need to reevaluate if this is necessary.
+    //      Before vector refctor, we erased the array, so I'm keeping it here for now.
+    dataArr.resize(_width * _height);
+    // int daSize = dataArr.size();
 }
 
 void Block::Reposition(int newX, int newY){

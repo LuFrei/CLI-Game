@@ -64,7 +64,6 @@ void Renderer::OnNotify(Event e) {
 			}
 			break;
 	}
-
 }
 }
 
