@@ -13,10 +13,10 @@
 1. Scrolling view
 [x] list of blocks
 - scrolling blocks
-  [ ] Move blocks up/down, with last/first blocks rotating
+  [x] Move blocks up/down, with last/first blocks rotating
   [ ] Get mouse wheel input
 - Data scrolling for scrolling blocks
-  [ ] Make data set LARGER than lsit size.
+  [x] Make data set LARGER than lsit size.
   [ ] "viewport" range for history log
 2. "Log history" array
 [ ] Vector of strings locally.
@@ -54,23 +54,31 @@ int main(int argc, char* argv[]){
     Shared::PlayerData* pData = (Shared::PlayerData*)sharedData;
 
 #pragma region ScrollingLogScreen
+    // // Populating fake data
     // std::vector<std::string> logHistory;
+    // logHistory.push_back("Character Loaded.");
+    // logHistory.push_back("");
+
+    std::vector<WCHAR> fakeValues = {
+        L'A', L'B', L'C', L'D', L'E', L'F', L'G', L'H', L'I', L'J', L'K', L'L', L'M',
+        L'N', L'O', L'P', L'Q', L'R', L'S', L'T', L'U', L'V', L'W', L'X', L'Y', L'Z',
+        L'a', L'b', L'c', L'd', L'e', L'f', L'g', L'h', L'i', L'j', L'k', L'l', L'm',
+        L'n', L'o', L'p', L'q', L'r', L's', L't', L'u', L'v', L'w', L'x', L'y', L'z',
+        L'0', L'1', L'2', L'3', L'4', L'5', L'6', L'7', L'8', L'9'
+    };
+    // View port size
+    int viewportSize = SCREEN_HEIGHT;
+    int bottom = fakeValues.size();
+    int top = bottom - SCREEN_HEIGHT;
+    
     std::array<clr::Block, SCREEN_HEIGHT> textLines;
 
-    WCHAR characters[SCREEN_HEIGHT] = {
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 
-        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 
-        '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'
-    };
-
     for(int i = 0; i < SCREEN_HEIGHT; i++){
-        // textLines[i] = clr::Block(5, 1);
-        textLines[i].Resize(5, 1);
+        textLines[i].Resize(SCREEN_WIDTH/2, 1);
         textLines[i].y = i;
-        textLines[i].Fill({characters[i], WHITE});
+        textLines[i].Fill({fakeValues[i+top],WHITE});
         screen->AddToRenderQueue(&textLines[i]);
     }
-
 
 
 #pragma endregion // Scrolling log screen
@@ -90,22 +98,30 @@ Starting with straight forward approach.
 */
 
         // Scrolling down
-        if(GetKeyState(VK_DOWN) & 0x8000){
+        if(GetKeyState(VK_UP) & 0x8000 && top > 0){
+            bottom--;
+            top--;
             for(clr::Block& block : textLines){
                 block.y++;
-                if(block.y >= SCREEN_HEIGHT) 
+                if(block.y >= SCREEN_HEIGHT) {
                     block.y = 0;
+                    block.Fill({fakeValues[top], WHITE});
+                }
             }
 
             Sleep(50);
         }
 
         // Scrolling Up
-        if(GetKeyState(VK_UP) & 0x8000){
+        if(GetKeyState(VK_DOWN) & 0x8000 && bottom < fakeValues.size() - 1){
+            bottom++;
+            top++;
             for(clr::Block& block : textLines){
                 block.y--;
-                if(block.y < 0) 
+                if(block.y < 0) {
                     block.y = SCREEN_HEIGHT - 1;
+                    block.Fill({fakeValues[bottom], WHITE});
+                }
             }
 
             Sleep(50);
