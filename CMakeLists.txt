@@ -8,7 +8,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 link_directories(./libclr/build/Debug)
 
 add_executable(${PROJECT_NAME} src/main.cpp)
-add_executable(SecondScreen subproc/main.cpp)
+add_executable(SecondScreen subproc/main.cpp subproc/ScrollableTextView.cpp)
+
 
 include_directories(PUBLIC ./libclr)
 add_subdirectory(src/CLGEngine)
@@ -16,7 +17,7 @@ add_subdirectory(src/Game)
 include_directories(${CMAKE_SOURCE_DIR})
 
 target_link_libraries(${PROJECT_NAME} PUBLIC CLGEngine Game libclr)
-target_link_libraries(SecondScreen PUBLIC libclr)
+target_link_libraries(SecondScreen PUBLIC libclr) 
 
 add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD

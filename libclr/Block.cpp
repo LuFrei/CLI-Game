@@ -2,7 +2,7 @@
 #include "Block.h"
 #include "ASCII.h"
 
-namespace clr{
+namespace clr {
 
 Block::Block():
     Block(0, 0, 1, 1)
@@ -51,8 +51,14 @@ void Block::Resize(int newWidth, int newHeight){ // If we are to make this multi
     // int daSize = dataArr.size();
 }
 
-void Block::Reposition(int newX, int newY){
-    this->x = newX;
-    this->y = newY;
+void Block::SetTextData(std::string text){
+    // Would it be faster to just fill the empty space in the loop?
+    dataArr.clear();
+    dataArr.resize(_width * _height);
+
+    for(int i = 0; i < text.size() && i < _width * _height; i++){
+        dataArr[i].Char.AsciiChar = text[i];
+        dataArr[i].Attributes = WHITE;
+    }
 }
-}
+} // namespace clr

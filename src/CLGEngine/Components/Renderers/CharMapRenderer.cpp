@@ -19,7 +19,8 @@ void CharMapRenderer::SetCharMap(TileMap& charMap){
 	int width = _squareCells ? charMap.size.x * 2 : charMap.size.x;
 	float xPos =  _squareCells ? charMap.offset.x * 2 : charMap.offset.x;
 	
-	block.Reposition((int)xPos, charMap.offset.y);
+	block.x = (int)xPos;
+	block.y = charMap.offset.y;
 	block.Resize(width, charMap.size.y);
 	// block.SetRect({
 	// 	(int)xPos, 

@@ -2,6 +2,7 @@
 
 #include "export.h"
 #include <vector>
+#include <string>
 #include <windows.h>
 
 #include "Color.h"
@@ -37,6 +38,8 @@ public:
     void Fill(CHAR_INFO material);
     void Resize(int newWidth, int newHeight);
     // is this even necessary?
-    void Reposition(int newX, int newY);
+    void SetTextData(std::string);
+    // void SetBackGroundColorData(std::vector<Color> colors);
+    // void SetForeGroundColorData(std::vector<Color> colors);
 };
 }

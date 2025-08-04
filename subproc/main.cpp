@@ -6,8 +6,15 @@
 #include "../shared.h"
 #include "libclr.h"
 
+#include "ScrollableTextView.h"
+
 #define SCREEN_WIDTH 120
 #define SCREEN_HEIGHT 30
+
+/* WHEN IM BACK FROM MECHANIC:
+- Make CmakeLists file for subproc
+- Implement ScrollableTextView in this file.
+*/
 
 /* Checklist
 1. Scrolling view
@@ -17,10 +24,14 @@
   [ ] Get mouse wheel input
 - Data scrolling for scrolling blocks
   [x] Make data set LARGER than lsit size.
-  [ ] "viewport" range for history log
+  [x] "viewport" range for history log
 2. "Log history" array
-[ ] Vector of strings locally.
-[ ] TextBlocks: set text as block data.
+[-] TextBlocks: set text as block data.
+  - Half-done - Added set Text to Block. Not sure if should make TextBlock yet.
+[x] Vector of strings locally.
+[ ] Test to make sure live data additions are displayed properly
+  - Data sets < display capcity should be displayed top-to-bottom
+  - NEw data should appear below.
 3. File MApping data transfer
 [ ] temp data system
   - App sends string to display in data strucutre
@@ -28,7 +39,6 @@
     - if there's data, copy it to Log History, and erase temp data
     - When copying: move head of visible logs down (we want to show the enw data instantly.)
 */
-
 
 
 int main(int argc, char* argv[]){
@@ -54,32 +64,77 @@ int main(int argc, char* argv[]){
     Shared::PlayerData* pData = (Shared::PlayerData*)sharedData;
 
 #pragma region ScrollingLogScreen
-    // // Populating fake data
-    // std::vector<std::string> logHistory;
-    // logHistory.push_back("Character Loaded.");
-    // logHistory.push_back("");
 
-    std::vector<WCHAR> fakeValues = {
-        L'A', L'B', L'C', L'D', L'E', L'F', L'G', L'H', L'I', L'J', L'K', L'L', L'M',
-        L'N', L'O', L'P', L'Q', L'R', L'S', L'T', L'U', L'V', L'W', L'X', L'Y', L'Z',
-        L'a', L'b', L'c', L'd', L'e', L'f', L'g', L'h', L'i', L'j', L'k', L'l', L'm',
-        L'n', L'o', L'p', L'q', L'r', L's', L't', L'u', L'v', L'w', L'x', L'y', L'z',
-        L'0', L'1', L'2', L'3', L'4', L'5', L'6', L'7', L'8', L'9'
+    std::vector<std::string> mockLogs = {
+        "1. Character Loaded.",
+        "2. Player spawned at coordinates (100, 200, 300).",
+        "3. Inventory updated: Added 'Health Potion'.",
+        "4. Quest 'Find the Lost Sword' started.",
+        "5. Enemy defeated: Goblin King.",
+        "6. Experience gained: 150 XP.",
+        "7. Level up! Now at Level 2.",
+        "8. New skill learned: Fireball.",
+        "9. Player traded with NPC: Merchant Joe.",
+        "10. Quest 'Defeat the Dragon' completed.",
+        "11. Gold earned: 500.",
+        "12. Player logged out.",
+        "13. Player logged in.",
+        "14. Player equipped 'Iron Sword'.",
+        "15. Achievement unlocked: First Blood.",
+        "16. Discovered new area: Whispering Woods.",
+        "17. Item crafted: Wooden Shield.",
+        "18. Player joined party: Alice.",
+        "19. Player left party: Bob.",
+        "20. Received message from NPC: 'Beware the caves.'",
+        "21. Player rested at campfire.",
+        "22. Weather changed: Rain started.",
+        "23. Trap triggered: Poison Dart.",
+        "24. Player revived by teammate.",
+        "25. Skill upgraded: Stealth II.",
+        "26. Player used item: Mana Potion.",
+        "27. Inventory full: Cannot pick up 'Silver Ring'.",
+        "28. Player opened treasure chest.",
+        "29. Found secret passage.",
+        "30. Player tamed a wild horse.",
+        "31. Player completed daily quest.",
+        "32. Player failed to pick lock.",
+        "33. Player learned recipe: Healing Salve.",
+        "34. Player took damage: 25 HP.",
+        "35. Player healed: 30 HP.",
+        "36. Player discovered hidden room.",
+        "37. Player solved puzzle: Ancient Runes.",
+        "38. Player received mail: 'Welcome Gift'.",
+        "39. Player equipped 'Leather Armor'.",
+        "40. Player unequipped 'Iron Helmet'.",
+        "41. Player upgraded weapon: +1 Damage.",
+        "42. Player started fishing.",
+        "43. Player caught a 'Golden Carp'.",
+        "44. Player cooked 'Grilled Meat'.",
+        "45. Player set waypoint: Mountain Peak.",
+        "46. Player activated portal.",
+        "47. Player entered dungeon: Shadow Crypt.",
+        "48. Player found rare item: 'Emerald Amulet'.",
+        "49. Player completed achievement: Explorer.",
+        "50. Player summoned pet: Wolf.",
+        "51. Player dismissed pet.",
+        "52. Player used emote: Wave.",
+        "53. Player changed appearance: New hairstyle.",
+        "54. Player received friend request.",
+        "55. Player accepted friend request.",
+        "56. Player declined trade offer.",
+        "57. Player sent group invite.",
+        "58. Player received group invite.",
+        "59. Player changed settings: Audio volume.",
+        "60. Player reported bug: 'Invisible wall'.",
+        "61. Player submitted feedback.",
+        "62. Player viewed leaderboard.",
+        "63. Player reached checkpoint.",
+        "64. Player exited to main menu."
     };
-    // View port size
-    int viewportSize = SCREEN_HEIGHT;
-    int bottom = fakeValues.size();
-    int top = bottom - SCREEN_HEIGHT;
-    
-    std::array<clr::Block, SCREEN_HEIGHT> textLines;
+    //Mock Log position Tracker -- for test use
+    int i = 0;
 
-    for(int i = 0; i < SCREEN_HEIGHT; i++){
-        textLines[i].Resize(SCREEN_WIDTH/2, 1);
-        textLines[i].y = i;
-        textLines[i].Fill({fakeValues[i+top],WHITE});
-        screen->AddToRenderQueue(&textLines[i]);
-    }
-
+    ScrollableTextView* logView = new ScrollableTextView(screen);
 
 #pragma endregion // Scrolling log screen
     
@@ -92,48 +147,41 @@ Simple solution is to iterate the array and update each
 block and check for bottom/top most if they exceed the limits.
 
 Maybe something better would be to have them grouped together
-where one change would move them all at once, And when one went out of bounds, it would self correct with an offset.
+where one change would move them all at once, And when one went 
+out of bounds, it would self correct with an offset.
 
 Starting with straight forward approach.
 */
 
-        // Scrolling down
-        if(GetKeyState(VK_UP) & 0x8000 && top > 0){
-            bottom--;
-            top--;
-            for(clr::Block& block : textLines){
-                block.y++;
-                if(block.y >= SCREEN_HEIGHT) {
-                    block.y = 0;
-                    block.Fill({fakeValues[top], WHITE});
-                }
-            }
-
-            Sleep(50);
+        // Testing adding Mock Logs
+        if(GetKeyState('P') & 0x8000 && i < mockLogs.size()){
+            logView->AddEntry(mockLogs[i]);
+            
+            i++;
+            Sleep(100);
         }
 
-        // Scrolling Up
-        if(GetKeyState(VK_DOWN) & 0x8000 && bottom < fakeValues.size() - 1){
-            bottom++;
-            top++;
-            for(clr::Block& block : textLines){
-                block.y--;
-                if(block.y < 0) {
-                    block.y = SCREEN_HEIGHT - 1;
-                    block.Fill({fakeValues[bottom], WHITE});
-                }
-            }
-
-            Sleep(50);
+        // (!)TODO: replace Sleep with a timer.
+        //          Debugger may be doing other things like watching live 
+        //          values, so we don't want to paud the entire app.
+        if(GetKeyState(VK_UP) & 0x8000){
+            logView->ScrollUp();
+            Sleep(50); // (!)
         }
-        
+
+        if(GetKeyState(VK_DOWN) & 0x8000){
+            logView->ScrollDown();
+            Sleep(50); // (!)
+        }
 
 #pragma endregion
-    
+
         screen->Draw(); 
     }
 
     CloseHandle(hFMO);
+    
+    delete logView;
     delete screen;
     return 0;
 }
