@@ -5,6 +5,7 @@
 #include "../../CLGEngine/Time.h"
 #include "../../CLGEngine/Input.h"
 #include "../Maps.h"
+#include "../../Debugger.h"
 
 const int jumpHeight = 4;
 const int jumpSpeed = 10;
@@ -140,6 +141,7 @@ void Character::Move(float momentum) {
 
 void Character::Jump(){
     if(vertMomentum == 0){
+        AddEntry((unsigned char*)"The player just jumped!");
         vertMomentum = 1;
     }
 

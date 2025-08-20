@@ -241,13 +241,7 @@ if( !AssignProcessToJobObject(hJob, GetCurrentProcess()))
         printf("Runtime reported exception 0x%lx = %ld\n", err, err);
     }
 
-    status = RpcStringFree(&pszStringBinding); 
 
-    if (status) exit(status);
-
-    status = RpcBindingFree(&Debugger_IfHandle);
-
-    if (status) exit(status);
 #pragma endregion   //RPC_Setup
    
 
@@ -264,6 +258,13 @@ if( !AssignProcessToJobObject(hJob, GetCurrentProcess()))
     mapNameText->SetText(std::string(GetCommandLine()));
 
     game.Play();
+        status = RpcStringFree(&pszStringBinding); 
+
+    if (status) exit(status);
+
+    status = RpcBindingFree(&Debugger_IfHandle);
+
+    if (status) exit(status);
     cleanup();
 
     return 0;
