@@ -1,5 +1,7 @@
-#include <iostream>
-#include <Windows.h>
+#include <rpc.h>
+#include <rpcndr.h>
+#include <iostream> // May not need this anymore
+#include <windows.h>
 #include <array>
 #include <stdlib.h>
 
@@ -7,49 +9,23 @@
 #include "libclr.h"
 
 #include "ScrollableTextView.h"
+#include "Debugger.h"
+
 
 #define SCREEN_WIDTH 120
 #define SCREEN_HEIGHT 30
 
-/* WHEN IM BACK FROM MECHANIC:
-- Make CmakeLists file for subproc
-- Implement ScrollableTextView in this file.
-*/
-
-/* Checklist
-1. Scrolling view
-[x] list of blocks
-- scrolling blocks
-  [x] Move blocks up/down, with last/first blocks rotating
-  [ ] Get mouse wheel input
-- Data scrolling for scrolling blocks
-  [x] Make data set LARGER than lsit size.
-  [x] "viewport" range for history log
-2. "Log history" array
-[-] TextBlocks: set text as block data.
-  - Half-done - Added set Text to Block. Not sure if should make TextBlock yet.
-[x] Vector of strings locally.
-[ ] Test to make sure live data additions are displayed properly
-  - Data sets < display capcity should be displayed top-to-bottom
-  - NEw data should appear below.
-3. File MApping data transfer
-[ ] temp data system
-  - App sends string to display in data strucutre
-  - Debugger checks if theres any content in data structure
-    - if there's data, copy it to Log History, and erase temp data
-    - When copying: move head of visible logs down (we want to show the enw data instantly.)
-*/
-
+ScrollableTextView* logView;
 
 int main(int argc, char* argv[]){
     clr::Screen* screen = new clr::Screen(SCREEN_WIDTH, SCREEN_HEIGHT);
-
+    
     HANDLE hFMO = OpenFileMapping(
         FILE_MAP_READ,
         FALSE,
         "clgSharedData"
     );
-
+    
     SYSTEM_INFO sysInfo;
     GetSystemInfo(&sysInfo);
 
@@ -60,11 +36,40 @@ int main(int argc, char* argv[]){
         0, //sysInfo.dwAllocationGranularity,
         0
     );
+
+#pragma region RPC_Setup
+    RPC_STATUS status;
+    unsigned char * pszProtocolSequence = (unsigned char*)"ncacn_np";
+    unsigned char * pszSecurity         = NULL; 
+    unsigned char * pszEndpoint         = (unsigned char*)"\\pipe\\hello";
+    unsigned int    cMinCalls = 1;
+    unsigned int    fDontWait = FALSE;
+
+    status = RpcServerUseProtseqEp(pszProtocolSequence,
+                                   RPC_C_LISTEN_MAX_CALLS_DEFAULT,
+                                   pszEndpoint,
+                                   pszSecurity); 
+ 
+    if (status) exit(status);
+ 
+    status = RpcServerRegisterIf(Debugger_v1_0_s_ifspec,  
+                                 NULL,   
+                                 NULL); 
+ 
+    if (status) exit(status);
+ 
+    status = RpcServerListen(cMinCalls,
+                             RPC_C_LISTEN_MAX_CALLS_DEFAULT,
+                             fDontWait);
+ 
+    if (status) exit(status);
+#pragma endregion //RPC_Setup
+
     // extracting to avoid doing ((Shared::PlayerData*)sharedData) 20000 times
     Shared::PlayerData* pData = (Shared::PlayerData*)sharedData;
-
-#pragma region ScrollingLogScreen
-
+    
+    #pragma region ScrollingLogScreen
+    
     std::vector<std::string> mockLogs = {
         "1. Character Loaded.",
         "2. Player spawned at coordinates (100, 200, 300).",
@@ -133,34 +138,33 @@ int main(int argc, char* argv[]){
     };
     //Mock Log position Tracker -- for test use
     int i = 0;
-
-    ScrollableTextView* logView = new ScrollableTextView(screen);
-
-#pragma endregion // Scrolling log screen
     
-
+    logView = new ScrollableTextView(screen);
+    
+    #pragma endregion // Scrolling log screen
+    
     while(true){
-
-#pragma region ScrollTesting
-/* NOTES: 
-Simple solution is to iterate the array and update each 
-block and check for bottom/top most if they exceed the limits.
-
-Maybe something better would be to have them grouped together
-where one change would move them all at once, And when one went 
-out of bounds, it would self correct with an offset.
-
-Starting with straight forward approach.
-*/
-
-        // Testing adding Mock Logs
-        if(GetKeyState('P') & 0x8000 && i < mockLogs.size()){
-            logView->AddEntry(mockLogs[i]);
-            
-            i++;
+        
+        #pragma region ScrollTesting
+        /* NOTES: 
+        Simple solution is to iterate the array and update each 
+        block and check for bottom/top most if they exceed the limits.
+        
+        Maybe something better would be to have them grouped together
+        where one change would move them all at once, And when one went 
+        out of bounds, it would self correct with an offset.
+        
+        Starting with straight forward approach.
+        */
+       
+       // Testing adding Mock Logs
+       if(GetKeyState('P') & 0x8000 && i < mockLogs.size()){
+           logView->AddEntry(mockLogs[i].c_str());
+           
+           i++;
             Sleep(100);
         }
-
+        
         // (!)TODO: replace Sleep with a timer.
         //          Debugger may be doing other things like watching live 
         //          values, so we don't want to paud the entire app.
@@ -168,20 +172,38 @@ Starting with straight forward approach.
             logView->ScrollUp();
             Sleep(50); // (!)
         }
-
+        
         if(GetKeyState(VK_DOWN) & 0x8000){
             logView->ScrollDown();
             Sleep(50); // (!)
         }
-
-#pragma endregion
-
+        
+        #pragma endregion
+        
         screen->Draw(); 
     }
-
+    
     CloseHandle(hFMO);
     
     delete logView;
     delete screen;
     return 0;
+}
+
+
+void AddEntry( 
+    /* [string][in] */ unsigned char *text
+){
+    char* sText = reinterpret_cast<char*>(text);
+    logView->AddEntry(sText);
+}
+
+void __RPC_FAR * __RPC_USER midl_user_allocate(size_t len)
+{
+    return(malloc(len));
+}
+ 
+void __RPC_USER midl_user_free(void __RPC_FAR * ptr)
+{
+    free(ptr);
 }

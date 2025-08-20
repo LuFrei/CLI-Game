@@ -14,8 +14,6 @@ Scrolling only works when _textList is larger than _textLines
 window is a range of 
 Should log histroy be in or out of the class?
 
-
-
 */
 
 class ScrollableTextView{

@@ -17,6 +17,8 @@
 #include <filesystem>
 #include <iostream>
 
+#include "Debugger.h"
+
 using namespace CLGEngine;
 
 #define SUB_PROCESS_PATH "SecondScreen.exe "
@@ -37,8 +39,13 @@ PROCESS_INFORMATION procInfo;
 STARTUPINFO startInfo;
 HANDLE hJob;
 HANDLE hFMO;
-
-
+/*********************/
+/* FOR WHEN IM BACK: */
+/*********************/
+/*
+RPC Say tconnection doesnt exist. 
+Look into race conditions when starting RPC/Second process!!!!
+*/
 inline void cleanup(){
     delete instructionalText;
     delete player;
@@ -59,6 +66,46 @@ inline void cleanup(){
     }
 
 };
+
+
+// TODO!: This will silent fail, need to integrate it with the RpcTryExcept
+//          Or vice versa.
+Shared::PlayerData* SetupFileMapping(){
+    // try {
+        int sharedSize = sizeof(struct Shared::PlayerData);
+
+        hFMO = CreateFileMapping(
+            INVALID_HANDLE_VALUE,
+            NULL,
+            PAGE_READWRITE,
+            0,
+            sharedSize,
+            "clgSharedData"
+        );
+        
+        SYSTEM_INFO sysInfo;
+        GetSystemInfo(&sysInfo);
+        
+        void* sharedData = MapViewOfFile(
+            hFMO,
+            FILE_MAP_ALL_ACCESS,
+            0,
+            0,
+            sharedSize
+        );
+        
+        if(sharedData == nullptr){
+            printf( "View File mapping failed (%d).\n", GetLastError() );
+            // return 1; // Will we crash or silent fail?
+        }
+
+        return (Shared::PlayerData*)sharedData;
+    // } catch (int errCode) {
+    //     cleanup();
+    //     //TODO: handle errors.
+    //     exit(1);
+    // }
+}
 
 inline void MakeNewWindow(){
     TCHAR modFileNameOut[MAX_PATH] = {0}; 
@@ -115,93 +162,115 @@ BOOL WINAPI ConsoleHandler(DWORD signal) {
 
 int main(int argc, char* argv[])
 {
-    try {
-        int simulatedXPos = 10;
-        int simulatedYPos = 15;
-        //Setting up File MApping
-        struct Shared::PlayerData pData = {simulatedXPos, simulatedYPos};
 
-        int sharedSize = sizeof(struct Shared::PlayerData);
+#pragma region File-Mapping
+    int simulatedXPos = 10;
+    int simulatedYPos = 15;
 
-        hFMO = CreateFileMapping(
-            INVALID_HANDLE_VALUE,
-            NULL,
-            PAGE_READWRITE,
-            0,
-            sharedSize,
-            "clgSharedData"
-        );
+    struct Shared::PlayerData pData = {simulatedXPos, simulatedYPos};
 
-        SYSTEM_INFO sysInfo;
-        GetSystemInfo(&sysInfo);
-
-        void* sharedData = MapViewOfFile(
-            hFMO,
-            FILE_MAP_ALL_ACCESS,
-            0,
-            0,
-            sharedSize
-        );
-
-        if(sharedData == nullptr){
-            printf( "View File mapping failed (%d).\n", GetLastError() );
-            return 1; 
-        }
-
-        //End File Mapping Setup
-
-        //Testing FMO data sharing
-        *((Shared::PlayerData*)sharedData) = pData;
-        simulatedXPos = 20;
-        //End Testing FMO data sharing
-
-        SetConsoleCtrlHandler(ConsoleHandler, TRUE);
-
-        hJob = CreateJobObject(NULL, "CLI-Game");
-        if( !AssignProcessToJobObject(hJob, GetCurrentProcess()))
-        {
-            printf( "Failed to assign process to Job: (%d).\n", GetLastError() );
-            return 1;
-        }
-  
-
-        /*Level Setup
-        * Have levels in a folder.
-        * Load levels from directory into Level queue
-        
-        LevelManager.AddLevelToQueue(<path/to/levels>);
-
-        * LevelManager should have direct access to entity manager to create and destroy
-        
-        * TileMap will be 1 value in each level.
-        */
-
-        
-        MakeNewWindow();
+    Shared::PlayerData* sharedData = SetupFileMapping();
 
 
-        gm = new GameManager();
 
-        player = new Character({25, 21});
-        player->gm = gm;
-        player->AddTileMap(gm->GetLevelTileMap()); // Make this internal. No need if we reference gm in Player.
+    //Testing FMO data sharing
+    *(sharedData) = pData;
+    simulatedXPos = 20;
 
-        instructionalText = new ScreenText({0, 29});
-        mapNameText = new ScreenText({40, 0});
-        instructionalText->SetText("[SpaceBar]  [<][>]");
-        // TODO: Just testing, remove later
-        mapNameText->SetText(std::string(GetCommandLine()));
+#pragma endregion   //File-Mapping
 
-        game.Play();
-        cleanup();
+#pragma region RPC_Setup
+    RPC_STATUS status;
+    unsigned char * pszUuid             = NULL;
+    unsigned char * pszProtocolSequence = (unsigned char*)"ncacn_np";
+    unsigned char * pszNetworkAddress   = NULL;
+    unsigned char * pszEndpoint         = (unsigned char*)"\\pipe\\hello";
+    unsigned char * pszOptions          = NULL;
+    unsigned char * pszStringBinding    = NULL;
+    unsigned char * pszString           = (unsigned char*)"DEBUGGER ONLINE!";
+    unsigned long ulCode;
+ 
+    status = RpcStringBindingCompose(pszUuid,
+                                     pszProtocolSequence,
+                                     pszNetworkAddress,
+                                     pszEndpoint,
+                                     pszOptions,
+                                     &pszStringBinding);
+    if (status) exit(status);
 
-        return 0;
-    } catch (int errCode) {
-        cleanup();
-        //TODO: handle errors.
-        return errCode;
+    status = RpcBindingFromStringBinding(pszStringBinding, &Debugger_IfHandle);
+ 
+    if (status) exit(status);
+ 
+    try  
+    {
+        AddEntry(pszString);
     }
+    catch(int err) 
+    {
+        printf("Runtime reported exception 0x%lx = %ld\n", err, err);
+    }
+ 
+    status = RpcStringFree(&pszStringBinding); 
+ 
+    if (status) exit(status);
+ 
+    status = RpcBindingFree(&Debugger_IfHandle);
+ 
+    if (status) exit(status);
+#pragma endregion   //RPC_Setup
+
+    SetConsoleCtrlHandler(ConsoleHandler, TRUE);
+
+    hJob = CreateJobObject(NULL, "CLI-Game");
+    if( !AssignProcessToJobObject(hJob, GetCurrentProcess()))
+    {
+        printf( "Failed to assign process to Job: (%d).\n", GetLastError() );
+        return 1;
+    }
+
+
+    /*Level Setup
+    * Have levels in a folder.
+    * Load levels from directory into Level queue
+    
+    LevelManager.AddLevelToQueue(<path/to/levels>);
+
+    * LevelManager should have direct access to entity manager to create and destroy
+    
+    * TileMap will be 1 value in each level.
+    */
+
+    
+    MakeNewWindow();
+
+
+    gm = new GameManager();
+
+    player = new Character({25, 21});
+    player->gm = gm;
+    player->AddTileMap(gm->GetLevelTileMap()); // Make this internal. No need if we reference gm in Player.
+
+    instructionalText = new ScreenText({0, 29});
+    mapNameText = new ScreenText({40, 0});
+    instructionalText->SetText("[SpaceBar]  [<][>]");
+    // TODO: Just testing, remove later
+    mapNameText->SetText(std::string(GetCommandLine()));
+
+    game.Play();
+    cleanup();
+
+    return 0;
 }
 
+void __RPC_FAR * __RPC_USER midl_user_allocate(size_t len)
+{
+    return(malloc(len));
+}
+ 
+void __RPC_USER midl_user_free(void __RPC_FAR * ptr)
+{
+    free(ptr);
+}
 
 // Need to know "what" to instantiate and the positions.

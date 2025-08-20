@@ -1,0 +1,6 @@
+[
+    implicit_handle (handle_t Debugger_IfHandle)
+] 
+interface Debugger
+{
+}
