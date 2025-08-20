@@ -17,6 +17,10 @@
 #include <filesystem>
 #include <iostream>
 
+// Temp, for testing
+#include <thread>
+#include <chrono>
+
 #include "Debugger.h"
 
 using namespace CLGEngine;
@@ -160,8 +164,7 @@ BOOL WINAPI ConsoleHandler(DWORD signal) {
     return FALSE;
 }
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
 
 #pragma region File-Mapping
     int simulatedXPos = 10;
@@ -179,29 +182,56 @@ int main(int argc, char* argv[])
 
 #pragma endregion   //File-Mapping
 
+
+SetConsoleCtrlHandler(ConsoleHandler, TRUE);
+
+hJob = CreateJobObject(NULL, "CLI-Game");
+if( !AssignProcessToJobObject(hJob, GetCurrentProcess()))
+{
+        printf( "Failed to assign process to Job: (%d).\n", GetLastError() );
+        return 1;
+    }
+
+    
+    /*Level Setup
+    * Have levels in a folder.
+    * Load levels from directory into Level queue
+    
+    LevelManager.AddLevelToQueue(<path/to/levels>);
+    
+    * LevelManager should have direct access to entity manager to create and destroy
+    
+    * TileMap will be 1 value in each level.
+    */
+   
+   
+   MakeNewWindow();
+   
+   std::this_thread::sleep_for(std::chrono::milliseconds(4000));
+
 #pragma region RPC_Setup
     RPC_STATUS status;
     unsigned char * pszUuid             = NULL;
     unsigned char * pszProtocolSequence = (unsigned char*)"ncacn_np";
     unsigned char * pszNetworkAddress   = NULL;
-    unsigned char * pszEndpoint         = (unsigned char*)"\\pipe\\hello";
+    unsigned char * pszEndpoint         = (unsigned char*)"\\pipe\\Debugger";
     unsigned char * pszOptions          = NULL;
     unsigned char * pszStringBinding    = NULL;
     unsigned char * pszString           = (unsigned char*)"DEBUGGER ONLINE!";
     unsigned long ulCode;
- 
+
     status = RpcStringBindingCompose(pszUuid,
-                                     pszProtocolSequence,
-                                     pszNetworkAddress,
-                                     pszEndpoint,
-                                     pszOptions,
-                                     &pszStringBinding);
+                                    pszProtocolSequence,
+                                    pszNetworkAddress,
+                                    pszEndpoint,
+                                    pszOptions,
+                                    &pszStringBinding);
     if (status) exit(status);
 
     status = RpcBindingFromStringBinding(pszStringBinding, &Debugger_IfHandle);
- 
+
     if (status) exit(status);
- 
+
     try  
     {
         AddEntry(pszString);
@@ -210,40 +240,16 @@ int main(int argc, char* argv[])
     {
         printf("Runtime reported exception 0x%lx = %ld\n", err, err);
     }
- 
+
     status = RpcStringFree(&pszStringBinding); 
- 
+
     if (status) exit(status);
- 
+
     status = RpcBindingFree(&Debugger_IfHandle);
- 
+
     if (status) exit(status);
 #pragma endregion   //RPC_Setup
-
-    SetConsoleCtrlHandler(ConsoleHandler, TRUE);
-
-    hJob = CreateJobObject(NULL, "CLI-Game");
-    if( !AssignProcessToJobObject(hJob, GetCurrentProcess()))
-    {
-        printf( "Failed to assign process to Job: (%d).\n", GetLastError() );
-        return 1;
-    }
-
-
-    /*Level Setup
-    * Have levels in a folder.
-    * Load levels from directory into Level queue
-    
-    LevelManager.AddLevelToQueue(<path/to/levels>);
-
-    * LevelManager should have direct access to entity manager to create and destroy
-    
-    * TileMap will be 1 value in each level.
-    */
-
-    
-    MakeNewWindow();
-
+   
 
     gm = new GameManager();
 

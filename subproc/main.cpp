@@ -11,15 +11,60 @@
 #include "ScrollableTextView.h"
 #include "Debugger.h"
 
+#include <thread>
+
 
 #define SCREEN_WIDTH 120
 #define SCREEN_HEIGHT 30
 
 ScrollableTextView* logView;
 
+void StartRcpServer(){
+    logView->AddEntry("Setting up RPC...");
+    RPC_STATUS status;
+    unsigned char * pszProtocolSequence = (unsigned char*)"ncacn_np";
+    unsigned char * pszSecurity         = NULL; 
+    unsigned char * pszEndpoint         = (unsigned char*)"\\pipe\\Debugger";
+    unsigned int    cMinCalls = 1;
+    unsigned int    fDontWait = FALSE;
+
+    logView->AddEntry("RPC Server Use Protseq...");
+    status = RpcServerUseProtseqEp(pszProtocolSequence,
+                                   RPC_C_LISTEN_MAX_CALLS_DEFAULT,
+                                   pszEndpoint,
+                                   pszSecurity); 
+ 
+    if (status) exit(status);
+ 
+    logView->AddEntry("Done.");
+    logView->AddEntry("RPC Server Register If...");
+
+    status = RpcServerRegisterIf(Debugger_v1_0_s_ifspec,  
+                                 NULL,   
+                                 NULL); 
+ 
+    if (status) exit(status);
+
+    logView->AddEntry("Done.");
+    logView->AddEntry("RPC Server Listening...");
+ 
+    status = RpcServerListen(cMinCalls,
+                             RPC_C_LISTEN_MAX_CALLS_DEFAULT,
+                             fDontWait);
+ 
+    if (status) 
+        exit(status);
+
+    logView->AddEntry("Done.");
+    logView->AddEntry("RPC setup DONE!");
+}
+
 int main(int argc, char* argv[]){
     clr::Screen* screen = new clr::Screen(SCREEN_WIDTH, SCREEN_HEIGHT);
-    
+    logView = new ScrollableTextView(screen);
+
+    logView->AddEntry("Setting up File Mapping...");
+
     HANDLE hFMO = OpenFileMapping(
         FILE_MAP_READ,
         FALSE,
@@ -37,33 +82,9 @@ int main(int argc, char* argv[]){
         0
     );
 
-#pragma region RPC_Setup
-    RPC_STATUS status;
-    unsigned char * pszProtocolSequence = (unsigned char*)"ncacn_np";
-    unsigned char * pszSecurity         = NULL; 
-    unsigned char * pszEndpoint         = (unsigned char*)"\\pipe\\hello";
-    unsigned int    cMinCalls = 1;
-    unsigned int    fDontWait = FALSE;
+    logView->AddEntry("COMPLETE.");
 
-    status = RpcServerUseProtseqEp(pszProtocolSequence,
-                                   RPC_C_LISTEN_MAX_CALLS_DEFAULT,
-                                   pszEndpoint,
-                                   pszSecurity); 
- 
-    if (status) exit(status);
- 
-    status = RpcServerRegisterIf(Debugger_v1_0_s_ifspec,  
-                                 NULL,   
-                                 NULL); 
- 
-    if (status) exit(status);
- 
-    status = RpcServerListen(cMinCalls,
-                             RPC_C_LISTEN_MAX_CALLS_DEFAULT,
-                             fDontWait);
- 
-    if (status) exit(status);
-#pragma endregion //RPC_Setup
+    std::thread RpcServer(StartRcpServer);
 
     // extracting to avoid doing ((Shared::PlayerData*)sharedData) 20000 times
     Shared::PlayerData* pData = (Shared::PlayerData*)sharedData;
@@ -139,10 +160,11 @@ int main(int argc, char* argv[]){
     //Mock Log position Tracker -- for test use
     int i = 0;
     
-    logView = new ScrollableTextView(screen);
     
     #pragma endregion // Scrolling log screen
     
+    logView->AddEntry("Ready to receive!");
+
     while(true){
         
         #pragma region ScrollTesting
