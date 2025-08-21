@@ -9,7 +9,7 @@
 #include "libclr.h"
 
 #include "ScrollableTextView.h"
-#include "Debugger.h"
+#include "DebugLogger.h"
 
 #include <thread>
 
@@ -24,7 +24,7 @@ void StartRcpServer(){
     RPC_STATUS status;
     unsigned char * pszProtocolSequence = (unsigned char*)"ncacn_np";
     unsigned char * pszSecurity         = NULL; 
-    unsigned char * pszEndpoint         = (unsigned char*)"\\pipe\\Debugger";
+    unsigned char * pszEndpoint         = (unsigned char*)"\\pipe\\DebugLogger";
     unsigned int    cMinCalls = 1;
     unsigned int    fDontWait = FALSE;
 
@@ -39,7 +39,7 @@ void StartRcpServer(){
     logView->AddEntry("Done.");
     logView->AddEntry("RPC Server Register If...");
 
-    status = RpcServerRegisterIf(Debugger_v1_0_s_ifspec,  
+    status = RpcServerRegisterIf(DebugLogger_v1_0_s_ifspec,  
                                  NULL,   
                                  NULL); 
  
@@ -214,9 +214,9 @@ int main(int argc, char* argv[]){
 
 
 void AddEntry( 
-    /* [string][in] */ unsigned char *text
+    /* [string][in] */ const unsigned char *text
 ){
-    char* sText = reinterpret_cast<char*>(text);
+    const char* sText = reinterpret_cast<const char*>(text);
     logView->AddEntry(sText);
 }
 

@@ -6,7 +6,7 @@
  /* File created by MIDL compiler version 8.01.0628 */
 /* at Mon Jan 18 22:14:07 2038
  */
-/* Compiler settings for Debugger.idl:
+/* Compiler settings for DebugLogger.idl:
     Oicf, W1, Zp8, env=Win64 (32b run), target_arch=AMD64 8.01.0628 
     protocol : dce , ms_ext, c_ext, robust
     error checks: allocation ref bounds_check enum stub_data 
@@ -33,7 +33,7 @@
 
 #include <string.h>
 
-#include "Debugger.h"
+#include "DebugLogger.h"
 
 #define TYPE_FORMAT_STRING_SIZE   7                                 
 #define PROC_FORMAT_STRING_SIZE   33                                
@@ -41,23 +41,23 @@
 #define TRANSMIT_AS_TABLE_SIZE    0            
 #define WIRE_MARSHAL_TABLE_SIZE   0            
 
-typedef struct _Debugger_MIDL_TYPE_FORMAT_STRING
+typedef struct _DebugLogger_MIDL_TYPE_FORMAT_STRING
     {
     short          Pad;
     unsigned char  Format[ TYPE_FORMAT_STRING_SIZE ];
-    } Debugger_MIDL_TYPE_FORMAT_STRING;
+    } DebugLogger_MIDL_TYPE_FORMAT_STRING;
 
-typedef struct _Debugger_MIDL_PROC_FORMAT_STRING
+typedef struct _DebugLogger_MIDL_PROC_FORMAT_STRING
     {
     short          Pad;
     unsigned char  Format[ PROC_FORMAT_STRING_SIZE ];
-    } Debugger_MIDL_PROC_FORMAT_STRING;
+    } DebugLogger_MIDL_PROC_FORMAT_STRING;
 
-typedef struct _Debugger_MIDL_EXPR_FORMAT_STRING
+typedef struct _DebugLogger_MIDL_EXPR_FORMAT_STRING
     {
     long          Pad;
     unsigned char  Format[ EXPR_FORMAT_STRING_SIZE ];
-    } Debugger_MIDL_EXPR_FORMAT_STRING;
+    } DebugLogger_MIDL_EXPR_FORMAT_STRING;
 
 
 static const RPC_SYNTAX_IDENTIFIER  _RpcTransferSyntax_2_0 = 
@@ -118,20 +118,20 @@ ObjectType ## _unbind((ObjectType) pObject, ServerHandle);\
 #endif
 
 
-extern const Debugger_MIDL_TYPE_FORMAT_STRING Debugger__MIDL_TypeFormatString;
-extern const Debugger_MIDL_PROC_FORMAT_STRING Debugger__MIDL_ProcFormatString;
-extern const Debugger_MIDL_EXPR_FORMAT_STRING Debugger__MIDL_ExprFormatString;
+extern const DebugLogger_MIDL_TYPE_FORMAT_STRING DebugLogger__MIDL_TypeFormatString;
+extern const DebugLogger_MIDL_PROC_FORMAT_STRING DebugLogger__MIDL_ProcFormatString;
+extern const DebugLogger_MIDL_EXPR_FORMAT_STRING DebugLogger__MIDL_ExprFormatString;
 
 #define GENERIC_BINDING_TABLE_SIZE   0            
 
 
-/* Standard interface: Debugger, ver. 1.0,
+/* Standard interface: DebugLogger, ver. 1.0,
    GUID={0x6a02bdc9,0x1d2e,0x4a81,{0x93,0xc2,0x4a,0x9c,0x47,0x21,0x80,0x1e}} */
 
-handle_t Debugger_IfHandle;
+handle_t DebugLogger_IfHandle;
 
 
-static const RPC_CLIENT_INTERFACE Debugger___RpcClientInterface =
+static const RPC_CLIENT_INTERFACE DebugLogger___RpcClientInterface =
     {
     sizeof(RPC_CLIENT_INTERFACE),
     {{0x6a02bdc9,0x1d2e,0x4a81,{0x93,0xc2,0x4a,0x9c,0x47,0x21,0x80,0x1e}},{1,0}},
@@ -143,26 +143,26 @@ static const RPC_CLIENT_INTERFACE Debugger___RpcClientInterface =
     0,
     0x00000000
     };
-RPC_IF_HANDLE Debugger_v1_0_c_ifspec = (RPC_IF_HANDLE)& Debugger___RpcClientInterface;
+RPC_IF_HANDLE DebugLogger_v1_0_c_ifspec = (RPC_IF_HANDLE)& DebugLogger___RpcClientInterface;
 #ifdef __cplusplus
 namespace {
 #endif
 
-extern const MIDL_STUB_DESC Debugger_StubDesc;
+extern const MIDL_STUB_DESC DebugLogger_StubDesc;
 #ifdef __cplusplus
 }
 #endif
 
-static RPC_BINDING_HANDLE Debugger__MIDL_AutoBindHandle;
+static RPC_BINDING_HANDLE DebugLogger__MIDL_AutoBindHandle;
 
 
 void AddEntry( 
-    /* [string][in] */ unsigned char *text)
+    /* [string][in] */ const unsigned char *text)
 {
 
     NdrClientCall2(
-                  ( PMIDL_STUB_DESC  )&Debugger_StubDesc,
-                  (PFORMAT_STRING) &Debugger__MIDL_ProcFormatString.Format[0],
+                  ( PMIDL_STUB_DESC  )&DebugLogger_StubDesc,
+                  (PFORMAT_STRING) &DebugLogger__MIDL_ProcFormatString.Format[0],
                   text);
     
 }
@@ -180,7 +180,7 @@ void AddEntry(
 #endif
 
 
-static const Debugger_MIDL_PROC_FORMAT_STRING Debugger__MIDL_ProcFormatString =
+static const DebugLogger_MIDL_PROC_FORMAT_STRING DebugLogger__MIDL_ProcFormatString =
     {
         0,
         {
@@ -213,7 +213,7 @@ static const Debugger_MIDL_PROC_FORMAT_STRING Debugger__MIDL_ProcFormatString =
         }
     };
 
-static const Debugger_MIDL_TYPE_FORMAT_STRING Debugger__MIDL_TypeFormatString =
+static const DebugLogger_MIDL_TYPE_FORMAT_STRING DebugLogger__MIDL_TypeFormatString =
     {
         0,
         {
@@ -228,7 +228,7 @@ static const Debugger_MIDL_TYPE_FORMAT_STRING Debugger__MIDL_TypeFormatString =
         }
     };
 
-static const unsigned short Debugger_FormatStringOffsetTable[] =
+static const unsigned short DebugLogger_FormatStringOffsetTable[] =
     {
     0
     };
@@ -237,17 +237,17 @@ static const unsigned short Debugger_FormatStringOffsetTable[] =
 #ifdef __cplusplus
 namespace {
 #endif
-static const MIDL_STUB_DESC Debugger_StubDesc = 
+static const MIDL_STUB_DESC DebugLogger_StubDesc = 
     {
-    (void *)& Debugger___RpcClientInterface,
+    (void *)& DebugLogger___RpcClientInterface,
     MIDL_user_allocate,
     MIDL_user_free,
-    &Debugger_IfHandle,
+    &DebugLogger_IfHandle,
     0,
     0,
     0,
     0,
-    Debugger__MIDL_TypeFormatString.Format,
+    DebugLogger__MIDL_TypeFormatString.Format,
     1, /* -error bounds_check flag */
     0x50002, /* Ndr library version */
     0,

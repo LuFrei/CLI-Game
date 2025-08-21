@@ -2,9 +2,9 @@
 uuid(6a02bdc9-1d2e-4a81-93c2-4a9c4721801e),
 version(1.0)
 ]
-interface Debugger
+interface DebugLogger
 {
     void AddEntry(
-        [in, string] unsigned char* text
+        [in, string] const char* text
     );
 }

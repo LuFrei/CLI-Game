@@ -11,6 +11,7 @@ private:
     static std::vector<std::string> _logHistory;
 public:
     Debugger();
+    ~Debugger();
     void AddToWatchList(std::string name, int* value);
     static void Log(std::string text);
 };

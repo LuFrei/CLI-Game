@@ -6,7 +6,7 @@
  /* File created by MIDL compiler version 8.01.0628 */
 /* at Mon Jan 18 22:14:07 2038
  */
-/* Compiler settings for Debugger.idl:
+/* Compiler settings for DebugLogger.idl:
     Oicf, W1, Zp8, env=Win64 (32b run), target_arch=AMD64 8.01.0628 
     protocol : dce , ms_ext, c_ext, robust
     error checks: allocation ref bounds_check enum stub_data 
@@ -32,7 +32,7 @@
 #pragma optimize("", off ) 
 
 #include <string.h>
-#include "Debugger.h"
+#include "DebugLogger.h"
 
 #define TYPE_FORMAT_STRING_SIZE   7                                 
 #define PROC_FORMAT_STRING_SIZE   33                                
@@ -40,23 +40,23 @@
 #define TRANSMIT_AS_TABLE_SIZE    0            
 #define WIRE_MARSHAL_TABLE_SIZE   0            
 
-typedef struct _Debugger_MIDL_TYPE_FORMAT_STRING
+typedef struct _DebugLogger_MIDL_TYPE_FORMAT_STRING
     {
     short          Pad;
     unsigned char  Format[ TYPE_FORMAT_STRING_SIZE ];
-    } Debugger_MIDL_TYPE_FORMAT_STRING;
+    } DebugLogger_MIDL_TYPE_FORMAT_STRING;
 
-typedef struct _Debugger_MIDL_PROC_FORMAT_STRING
+typedef struct _DebugLogger_MIDL_PROC_FORMAT_STRING
     {
     short          Pad;
     unsigned char  Format[ PROC_FORMAT_STRING_SIZE ];
-    } Debugger_MIDL_PROC_FORMAT_STRING;
+    } DebugLogger_MIDL_PROC_FORMAT_STRING;
 
-typedef struct _Debugger_MIDL_EXPR_FORMAT_STRING
+typedef struct _DebugLogger_MIDL_EXPR_FORMAT_STRING
     {
     long          Pad;
     unsigned char  Format[ EXPR_FORMAT_STRING_SIZE ];
-    } Debugger_MIDL_EXPR_FORMAT_STRING;
+    } DebugLogger_MIDL_EXPR_FORMAT_STRING;
 
 
 static const RPC_SYNTAX_IDENTIFIER  _RpcTransferSyntax_2_0 = 
@@ -116,36 +116,36 @@ ObjectType ## _unbind((ObjectType) pObject, ServerHandle);\
 #define XFG_TRAMPOLINE_FPTR_DEPENDENT_SYMBOL(Symbol) Symbol
 #endif
 
-extern const Debugger_MIDL_TYPE_FORMAT_STRING Debugger__MIDL_TypeFormatString;
-extern const Debugger_MIDL_PROC_FORMAT_STRING Debugger__MIDL_ProcFormatString;
-extern const Debugger_MIDL_EXPR_FORMAT_STRING Debugger__MIDL_ExprFormatString;
+extern const DebugLogger_MIDL_TYPE_FORMAT_STRING DebugLogger__MIDL_TypeFormatString;
+extern const DebugLogger_MIDL_PROC_FORMAT_STRING DebugLogger__MIDL_ProcFormatString;
+extern const DebugLogger_MIDL_EXPR_FORMAT_STRING DebugLogger__MIDL_ExprFormatString;
 
-/* Standard interface: Debugger, ver. 1.0,
+/* Standard interface: DebugLogger, ver. 1.0,
    GUID={0x6a02bdc9,0x1d2e,0x4a81,{0x93,0xc2,0x4a,0x9c,0x47,0x21,0x80,0x1e}} */
 
 
-extern const MIDL_SERVER_INFO Debugger_ServerInfo;
+extern const MIDL_SERVER_INFO DebugLogger_ServerInfo;
 
-extern const RPC_DISPATCH_TABLE Debugger_v1_0_DispatchTable;
+extern const RPC_DISPATCH_TABLE DebugLogger_v1_0_DispatchTable;
 
-static const RPC_SERVER_INTERFACE Debugger___RpcServerInterface =
+static const RPC_SERVER_INTERFACE DebugLogger___RpcServerInterface =
     {
     sizeof(RPC_SERVER_INTERFACE),
     {{0x6a02bdc9,0x1d2e,0x4a81,{0x93,0xc2,0x4a,0x9c,0x47,0x21,0x80,0x1e}},{1,0}},
     {{0x8A885D04,0x1CEB,0x11C9,{0x9F,0xE8,0x08,0x00,0x2B,0x10,0x48,0x60}},{2,0}},
-    (RPC_DISPATCH_TABLE*)&Debugger_v1_0_DispatchTable,
+    (RPC_DISPATCH_TABLE*)&DebugLogger_v1_0_DispatchTable,
     0,
     0,
     0,
-    &Debugger_ServerInfo,
+    &DebugLogger_ServerInfo,
     0x04000000
     };
-RPC_IF_HANDLE Debugger_v1_0_s_ifspec = (RPC_IF_HANDLE)& Debugger___RpcServerInterface;
+RPC_IF_HANDLE DebugLogger_v1_0_s_ifspec = (RPC_IF_HANDLE)& DebugLogger___RpcServerInterface;
 #ifdef __cplusplus
 namespace {
 #endif
 
-extern const MIDL_STUB_DESC Debugger_StubDesc;
+extern const MIDL_STUB_DESC DebugLogger_StubDesc;
 #ifdef __cplusplus
 }
 #endif
@@ -163,7 +163,7 @@ extern const MIDL_STUB_DESC Debugger_StubDesc;
 #endif
 
 
-static const Debugger_MIDL_PROC_FORMAT_STRING Debugger__MIDL_ProcFormatString =
+static const DebugLogger_MIDL_PROC_FORMAT_STRING DebugLogger__MIDL_ProcFormatString =
     {
         0,
         {
@@ -196,7 +196,7 @@ static const Debugger_MIDL_PROC_FORMAT_STRING Debugger__MIDL_ProcFormatString =
         }
     };
 
-static const Debugger_MIDL_TYPE_FORMAT_STRING Debugger__MIDL_TypeFormatString =
+static const DebugLogger_MIDL_TYPE_FORMAT_STRING DebugLogger__MIDL_TypeFormatString =
     {
         0,
         {
@@ -211,7 +211,7 @@ static const Debugger_MIDL_TYPE_FORMAT_STRING Debugger__MIDL_TypeFormatString =
         }
     };
 
-static const unsigned short Debugger_FormatStringOffsetTable[] =
+static const unsigned short DebugLogger_FormatStringOffsetTable[] =
     {
     0
     };
@@ -220,9 +220,9 @@ static const unsigned short Debugger_FormatStringOffsetTable[] =
 #ifdef __cplusplus
 namespace {
 #endif
-static const MIDL_STUB_DESC Debugger_StubDesc = 
+static const MIDL_STUB_DESC DebugLogger_StubDesc = 
     {
-    (void *)& Debugger___RpcServerInterface,
+    (void *)& DebugLogger___RpcServerInterface,
     MIDL_user_allocate,
     MIDL_user_free,
     0,
@@ -230,7 +230,7 @@ static const MIDL_STUB_DESC Debugger_StubDesc =
     0,
     0,
     0,
-    Debugger__MIDL_TypeFormatString.Format,
+    DebugLogger__MIDL_TypeFormatString.Format,
     1, /* -error bounds_check flag */
     0x50002, /* Ndr library version */
     0,
@@ -247,28 +247,28 @@ static const MIDL_STUB_DESC Debugger_StubDesc =
 }
 #endif
 
-static const RPC_DISPATCH_FUNCTION Debugger_table[] =
+static const RPC_DISPATCH_FUNCTION DebugLogger_table[] =
     {
     NdrServerCall2,
     0
     };
-static const RPC_DISPATCH_TABLE Debugger_v1_0_DispatchTable = 
+static const RPC_DISPATCH_TABLE DebugLogger_v1_0_DispatchTable = 
     {
     1,
-    (RPC_DISPATCH_FUNCTION*)Debugger_table
+    (RPC_DISPATCH_FUNCTION*)DebugLogger_table
     };
 
-static const SERVER_ROUTINE Debugger_ServerRoutineTable[] = 
+static const SERVER_ROUTINE DebugLogger_ServerRoutineTable[] = 
     {
     (SERVER_ROUTINE)AddEntry
     };
 
-static const MIDL_SERVER_INFO Debugger_ServerInfo = 
+static const MIDL_SERVER_INFO DebugLogger_ServerInfo = 
     {
-    &Debugger_StubDesc,
-    Debugger_ServerRoutineTable,
-    Debugger__MIDL_ProcFormatString.Format,
-    Debugger_FormatStringOffsetTable,
+    &DebugLogger_StubDesc,
+    DebugLogger_ServerRoutineTable,
+    DebugLogger__MIDL_ProcFormatString.Format,
+    DebugLogger_FormatStringOffsetTable,
     0,
     0,
     0,

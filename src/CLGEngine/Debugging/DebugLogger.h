@@ -6,7 +6,7 @@
  /* File created by MIDL compiler version 8.01.0628 */
 /* at Mon Jan 18 22:14:07 2038
  */
-/* Compiler settings for Debugger.idl:
+/* Compiler settings for DebugLogger.idl:
     Oicf, W1, Zp8, env=Win64 (32b run), target_arch=AMD64 8.01.0628 
     protocol : dce , ms_ext, c_ext, robust
     error checks: allocation ref bounds_check enum stub_data 
@@ -32,8 +32,8 @@
 #endif /* __RPCNDR_H_VERSION__ */
 
 
-#ifndef __Debugger_h__
-#define __Debugger_h__
+#ifndef __DebugLogger_h__
+#define __DebugLogger_h__
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1020)
 #pragma once
@@ -54,22 +54,22 @@ extern "C"{
 #endif 
 
 
-#ifndef __Debugger_INTERFACE_DEFINED__
-#define __Debugger_INTERFACE_DEFINED__
+#ifndef __DebugLogger_INTERFACE_DEFINED__
+#define __DebugLogger_INTERFACE_DEFINED__
 
-/* interface Debugger */
+/* interface DebugLogger */
 /* [implicit_handle][version][uuid] */ 
 
 void AddEntry( 
-    /* [string][in] */ unsigned char *text);
+    /* [string][in] */ const unsigned char *text);
 
 
-extern handle_t Debugger_IfHandle;
+extern handle_t DebugLogger_IfHandle;
 
 
-extern RPC_IF_HANDLE Debugger_v1_0_c_ifspec;
-extern RPC_IF_HANDLE Debugger_v1_0_s_ifspec;
-#endif /* __Debugger_INTERFACE_DEFINED__ */
+extern RPC_IF_HANDLE DebugLogger_v1_0_c_ifspec;
+extern RPC_IF_HANDLE DebugLogger_v1_0_s_ifspec;
+#endif /* __DebugLogger_INTERFACE_DEFINED__ */
 
 /* Additional Prototypes for ALL interfaces */
 

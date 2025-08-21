@@ -4,7 +4,7 @@
 
 #include "CLGEngine/CORE/MainWindow.h"
 #include "CLGEngine/CORE/Window.h"
-#include "CLGEngine/Debugger.h"
+#include "CLGEngine/Debugging/Debugger.h"
 
 #include "Game/Entities/Character.h"
 #include "Game/Entities/ScreenText.h"
@@ -15,15 +15,6 @@
 #include "Game/Entities/LevelTrigger.h"
 #include "Game/GameManager.h"
 #include "../shared.h"
-
-#include <filesystem>
-#include <iostream>
-
-// Temp, for testing
-#include <thread>
-#include <chrono>
-
-#include "Debugger.h"
 
 using namespace CLGEngine;
 
@@ -42,10 +33,10 @@ ScreenText* instructionalText;
 ScreenText* mapNameText;
 Debugger* debugger;
 
-PROCESS_INFORMATION procInfo;
-STARTUPINFO startInfo;
+// PROCESS_INFORMATION procInfo;
+// STARTUPINFO startInfo;
 HANDLE hJob;
-HANDLE hFMO;
+
 
 inline void cleanup(){
     delete debugger;
@@ -54,12 +45,8 @@ inline void cleanup(){
     delete mapNameText;
     delete gm;
 
-    CloseHandle(procInfo.hProcess);
-    CloseHandle(procInfo.hThread);
     CloseHandle(hJob);
-    CloseHandle(hFMO);
     
-
     // About to see if there actually hit...
     if(!TerminateJobObject(hJob, 0)){
         printf( "Failed to termiante Job: (%d).\n", GetLastError() );
@@ -96,9 +83,9 @@ int main(int argc, char* argv[]) {
     // Exit strategies
     SetConsoleCtrlHandler(ConsoleHandler, TRUE);
 
-    debugger = new Debugger::Debugger();
+    debugger = new Debugger();
 
-    // What was this for?
+    // Create Job to handle sub-processes.
     hJob = CreateJobObject(NULL, "CLI-Game");
     if( !AssignProcessToJobObject(hJob, GetCurrentProcess()))
     {
@@ -118,11 +105,7 @@ int main(int argc, char* argv[]) {
     
     * TileMap will be 1 value in each level.
     */
-
-
-
    
-
     gm = new GameManager();
 
     player = new Character({25, 21});
@@ -136,26 +119,10 @@ int main(int argc, char* argv[]) {
     mapNameText->SetText(std::string(GetCommandLine()));
 
     game.Play();
-        status = RpcStringFree(&pszStringBinding); 
-
-    if (status) exit(status);
-
-    status = RpcBindingFree(&Debugger_IfHandle);
-
-    if (status) exit(status);
+    
     cleanup();
 
     return 0;
-}
-
-void __RPC_FAR * __RPC_USER midl_user_allocate(size_t len)
-{
-    return(malloc(len));
-}
- 
-void __RPC_USER midl_user_free(void __RPC_FAR * ptr)
-{
-    free(ptr);
 }
 
 // Need to know "what" to instantiate and the positions.

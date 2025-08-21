@@ -1,6 +1,35 @@
 #include "Debugger.h"
 
-std::vector<std::strinf> Debugger::_logHistory = {};
+// Temp, for testing
+#include <thread>
+#include <chrono>
+
+#include <filesystem>
+#include <iostream>
+
+#include <Windows.h>
+
+#include "DebugLogger.h"
+#include "../../../shared.h"
+
+PROCESS_INFORMATION procInfo;
+STARTUPINFO startInfo;
+
+/* RPC Glob Vars*/
+RPC_STATUS status;
+unsigned char * pszUuid             = NULL;
+unsigned char * pszProtocolSequence = (unsigned char*)"ncacn_np";
+unsigned char * pszNetworkAddress   = NULL;
+unsigned char * pszEndpoint         = (unsigned char*)"\\pipe\\DebugLogger";
+unsigned char * pszOptions          = NULL;
+unsigned char * pszStringBinding    = NULL;
+unsigned char * pszString           = (unsigned char*)"LOGGER ONLINE!";
+unsigned long ulCode;
+// ---------
+
+HANDLE hFMO;
+
+std::vector<std::string> Debugger::_logHistory = {};
 
 inline void MakeNewWindow(){
     TCHAR modFileNameOut[MAX_PATH] = {0}; 
@@ -9,7 +38,7 @@ inline void MakeNewWindow(){
 
     std::filesystem::path exePath = modFileNameOut;
 
-    // TODO: Need to move SecondScreen to Debugger Directory.
+    // TODO: Need to move SecondScreen.exe to Debugger Directory.
     std::filesystem::path appPath = exePath.parent_path();
     appPath /= "SecondScreen.exe";
 
@@ -18,7 +47,7 @@ inline void MakeNewWindow(){
     ZeroMemory(&procInfo, sizeof(procInfo));
 
     if( !CreateProcess( NULL,                       // No module name (use command line)
-        (LPSTR)appPath.string().c_str(),        // Command line
+        (LPSTR)appPath.string().c_str(),            // Command line
         NULL,                                       // Process handle not inheritable
         NULL,                                       // Thread handle not inheritable
         FALSE,                                      // Set handle inheritance to FALSE
@@ -96,15 +125,7 @@ Debugger::Debugger(){
     std::this_thread::sleep_for(std::chrono::milliseconds(4000));
 
 #pragma region RPC_Setup
-    RPC_STATUS status;
-    unsigned char * pszUuid             = NULL;
-    unsigned char * pszProtocolSequence = (unsigned char*)"ncacn_np";
-    unsigned char * pszNetworkAddress   = NULL;
-    unsigned char * pszEndpoint         = (unsigned char*)"\\pipe\\Debugger";
-    unsigned char * pszOptions          = NULL;
-    unsigned char * pszStringBinding    = NULL;
-    unsigned char * pszString           = (unsigned char*)"DEBUGGER ONLINE!";
-    unsigned long ulCode;
+
 
     status = RpcStringBindingCompose(pszUuid,
                                     pszProtocolSequence,
@@ -114,7 +135,7 @@ Debugger::Debugger(){
                                     &pszStringBinding);
     if (status) exit(status);
 
-    status = RpcBindingFromStringBinding(pszStringBinding, &Debugger_IfHandle);
+    status = RpcBindingFromStringBinding(pszStringBinding, &DebugLogger_IfHandle);
 
     if (status) exit(status);
 
@@ -129,7 +150,35 @@ Debugger::Debugger(){
 #pragma endregion   //RPC_Setup
 }
 
-void Debugger::Log(std::string text){
-    _logHistory.push_back(text);
+Debugger::~Debugger(){
+    status = RpcStringFree(&pszStringBinding); 
+    if (status) exit(status);
 
+    status = RpcBindingFree(&DebugLogger_IfHandle);
+    if (status) exit(status);
+
+    CloseHandle(procInfo.hProcess);
+    CloseHandle(procInfo.hThread);
+    CloseHandle(hFMO);
+}
+
+// TODO: Make sure logger is up before using RPC
+//      And cache logs if it's not.
+void Debugger::Log(std::string text){
+    //if Dbgr is NOT live:
+    //    _logHistory.push_back(text);
+
+    //if Dbgr is live
+    AddEntry(reinterpret_cast<const unsigned char*>(text.c_str()));
+    // (unsigned char*)
+}
+
+void __RPC_FAR * __RPC_USER midl_user_allocate(size_t len)
+{
+    return(malloc(len));
+}
+ 
+void __RPC_USER midl_user_free(void __RPC_FAR * ptr)
+{
+    free(ptr);
 }

@@ -7,8 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # global library
 link_directories(./libclr/build/Debug)
 
-add_executable(${PROJECT_NAME} src/main.cpp src/Debugger_c.c)
-add_executable(SecondScreen subproc/main.cpp subproc/ScrollableTextView.cpp subproc/Debugger_s.c)
+add_executable(${PROJECT_NAME} src/main.cpp)
+add_executable(SecondScreen subproc/main.cpp subproc/ScrollableTextView.cpp subproc/DebugLogger_s.c)
 
 
 include_directories(PUBLIC ./libclr)
