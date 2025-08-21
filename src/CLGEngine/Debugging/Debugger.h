@@ -2,14 +2,17 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 class Debugger{
 private:
     // TODO: test if we can do variable data types.
-    std::map<std::string, int> watchList;
+    std::map<std::string, int> _watchList;
+    static std::vector<std::string> _logHistory;
 public:
     Debugger();
     void AddToWatchList(std::string name, int* value);
+    static void Log(std::string text);
 };
 
 /* Notes:

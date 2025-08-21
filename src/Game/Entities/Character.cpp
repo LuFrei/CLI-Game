@@ -64,16 +64,19 @@ void AdjustMomentum(int direction){
 bool jumping = 0;
 void Character::Update(){
 #pragma region Jump/Gravity Logic
-    CLGEngine::Vector2<float> belowCell = {_position.x, _position.y + 0.5f};        // This
+    CLGEngine::Vector2<float> belowCell 
+        = {_position.x, _position.y + 0.5f};        // This
     CLGEngine::Collider* hit = _col->CheckCollisionAtPoint(belowCell);
-    bool solidGround = 
-        (hit == nullptr) ? 
-        false : hit->isSolid;  
-    _grounded = _tileMap->GetTile((CLGEngine::Vector2<int>)belowCell) == '#' || solidGround;
+    bool solidGround 
+        = (hit == nullptr) 
+        ? false : hit->isSolid;  
+    _grounded 
+        = _tileMap->GetTile((CLGEngine::Vector2<int>)belowCell) == '#' 
+        || solidGround;
     
     if(_grounded){ 
         _groundLevel = belowCell.y;
-        _position.y = _groundLevel - 0.5;                                           // Plus this may cancel each other out...
+        _position.y = _groundLevel - 0.5;   // Plus this may cancel each other out...
         jumping = 0;
         vertMomentum = 0;
     } else {
@@ -168,7 +171,8 @@ void Character::Jump(){
 }
 
 void Character::SnapRectToGrid() {
-    CLGEngine::Vector2<float> posFloored = {std::floor(_position.x), std::floor(_position.y)};
+    CLGEngine::Vector2<float> posFloored
+        = {std::floor(_position.x), std::floor(_position.y)};
     if(posFloored == rect().position){
         return;
     }
