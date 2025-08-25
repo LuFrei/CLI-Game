@@ -24,7 +24,7 @@ private:
     int _viewportOffset = 0;
     clr::Screen* _screen = nullptr;
 public:
-    ScrollableTextView(clr::Screen* screen);
+    ScrollableTextView(clr::Screen* screen, int width, int height, int x, int y);
 
     void AddEntry(std::string log);
     void ScrollDown();
