@@ -65,9 +65,9 @@ inline void MakeNewWindow(){
 
 // TODO!: This will silent fail, need to integrate it with the RpcTryExcept
 //          Or vice versa.
-Shared::PlayerData* SetupFileMapping(){
+Shared::Data* SetupFileMapping(){
     // try {
-        int sharedSize = sizeof(struct Shared::PlayerData);
+        int sharedSize = sizeof(struct Shared::Data);
 
         hFMO = CreateFileMapping(
             INVALID_HANDLE_VALUE,
@@ -94,7 +94,7 @@ Shared::PlayerData* SetupFileMapping(){
             // return 1; // Will we crash or silent fail?
         }
 
-        return (Shared::PlayerData*)sharedData;
+        return (Shared::Data*)sharedData;
     // } catch (int errCode) {
     //     cleanup();
     //     //TODO: handle errors.
@@ -105,16 +105,15 @@ Shared::PlayerData* SetupFileMapping(){
 Debugger::Debugger(){
     // Most of this is testing data, and needs to be changed.
 #pragma region File-Mapping
-    int simulatedXPos = 10;
-    int simulatedYPos = 15;
 
-    struct Shared::PlayerData pData = {simulatedXPos, simulatedYPos};
+    struct Shared::Data pData = {};
 
-    Shared::PlayerData* sharedData = SetupFileMapping();
+    Shared::Data* sharedData = SetupFileMapping();
+
+    pData.AddData("Player X: ", 10);
 
     //Testing FMO data sharing
     *(sharedData) = pData;
-    simulatedXPos = 20;
 
 #pragma endregion   //File-Mapping
 

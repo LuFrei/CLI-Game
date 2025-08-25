@@ -9,7 +9,7 @@
 HANDLE hFMO;
 
 ScrollableTextView* view;
-Shared::PlayerData* pData;
+Shared::Data* sData;
 
 void InitWatchList(){
     view = new ScrollableTextView(screen, 
@@ -38,9 +38,26 @@ void SetupFileMap(){
         0
     );
 
-    pData = (Shared::PlayerData*)sharedData; 
+    sData = (Shared::Data*)sharedData; 
     Log("COMPLETE.");
 }
+
+/* TODO: 
+Vector is going out of bounds
+I'm not sure why but it's worth inspecting how GetEntry works,
+The lifecycle of new watchlist data,
+and how we manage the data.
+
+*/
+
+void PrintWatchListItems(){
+    if(sData != nullptr){
+        for(int i = 0; i < sData->size; i++){
+            *(view->GetEntry(i)) = sData->Message[i] + std::to_string(sData->Data[i]);
+        }
+    }
+}
+
 
 void CloseFileMap(){
     CloseHandle(hFMO);

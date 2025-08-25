@@ -24,6 +24,7 @@ int main(int argc, char* argv[]){
 
     while(true){
         RunLogger();
+        PrintWatchListItems();
         screen->Draw(); 
     }
     

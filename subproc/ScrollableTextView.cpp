@@ -15,23 +15,23 @@ ScrollableTextView::ScrollableTextView(clr::Screen* screen, int width, int heigh
 }
 
 void ScrollableTextView::AddEntry(std::string log){
-    _logHistory.push_back(log);
+    _entries.push_back(log);
 
-    if(_viewportOffset + SCREEN_HEIGHT < _logHistory.size() - 1){
+    if(_viewportOffset + SCREEN_HEIGHT < _entries.size() - 1){
         return;
-    }else if(_viewportOffset + SCREEN_HEIGHT > _logHistory.size() - 1){
+    }else if(_viewportOffset + SCREEN_HEIGHT > _entries.size() - 1){
         int blockOffset = _viewportOffset % SCREEN_HEIGHT;
-        int screenPosition = (_logHistory.size() - _viewportOffset - 1);
+        int screenPosition = (_entries.size() - _viewportOffset - 1);
         _textLines[(blockOffset + screenPosition) % SCREEN_HEIGHT]
-            .SetTextData(_logHistory.back());
-    } else if(_viewportOffset + SCREEN_HEIGHT == _logHistory.size() - 1){
+            .SetTextData(_entries.back());
+    } else if(_viewportOffset + SCREEN_HEIGHT == _entries.size() - 1){
         ScrollDown();
     }
 }
 
 void ScrollableTextView::ScrollDown() {
     // Fun Fact: .size() is unsigned...
-    if(_viewportOffset >= (int)(_logHistory.size() - 1)) {
+    if(_viewportOffset >= (int)(_entries.size() - 1)) {
         return;
     }
     _viewportOffset++;
@@ -39,10 +39,10 @@ void ScrollableTextView::ScrollDown() {
         block.y--;
         if(block.y < 0) {
             block.y = SCREEN_HEIGHT - 1;
-            if(_viewportOffset + SCREEN_HEIGHT > _logHistory.size()){
+            if(_viewportOffset + SCREEN_HEIGHT > _entries.size()){
                 block.Fill({' ', WHITE});
             } else {
-                block.SetTextData(_logHistory[_viewportOffset + SCREEN_HEIGHT - 1]);
+                block.SetTextData(_entries[_viewportOffset + SCREEN_HEIGHT - 1]);
             }
         }
     }
@@ -56,7 +56,7 @@ void ScrollableTextView::ScrollUp() {
         block.y++;
         if(block.y >= SCREEN_HEIGHT) {
             block.y = 0;
-            block.SetTextData(_logHistory[_viewportOffset]);
+            block.SetTextData(_entries[_viewportOffset]);
         }
     }
 }

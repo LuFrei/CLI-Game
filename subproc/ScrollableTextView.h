@@ -19,7 +19,7 @@ Should log histroy be in or out of the class?
 class ScrollableTextView{
 private:
     std::array<clr::Block, SCREEN_HEIGHT> _textLines;
-    std::vector<std::string> _logHistory;
+    std::vector<std::string> _entries;
     
     int _viewportOffset = 0;
     clr::Screen* _screen = nullptr;
@@ -29,4 +29,11 @@ public:
     void AddEntry(std::string log);
     void ScrollDown();
     void ScrollUp();
+
+    std::string* GetEntry(int i){
+        if(i > _entries.size()){
+            _entries.push_back("");
+        }
+        return &_entries[i];
+    }
 };
