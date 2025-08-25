@@ -1,7 +1,7 @@
 #include "../ScrollableTextView.h"
-#include "libclr.h"
 
-void InitLogger(clr::Screen* screen);
+void InitLogger();
+void ExitLogger();
 void StartRpcServer();
 void RunLogger();
 void Log(std::string log);

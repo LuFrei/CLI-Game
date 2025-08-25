@@ -6,53 +6,30 @@
 #include <stdlib.h>
 
 #include "../shared.h"
-#include "libclr.h"
 #include "Logger/Logger.h"
+#include "WatchList/WatchList.h"
+#include "globals.h"
+#include "libclr.h"
 
 #include <thread>
 
-#define SCREEN_WIDTH 120
-#define SCREEN_HEIGHT 30
-
-
 int main(int argc, char* argv[]){
-    clr::Screen* screen = new clr::Screen(SCREEN_WIDTH, SCREEN_HEIGHT);
-    InitLogger(screen);
-
-    Log("Setting up File Mapping...");
-
-    HANDLE hFMO = OpenFileMapping(
-        FILE_MAP_READ,
-        FALSE,
-        "clgSharedData"
-    );
+    screen = new clr::Screen(SCREEN_WIDTH, SCREEN_HEIGHT);
     
-    SYSTEM_INFO sysInfo;
-    GetSystemInfo(&sysInfo);
-
-    void* sharedData = MapViewOfFile(
-        hFMO,
-        FILE_MAP_READ,
-        0,
-        0, //sysInfo.dwAllocationGranularity,
-        0
-    );
-
-    Log("COMPLETE.");
-
+    InitLogger();
     std::thread RpcServer(StartRpcServer);
 
-    // extracting to avoid doing ((Shared::PlayerData*)sharedData) 20000 times
-    Shared::PlayerData* pData = (Shared::PlayerData*)sharedData;
+    InitWatchList();
+    SetupFileMap();
 
     while(true){
-        
         RunLogger();
         screen->Draw(); 
     }
     
-    CloseHandle(hFMO);
-    
+    CloseFileMap();
+    ExitLogger();
+
     delete screen;
     return 0;
 }

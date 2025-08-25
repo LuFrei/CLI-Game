@@ -2,20 +2,19 @@
 
 #include <thread>
 
+#include "../globals.h"
+#include "libclr.h"
 #include "DebugLogger.h"
 
-/* NOTES/TODO
-- Need to start RPC server and listen
-- Need to run input listener locally
-
-
-
-*/
 
 ScrollableTextView* logView;
 
-void InitLogger(clr::Screen* screen){
-    logView = new ScrollableTextView(screen);
+void InitLogger(){
+    logView = new ScrollableTextView(screen, SCREEN_WIDTH/2, SCREEN_HEIGHT, 0, 0);
+}
+
+void ExitLogger(){
+    delete logView;
 }
 
 void StartRpcServer(){

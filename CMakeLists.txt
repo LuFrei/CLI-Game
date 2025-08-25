@@ -17,9 +17,12 @@ target_link_libraries(${PROJECT_NAME} PUBLIC CLGEngine Game libclr Rpcrt4)
 add_executable(SecondScreen 
     subproc/main.cpp 
     subproc/ScrollableTextView.cpp 
+    subproc/globals.cpp
 )
 add_subdirectory(subproc/Logger)
-target_link_libraries(SecondScreen PUBLIC Logger libclr Rpcrt4)
+add_subdirectory(subproc/WatchList)
+target_include_directories(SecondScreen PUBLIC subproc)
+target_link_libraries(SecondScreen PUBLIC Logger WatchList libclr Rpcrt4)
 
 
 add_custom_command(
