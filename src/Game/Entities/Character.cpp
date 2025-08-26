@@ -25,6 +25,8 @@ Character::Character(CLGEngine::Vector2<float> startPosition)
     _col = new CLGEngine::Collider(this);
     _rend = new CLGEngine::BlockRenderer(this, charMat, true);
     _rend->z(1);
+    Debugger::AddToWatchList("Player X", (int*)&(_position.x)); // Think this is going out of scope so we are losing the values we need.
+    Debugger::AddToWatchList("Player Y", (int*)&(_position.y));
 }
 
 Character::~Character(){
