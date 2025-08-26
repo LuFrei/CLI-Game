@@ -27,12 +27,13 @@ public:
     ScrollableTextView(clr::Screen* screen, int width, int height, int x, int y);
 
     void AddEntry(std::string log);
+    void UpdateEntry(int i, std::string newMsg);
     void ScrollDown();
     void ScrollUp();
 
     std::string* GetEntry(int i){
         if(i > _entries.size()){
-            _entries.push_back("");
+            _entries.resize(i);
         }
         return &_entries[i];
     }

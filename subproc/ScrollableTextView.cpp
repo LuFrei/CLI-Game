@@ -29,6 +29,14 @@ void ScrollableTextView::AddEntry(std::string log){
     }
 }
 
+void ScrollableTextView::UpdateEntry(int i, std::string newMsg){
+    if(_entries.size() <= i){
+        AddEntry(newMsg);
+    } else {
+        _entries[i] = newMsg;
+    }
+}
+
 void ScrollableTextView::ScrollDown() {
     // Fun Fact: .size() is unsigned...
     if(_viewportOffset >= (int)(_entries.size() - 1)) {
