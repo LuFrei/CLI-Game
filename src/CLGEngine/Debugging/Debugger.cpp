@@ -31,6 +31,12 @@ HANDLE hFMO;
 
 std::vector<std::string> Debugger::_logHistory = {};
 
+//FileMApping
+struct Shared::Data Debugger::pData = {};
+Shared::Data* Debugger::sharedData;
+std::vector<int*> Debugger::watchedData;
+
+
 inline void MakeNewWindow(){
     TCHAR modFileNameOut[MAX_PATH] = {0}; 
         
@@ -66,7 +72,7 @@ inline void MakeNewWindow(){
 // TODO!: This will silent fail, need to integrate it with the RpcTryExcept
 //          Or vice versa.
 Shared::Data* SetupFileMapping(){
-    // try {
+    try {
         int sharedSize = sizeof(struct Shared::Data);
 
         hFMO = CreateFileMapping(
@@ -95,25 +101,34 @@ Shared::Data* SetupFileMapping(){
         }
 
         return (Shared::Data*)sharedData;
-    // } catch (int errCode) {
-    //     cleanup();
-    //     //TODO: handle errors.
-    //     exit(1);
-    // }
+    } catch (int errCode) {
+        //TODO: handle errors.
+        exit(1);
+    }
 }
 
 Debugger::Debugger(){
     // Most of this is testing data, and needs to be changed.
 #pragma region File-Mapping
 
-    struct Shared::Data pData = {};
+    // struct Shared::Data pData = {};
 
-    Shared::Data* sharedData = SetupFileMapping();
+    sharedData = SetupFileMapping();
 
-    pData.AddData("Player X: ", 10);
+    // sharedData = &pData;
+
+    // This is working only when both are being set before setting shareData = pData
+    // pData.AddData("Player X: ", 10);
+    // sharedData->AddData("Player X: ", 10);
+    // *(sharedData) = pData;
+
+    //Update sharedData
+    // for(int i = 0; i < CAPACITY && pData.Message[i] != "" ; i++){
+    //     sharedData->Data[i] = pData.Data[i];
+    //     sharedData->Message[i] = pData.Message[i];
+    // }
 
     //Testing FMO data sharing
-    *(sharedData) = pData;
 
 #pragma endregion   //File-Mapping
 
@@ -170,6 +185,25 @@ void Debugger::Log(std::string text){
     //if Dbgr is live
     AddEntry(reinterpret_cast<const unsigned char*>(text.c_str()));
     // (unsigned char*)
+}
+
+void Debugger::AddToWatchList(std::string name, int* value){
+    if(watchedData.size() >= CAPACITY){
+        Log("! Watch List at capacity !");
+        return;
+    }
+    watchedData.push_back(value);
+    pData.AddData(name + ": ", *value);
+    sharedData->AddData(name + ": ", *value);
+    *(sharedData) = pData;
+}
+
+void Debugger::UpdateWatchList(){
+    for(int i = 0; i < watchedData.size(); i++){
+        pData.Data[i] = *watchedData[i];
+        sharedData->Data[i] = *watchedData[i];
+        *(sharedData) = pData;
+    }
 }
 
 void __RPC_FAR * __RPC_USER midl_user_allocate(size_t len)

@@ -4,15 +4,22 @@
 #include <string>
 #include <vector>
 
+#include "../../../shared.h"
+
 class Debugger{
 private:
     // TODO: test if we can do variable data types.
-    std::map<std::string, int> _watchList;
+    // std::map<std::string, int> _watchList;
     static std::vector<std::string> _logHistory;
+
+    static struct Shared::Data pData;
+    static Shared::Data* sharedData;
+    static std::vector<int*> watchedData;
 public:
     Debugger();
     ~Debugger();
-    void AddToWatchList(std::string name, int* value);
+    static void AddToWatchList(std::string name, int* value);
+    static void UpdateWatchList();
     static void Log(std::string text);
 };
 
