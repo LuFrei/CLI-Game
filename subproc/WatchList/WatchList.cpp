@@ -9,7 +9,8 @@
 HANDLE hFMO;
 
 ScrollableTextView* view;
-Shared::Data* sData;
+Shared::Data sData;
+Shared::Data* sharedData;
 
 void InitWatchList(){
     view = new ScrollableTextView(screen, 
@@ -30,7 +31,7 @@ void SetupFileMap(){
     SYSTEM_INFO sysInfo;
     GetSystemInfo(&sysInfo);
 
-    Shared::Data* sharedData = (Shared::Data*)MapViewOfFile(
+    sharedData = (Shared::Data*)MapViewOfFile(
         hFMO,
         FILE_MAP_READ,
         0,
@@ -38,7 +39,7 @@ void SetupFileMap(){
         0
     );
 
-    sData = sharedData;
+    // sData = *sharedData;
 
     Log("sData Size: " + std::to_string(sharedData->size));
 
@@ -54,9 +55,10 @@ and how we manage the data.
 */
 
 void PrintWatchListItems(){
-    if(sData != nullptr){
-        for(int i = 0; i < sData->size; i++){
-            view->UpdateEntry(i, sData->Message[i] + std::to_string(sData->Data[i]));
+    if(sharedData != nullptr){
+    sData = *sharedData;
+        for(int i = 0; i < sData.size; i++){
+            view->UpdateEntry(i, sData.Message[i] + std::to_string(sData.Data[i]));
         }
     }
 }

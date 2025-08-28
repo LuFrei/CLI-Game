@@ -176,7 +176,7 @@ void Debugger::AddToWatchList(std::string name, void* value){
 
     watchedData.push_back(value);
     pData.AddData(name + ": ", (int)*(float*)value);
-    sharedData->AddData(name + ": ", (int)*(float*)value);
+    // sharedData->AddData(name + ": ", (int)*(float*)value);
     *(sharedData) = pData;
 }
 

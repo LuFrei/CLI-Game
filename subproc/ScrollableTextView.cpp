@@ -33,7 +33,9 @@ void ScrollableTextView::UpdateEntry(int i, std::string newMsg){
     if(_entries.size() <= i){
         AddEntry(newMsg);
     } else {
+        _textLines[i].SetTextData(newMsg);
         _entries[i] = newMsg;
+
     }
 }
 

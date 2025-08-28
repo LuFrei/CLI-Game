@@ -92,7 +92,11 @@ void Screen::Draw() {
 
 					int cellIdx = _width * cellY + cellX;
 					int dataIdx = block->width() * h + w;
-					if(dataIdx < block->dataArr.size()) {
+					if(
+						dataIdx 
+						< 
+						block->dataArr.size()
+					) {
 						_data[cellIdx] = block->dataArr[dataIdx];
 					}
 				}
