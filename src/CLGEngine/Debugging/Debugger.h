@@ -14,11 +14,13 @@ private:
 
     static struct Shared::Data pData;
     static Shared::Data* sharedData;
-    static std::vector<int*> watchedData;
+    static std::vector<void*> watchedData;
+    static std::vector<std::pair<void*, std::string>> testing_watchedData; //val*, type name
 public:
     Debugger();
     ~Debugger();
-    static void AddToWatchList(std::string name, int* value);
+    // template<typename T>
+    static void AddToWatchList(std::string name, void* value);
     static void UpdateWatchList();
     static void Log(std::string text);
 };

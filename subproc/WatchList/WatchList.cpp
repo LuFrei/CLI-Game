@@ -41,10 +41,7 @@ void SetupFileMap(){
     sData = sharedData;
 
     Log("sData Size: " + std::to_string(sharedData->size));
-    // // Simulating
-    // sData = new Shared::Data();
-    // sData->AddData("Player X: ", 10);
-    // //
+
     Log("COMPLETE.");
 }
 

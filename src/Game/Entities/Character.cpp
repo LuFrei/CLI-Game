@@ -20,13 +20,22 @@ Character::Character(CLGEngine::Vector2<float> startPosition)
             : Entity(startPosition.x, startPosition.y, 1, 1)
             , _speed(10)
             , _position({startPosition.x + 0.5f, startPosition.y + 0.5f}) // shouldnt y be -0.5?
+            , _test_position(new CLGEngine::Vector2<float>())
 {
     name = "player";
     _col = new CLGEngine::Collider(this);
     _rend = new CLGEngine::BlockRenderer(this, charMat, true);
     _rend->z(1);
-    Debugger::AddToWatchList("Player X", (int*)&(_position.x)); // Think this is going out of scope so we are losing the values we need.
-    Debugger::AddToWatchList("Player Y", (int*)&(_position.y));
+    _test_position->x = _position.x;
+    _test_position->y = _position.y;
+    float* xFP = &_test_position->x;
+    float* yFP = &_test_position->y;
+    void* xP = xFP;
+    void* yP = yFP;
+    int xA = (int)xP;
+    int yA = *(int*)yP;
+    Debugger::AddToWatchList("Player X", &_test_position->x); // Think this is going out of scope so we are losing the values we need.
+    Debugger::AddToWatchList("Player Y", &_test_position->y);
 }
 
 Character::~Character(){
@@ -127,6 +136,8 @@ void Character::Update(){
     if(CLGEngine::Input::Input::GetKeyPressed(CLGEngine::Input::KeyCode::Alpha4)) {
         _tileMap->SetMap(Maps::list[3]);
     }
+
+    *_test_position = _position;
 }
 
 void Character::Move(float momentum) {

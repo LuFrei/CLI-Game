@@ -4,6 +4,7 @@
 #include <thread>
 #include <chrono>
 
+// #include <pair>
 #include <filesystem>
 #include <iostream>
 
@@ -34,7 +35,8 @@ std::vector<std::string> Debugger::_logHistory = {};
 //FileMApping
 struct Shared::Data Debugger::pData = {};
 Shared::Data* Debugger::sharedData;
-std::vector<int*> Debugger::watchedData;
+std::vector<void*> Debugger::watchedData; //val*, type name
+std::vector<std::pair<void*, std::string>> Debugger::testing_watchedData; //val*, type name
 
 
 inline void MakeNewWindow(){
@@ -108,29 +110,7 @@ Shared::Data* SetupFileMapping(){
 }
 
 Debugger::Debugger(){
-    // Most of this is testing data, and needs to be changed.
-#pragma region File-Mapping
-
-    // struct Shared::Data pData = {};
-
     sharedData = SetupFileMapping();
-
-    // sharedData = &pData;
-
-    // This is working only when both are being set before setting shareData = pData
-    // pData.AddData("Player X: ", 10);
-    // sharedData->AddData("Player X: ", 10);
-    // *(sharedData) = pData;
-
-    //Update sharedData
-    // for(int i = 0; i < CAPACITY && pData.Message[i] != "" ; i++){
-    //     sharedData->Data[i] = pData.Data[i];
-    //     sharedData->Message[i] = pData.Message[i];
-    // }
-
-    //Testing FMO data sharing
-
-#pragma endregion   //File-Mapping
 
     // Create Window
     MakeNewWindow();
@@ -187,21 +167,23 @@ void Debugger::Log(std::string text){
     // (unsigned char*)
 }
 
-void Debugger::AddToWatchList(std::string name, int* value){
+// template<typename T>
+void Debugger::AddToWatchList(std::string name, void* value){
     if(watchedData.size() >= CAPACITY){
         Log("! Watch List at capacity !");
         return;
     }
+
     watchedData.push_back(value);
-    pData.AddData(name + ": ", *value);
-    sharedData->AddData(name + ": ", *value);
+    pData.AddData(name + ": ", (int)*(float*)value);
+    sharedData->AddData(name + ": ", (int)*(float*)value);
     *(sharedData) = pData;
 }
 
 void Debugger::UpdateWatchList(){
     for(int i = 0; i < watchedData.size(); i++){
-        pData.Data[i] = *watchedData[i];
-        sharedData->Data[i] = *watchedData[i];
+        pData.Data[i] = (int)*(float*)watchedData[i];
+        sharedData->Data[i] = (int)*(float*)watchedData[i];
         *(sharedData) = pData;
     }
 }
