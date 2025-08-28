@@ -158,7 +158,6 @@ void Character::Move(float momentum) {
 
 void Character::Jump(){
     if(vertMomentum == 0){
-        Debugger::Log("The player just jumped!");
         vertMomentum = 1;
     }
 
@@ -176,7 +175,6 @@ void Character::Jump(){
         ) 
         && vertMomentum == 1)
     {
-        Debugger::Log("Players Landed");
         vertMomentum = -1;
         jumping = 0;
         return;
@@ -194,8 +192,6 @@ void Character::SnapRectToGrid() {
     std::string xStr = std::to_string(posFloored.x);
     std::string yStr = std::to_string(posFloored.y);
 
-
-    Debugger::Log( "New player position: " + xStr + ", " + yStr );
     SetPosition(posFloored);
 
 }
