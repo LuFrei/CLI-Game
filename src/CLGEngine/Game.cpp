@@ -29,6 +29,7 @@ Game::~Game(){
 
 void Game::Play() {
     while(running){
+
         CLGEngine::Time::CalculateDeltaTime();
 
         Input::Input::UpdateAllInputState();

@@ -31,13 +31,14 @@ unsigned long ulCode;
 HANDLE hFMO;
 
 std::vector<std::string> Debugger::_logHistory = {};
+bool _running = false;
 
-//FileMApping
+/* FileMapping */
 struct Shared::Data Debugger::pData = {};
 Shared::Data* Debugger::sharedData;
 std::vector<void*> Debugger::watchedData; //val*, type name
 std::vector<std::pair<void*, std::string>> Debugger::testing_watchedData; //val*, type name
-
+// ---------
 
 inline void MakeNewWindow(){
     TCHAR modFileNameOut[MAX_PATH] = {0}; 
@@ -66,8 +67,36 @@ inline void MakeNewWindow(){
         &procInfo )                                 // Pointer to PROCESS_INFORMATION structure
     )
     {
+        // TODO: Make a new method of communicating failures.
+        //       printf does nothing here because of the custom renderer
         printf( "CreateProcess failed (%d).\n", GetLastError() );
         throw 1;
+    }
+}
+
+inline void ConnectRPCServer(){
+    // Wait for process to boot up.
+    // std::this_thread::sleep_for(std::chrono::milliseconds(4000));
+
+    status = RpcStringBindingCompose(pszUuid,
+                                    pszProtocolSequence,
+                                    pszNetworkAddress,
+                                    pszEndpoint,
+                                    pszOptions,
+                                    &pszStringBinding);
+    if (status) exit(status);
+
+    status = RpcBindingFromStringBinding(pszStringBinding, &DebugLogger_IfHandle);
+
+    if (status) exit(status);
+
+    try  
+    {
+        AddEntry(pszString);
+    }
+    catch(int err) 
+    {
+        printf("Runtime reported exception 0x%lx = %ld\n", err, err);
     }
 }
 
@@ -109,62 +138,57 @@ Shared::Data* SetupFileMapping(){
     }
 }
 
-Debugger::Debugger(){
+Debugger::Debugger() {
     sharedData = SetupFileMapping();
-
-    // Create Window
-    MakeNewWindow();
-   
-    // Wait for process to boot up.
-    std::this_thread::sleep_for(std::chrono::milliseconds(4000));
-
-#pragma region RPC_Setup
-
-
-    status = RpcStringBindingCompose(pszUuid,
-                                    pszProtocolSequence,
-                                    pszNetworkAddress,
-                                    pszEndpoint,
-                                    pszOptions,
-                                    &pszStringBinding);
-    if (status) exit(status);
-
-    status = RpcBindingFromStringBinding(pszStringBinding, &DebugLogger_IfHandle);
-
-    if (status) exit(status);
-
-    try  
-    {
-        AddEntry(pszString);
-    }
-    catch(int err) 
-    {
-        printf("Runtime reported exception 0x%lx = %ld\n", err, err);
-    }
-#pragma endregion   //RPC_Setup
 }
 
 Debugger::~Debugger(){
+    if(_running){
+        Close();
+    }
+}
+
+void Debugger::ToggleActive(){
+    if(!_running){
+        std::thread Start(Open);
+        Start.detach();
+    } else {
+        Close();
+    }
+}
+
+void Debugger::Open(){
+    MakeNewWindow();
+    WaitForInputIdle(procInfo.hProcess, INFINITE); //This is not exiting...
+    ConnectRPCServer();
+    _running = true;
+}
+
+void Debugger::Close(){
+    _running = false;
     status = RpcStringFree(&pszStringBinding); 
     if (status) exit(status);
 
     status = RpcBindingFree(&DebugLogger_IfHandle);
     if (status) exit(status);
 
+    // Need to shut off window.
+
+    TerminateProcess(procInfo.hProcess, 0);
     CloseHandle(procInfo.hProcess);
     CloseHandle(procInfo.hThread);
-    CloseHandle(hFMO);
+    CloseHandle(hFMO);  
 }
+
 
 // TODO: Make sure logger is up before using RPC
 //      And cache logs if it's not.
 void Debugger::Log(std::string text){
-    //if Dbgr is NOT live:
-    //    _logHistory.push_back(text);
-
-    //if Dbgr is live
-    AddEntry(reinterpret_cast<const unsigned char*>(text.c_str()));
-    // (unsigned char*)
+    if(_running){
+        AddEntry(reinterpret_cast<const unsigned char*>(text.c_str()));
+    } else {
+       _logHistory.push_back(text); // this does nothing currently.
+    }
 }
 
 // template<typename T>
@@ -176,14 +200,12 @@ void Debugger::AddToWatchList(std::string name, void* value){
 
     watchedData.push_back(value);
     pData.AddData(name + ": ", (int)*(float*)value);
-    // sharedData->AddData(name + ": ", (int)*(float*)value);
     *(sharedData) = pData;
 }
 
 void Debugger::UpdateWatchList(){
     for(int i = 0; i < watchedData.size(); i++){
         pData.Data[i] = (int)*(float*)watchedData[i];
-        sharedData->Data[i] = (int)*(float*)watchedData[i];
         *(sharedData) = pData;
     }
 }

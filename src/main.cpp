@@ -83,8 +83,7 @@ int main(int argc, char* argv[]) {
     // Exit strategies
     SetConsoleCtrlHandler(ConsoleHandler, TRUE);
 
-    debugger = new Debugger();
-
+    
     // Create Job to handle sub-processes.
     hJob = CreateJobObject(NULL, "CLI-Game");
     if( !AssignProcessToJobObject(hJob, GetCurrentProcess()))
@@ -92,7 +91,8 @@ int main(int argc, char* argv[]) {
         printf( "Failed to assign process to Job: (%d).\n", GetLastError() );
         return 1;
     }
-
+    
+    debugger = new Debugger();
 
     
     /*Level Setup

@@ -75,6 +75,12 @@ void AdjustMomentum(int direction){
 
 bool jumping = 0;
 void Character::Update(){
+
+// TMEPORARY THIS REALLY SHOULD BE MOVED ASAP
+    if(CLGEngine::Input::Input::GetKeyJustPressed(CLGEngine::Input::KeyCode::Home)){
+        Debugger::ToggleActive();
+    }
+
 #pragma region Jump/Gravity Logic
     CLGEngine::Vector2<float> belowCell 
         = {_position.x, _position.y + 0.5f};        // This
@@ -158,6 +164,7 @@ void Character::Move(float momentum) {
 
 void Character::Jump(){
     if(vertMomentum == 0){
+        Debugger::Log("The player just jumped!");
         vertMomentum = 1;
     }
 

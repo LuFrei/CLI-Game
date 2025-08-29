@@ -14,10 +14,10 @@
 #include <thread>
 
 int main(int argc, char* argv[]){
-    screen = new clr::Screen(SCREEN_WIDTH, SCREEN_HEIGHT);
-    
-    InitLogger();
     std::thread RpcServer(StartRpcServer);
+    
+    screen = new clr::Screen(SCREEN_WIDTH, SCREEN_HEIGHT);
+    InitLogger();
 
     InitWatchList();
     SetupFileMap();
