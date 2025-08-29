@@ -40,6 +40,13 @@ std::vector<void*> Debugger::watchedData; //val*, type name
 std::vector<std::pair<void*, std::string>> Debugger::testing_watchedData; //val*, type name
 // ---------
 
+HANDLE hEventRPCFinished = CreateEventA(
+    NULL,               // lpEventAttributes
+    FALSE,              // bManualReset
+    FALSE,              // bInitialState
+    "RPCSetupFinished"  // lpName
+);
+
 inline void MakeNewWindow(){
     TCHAR modFileNameOut[MAX_PATH] = {0}; 
         
@@ -159,7 +166,7 @@ void Debugger::ToggleActive(){
 
 void Debugger::Open(){
     MakeNewWindow();
-    WaitForInputIdle(procInfo.hProcess, INFINITE); //This is not exiting...
+    WaitForSingleObject(procInfo.hProcess, INFINITE); //This is not exiting...
     ConnectRPCServer();
     _running = true;
 }
