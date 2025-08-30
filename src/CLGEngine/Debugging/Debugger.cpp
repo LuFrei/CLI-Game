@@ -180,6 +180,8 @@ void Debugger::Open(){
 
 void Debugger::Close(){
     _running = false;
+
+    Shutdown();
     status = RpcStringFree(&pszStringBinding); 
     if (status) exit(status);
 

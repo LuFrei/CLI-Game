@@ -7,4 +7,5 @@ interface DebugLogger
     void AddEntry(
         [in, string] const char* text
     );
+    void Shutdown(void);
 }

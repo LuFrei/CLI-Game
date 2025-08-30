@@ -97,6 +97,27 @@ void AddEntry(
     logView->AddEntry(sText);
 }
 
+void Shutdown(void)
+{
+    RPC_STATUS status;
+ 
+    status = RpcMgmtStopServerListening(NULL);
+ 
+    if (status) 
+    {
+       exit(status);
+    }
+ 
+    status = RpcServerUnregisterIf(NULL, NULL, FALSE);
+ 
+    if (status) 
+    {
+       exit(status);
+    }
+
+    ExitLogger();
+} //end Shutdown
+
 void __RPC_FAR * __RPC_USER midl_user_allocate(size_t len)
 {
     return(malloc(len));

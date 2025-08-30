@@ -63,6 +63,8 @@ extern "C"{
 void AddEntry( 
     /* [string][in] */ const unsigned char *text);
 
+void Shutdown( void);
+
 
 extern handle_t DebugLogger_IfHandle;
 
