@@ -38,12 +38,6 @@ void SetupFileMap(){
         0, //sysInfo.dwAllocationGranularity,
         0
     );
-
-    // sData = *sharedData;
-
-    Log("sData Size: " + std::to_string(sharedData->size));
-
-    Log("COMPLETE.");
 }
 
 /* TODO: 

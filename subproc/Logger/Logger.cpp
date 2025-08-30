@@ -9,12 +9,19 @@
 
 ScrollableTextView* logView;
 
+HANDLE hEventRPC = OpenEventA(
+  EVENT_MODIFY_STATE,   // dwDesiredAccess
+  FALSE,                // bInheritHandle
+  "RPCSetupFinished"  // lpName
+); 
+
 void InitLogger(){
     logView = new ScrollableTextView(screen, SCREEN_WIDTH/2, SCREEN_HEIGHT, 0, 0);
 }
 
 void ExitLogger(){
     delete logView;
+    CloseHandle(hEventRPC);
 }
 
 void StartRpcServer(){
@@ -47,6 +54,11 @@ void StartRpcServer(){
     logView->AddEntry("Done.");
     logView->AddEntry("RPC Server Listening...");
 
+    if(!SetEvent(hEventRPC)){
+        printf("Error: Event Set failed.\n");
+        exit(39);
+    }
+
     status = RpcServerListen(cMinCalls,
                              RPC_C_LISTEN_MAX_CALLS_DEFAULT,
                              fDontWait);
@@ -56,6 +68,7 @@ void StartRpcServer(){
 
     logView->AddEntry("Done.");
     logView->AddEntry("RPC setup DONE!");
+
 }
 
 void RunLogger(){

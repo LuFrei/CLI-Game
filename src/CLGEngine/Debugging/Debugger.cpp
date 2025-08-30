@@ -8,7 +8,7 @@
 #include <filesystem>
 #include <iostream>
 
-#include <Windows.h>
+#include <windows.h>
 
 #include "DebugLogger.h"
 #include "../../../shared.h"
@@ -97,14 +97,17 @@ inline void ConnectRPCServer(){
 
     if (status) exit(status);
 
-    try  
+    RpcTryExcept
     {
         AddEntry(pszString);
     }
-    catch(int err) 
+    RpcExcept(1)
     {
-        printf("Runtime reported exception 0x%lx = %ld\n", err, err);
+        ulCode = RpcExceptionCode();
+        printf("Runtime reported exception 0x%lx = %ld\n", ulCode, ulCode);
+        exit(39);
     }
+    RpcEndExcept
 }
 
 // TODO!: This will silent fail, need to integrate it with the RpcTryExcept
@@ -140,12 +143,16 @@ Shared::Data* SetupFileMapping(){
 
         return (Shared::Data*)sharedData;
     } catch (int errCode) {
-        //TODO: handle errors.
+        printf("File Mapping Setup failed: %d", errCode);
         exit(1);
     }
 }
 
 Debugger::Debugger() {
+    if (hEventRPCFinished == NULL) { 
+        printf("CreateEvent failed (%d)\n", GetLastError());
+        exit(39);
+    }
     sharedData = SetupFileMapping();
 }
 
@@ -166,7 +173,7 @@ void Debugger::ToggleActive(){
 
 void Debugger::Open(){
     MakeNewWindow();
-    WaitForSingleObject(procInfo.hProcess, INFINITE); //This is not exiting...
+    WaitForSingleObject(hEventRPCFinished, INFINITE); //This is not exiting...
     ConnectRPCServer();
     _running = true;
 }
@@ -181,10 +188,11 @@ void Debugger::Close(){
 
     // Need to shut off window.
 
+    CloseHandle(hEventRPCFinished);
     TerminateProcess(procInfo.hProcess, 0);
     CloseHandle(procInfo.hProcess);
     CloseHandle(procInfo.hThread);
-    CloseHandle(hFMO);  
+    CloseHandle(hFMO);
 }
 
 
