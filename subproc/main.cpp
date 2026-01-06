@@ -1,7 +1,6 @@
 #include <rpc.h>
 #include <rpcndr.h>
 #include <iostream> // May not need this anymore
-#include <windows.h>
 #include <array>
 #include <stdlib.h>
 

@@ -104,8 +104,8 @@ inline void ConnectRPCServer(){
     RpcExcept(1)
     {
         ulCode = RpcExceptionCode();
-        printf("Runtime reported exception 0x%lx = %ld\n", ulCode, ulCode);
-        exit(39);
+        printf("Failed to Connect to RPC Server.\nRuntime reported exception 0x%lx = %ld\n", ulCode, ulCode);
+        // exit(39);
     }
     RpcEndExcept
 }
@@ -181,6 +181,7 @@ void Debugger::Open(){
 void Debugger::Close(){
     _running = false;
 
+    ResetEvent(hEventRPCFinished);
     Shutdown();
     status = RpcStringFree(&pszStringBinding); 
     if (status) exit(status);

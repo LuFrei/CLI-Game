@@ -54,7 +54,7 @@ void StartRpcServer(){
     logView->AddEntry("Done.");
     logView->AddEntry("RPC Server Listening...");
 
-    if(!SetEvent(hEventRPC)){
+    if(!SetEvent(hEventRPC)){ //Maybe becuase it's create in client, it doesnt reset.
         printf("Error: Event Set failed.\n");
         exit(39);
     }
