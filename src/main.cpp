@@ -19,6 +19,7 @@
 using namespace CLGEngine;
 
 #define SUB_PROCESS_PATH "SecondScreen.exe "
+#define DEBUG
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam){
     // Let's keep it empty for now.
@@ -39,12 +40,13 @@ HANDLE hJob;
 
 
 inline void cleanup(){
-    delete debugger;
     delete instructionalText;
     delete player;
     delete mapNameText;
     delete gm;
-
+    
+#ifdef DEBUG
+    delete debugger;
     CloseHandle(hJob);
     
     // About to see if there actually hit...
@@ -53,7 +55,7 @@ inline void cleanup(){
     } else {
         printf( "Job Terminated");
     }
-
+#endif
 };
 
 BOOL WINAPI ConsoleHandler(DWORD signal) {
@@ -80,10 +82,10 @@ BOOL WINAPI ConsoleHandler(DWORD signal) {
 
 int main(int argc, char* argv[]) {
 
+#ifdef DEBUG
     // Exit strategies
     SetConsoleCtrlHandler(ConsoleHandler, TRUE);
 
-    
     // Create Job to handle sub-processes.
     hJob = CreateJobObject(NULL, "CLI-Game");
     if( !AssignProcessToJobObject(hJob, GetCurrentProcess()))
@@ -94,6 +96,7 @@ int main(int argc, char* argv[]) {
     
     debugger = new Debugger();
 
+#endif
     
     /*Level Setup
     * Have levels in a folder.
