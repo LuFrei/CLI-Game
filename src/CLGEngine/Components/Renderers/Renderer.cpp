@@ -43,29 +43,27 @@ void Renderer::z(int z){
 }
 
 void Renderer:: CreateNewBlock(Rect rect){
-	clr::Rect rectTranslation = {rect.position.x, rect.position.y, rect.size.x, rect.size.y};
-	block = clr::Block(rectTranslation);
+	block = clr::Block(rect.position.x, rect.position.y, rect.size.x, rect.size.y);
 }
 
 // Warn: if we - for whatever reason - need to change this at runtime,
 //		 there may be some issues.
 void Renderer::SetSquareCells(bool isSquare){
 	_squareCells = true;
-	block.rect.width *= 2; // TODO Next: Just hard code Block to do Square cells.
-	block.rect.x *= 2;
+	block.Resize(block.width() * 2, block.height());
+	block.x *= 2;
 }
 
 void Renderer::OnNotify(Event e) {
 	switch(e){
 		case Event::Moved:
-			block.rect.x = entity->rect().position.x;
-			block.rect.y = entity->rect().position.y;
+			block.x = entity->rect().position.x;
+			block.y = entity->rect().position.y;
 			if(_squareCells) {
-				block.rect.x *= 2;
+				block.x *= 2;
 			}
 			break;
 	}
-
 }
 }
 

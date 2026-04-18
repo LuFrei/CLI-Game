@@ -2,9 +2,11 @@
 
 #include <iostream>
 #include <cmath>
+#include <string>
 #include "../../CLGEngine/Time.h"
 #include "../../CLGEngine/Input.h"
 #include "../Maps.h"
+#include "../../CLGEngine/Debugging/Debugger.h"
 
 const int jumpHeight = 4;
 const int jumpSpeed = 10;
@@ -18,11 +20,22 @@ Character::Character(CLGEngine::Vector2<float> startPosition)
             : Entity(startPosition.x, startPosition.y, 1, 1)
             , _speed(10)
             , _position({startPosition.x + 0.5f, startPosition.y + 0.5f}) // shouldnt y be -0.5?
+            , _test_position(new CLGEngine::Vector2<float>())
 {
     name = "player";
     _col = new CLGEngine::Collider(this);
     _rend = new CLGEngine::BlockRenderer(this, charMat, true);
     _rend->z(1);
+    _test_position->x = _position.x;
+    _test_position->y = _position.y;
+    float* xFP = &_test_position->x;
+    float* yFP = &_test_position->y;
+    void* xP = xFP;
+    void* yP = yFP;
+    int xA = (int)xP;
+    int yA = *(int*)yP;
+    Debugger::AddToWatchList("Player X", &_test_position->x); // Think this is going out of scope so we are losing the values we need.
+    Debugger::AddToWatchList("Player Y", &_test_position->y);
 }
 
 Character::~Character(){
@@ -62,17 +75,26 @@ void AdjustMomentum(int direction){
 
 bool jumping = 0;
 void Character::Update(){
+
+// TMEPORARY THIS REALLY SHOULD BE MOVED ASAP
+    if(CLGEngine::Input::Input::GetKeyJustPressed(CLGEngine::Input::KeyCode::Home)){
+        Debugger::ToggleActive();
+    }
+
 #pragma region Jump/Gravity Logic
-    CLGEngine::Vector2<float> belowCell = {_position.x, _position.y + 0.5f};        // This
+    CLGEngine::Vector2<float> belowCell 
+        = {_position.x, _position.y + 0.5f};        // This
     CLGEngine::Collider* hit = _col->CheckCollisionAtPoint(belowCell);
-    bool solidGround = 
-        (hit == nullptr) ? 
-        false : hit->isSolid;  
-    _grounded = _tileMap->GetTile((CLGEngine::Vector2<int>)belowCell) == '#' || solidGround;
+    bool solidGround 
+        = (hit == nullptr) 
+        ? false : hit->isSolid;  
+    _grounded 
+        = _tileMap->GetTile((CLGEngine::Vector2<int>)belowCell) == '#' 
+        || solidGround;
     
     if(_grounded){ 
         _groundLevel = belowCell.y;
-        _position.y = _groundLevel - 0.5;                                           // Plus this may cancel each other out...
+        _position.y = _groundLevel - 0.5;   // Plus this may cancel each other out...
         jumping = 0;
         vertMomentum = 0;
     } else {
@@ -120,6 +142,8 @@ void Character::Update(){
     if(CLGEngine::Input::Input::GetKeyPressed(CLGEngine::Input::KeyCode::Alpha4)) {
         _tileMap->SetMap(Maps::list[3]);
     }
+
+    *_test_position = _position;
 }
 
 void Character::Move(float momentum) {
@@ -140,6 +164,7 @@ void Character::Move(float momentum) {
 
 void Character::Jump(){
     if(vertMomentum == 0){
+        Debugger::Log("The player just jumped!");
         vertMomentum = 1;
     }
 
@@ -166,11 +191,16 @@ void Character::Jump(){
 }
 
 void Character::SnapRectToGrid() {
-    CLGEngine::Vector2<float> posFloored = {std::floor(_position.x), std::floor(_position.y)};
+    CLGEngine::Vector2<float> posFloored
+        = {std::floor(_position.x), std::floor(_position.y)};
     if(posFloored == rect().position){
         return;
     }
+    std::string xStr = std::to_string(posFloored.x);
+    std::string yStr = std::to_string(posFloored.y);
+
     SetPosition(posFloored);
+
 }
 
 #pragma region  !/ / / QUARANTINE ZONE / / /! 

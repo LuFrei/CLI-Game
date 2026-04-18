@@ -2,28 +2,30 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
+#include "../../../shared.h"
+
+// TODO: Perhaps worth implementing some kind of singleton 
+//       to make sure only ONE Debugger exists.
 class Debugger{
 private:
-    // TODO: test if we can do variable data types.
-    std::map<std::string, int> watchList;
+    // bool _running;
+    static std::vector<std::string> _logHistory;
+
+    static struct Shared::Data pData;
+    static Shared::Data* sharedData;
+    static std::vector<void*> watchedData;
+    static std::vector<std::pair<void*, std::string>> testing_watchedData; //val*, type name
 public:
+    // bool running() {return _running;}
     Debugger();
-    void AddToWatchList(std::string name, int* value);
+    ~Debugger();
+    static void ToggleActive();
+    static void Open();
+    static void Close();
+    // template<typename T>
+    static void AddToWatchList(std::string name, void* value);
+    static void UpdateWatchList();
+    static void Log(std::string text);
 };
-
-/* Notes:
-
-Register a message & value in Game Code
-Store it here
-Value = pointer to value in code
-Debugger renders data when relavent (prints message and rewrites data live by writing value of pointer.)
-
-Live Look: auto update values
-Message triggers: Prints messsage on a given trigger (adds counter is triggered multiple times.)
-- Option for time stamp?
-- Drop down for multiple time stamps?
-
-*/
-
-/* Going to try to just send a raw pointer and see if the other process can read it */

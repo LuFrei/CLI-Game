@@ -15,9 +15,8 @@ TextRenderer::~TextRenderer(){
 void TextRenderer::SetText(std::string text){
     _text = text; 
     float capacity = entity->rect().size.x * entity->rect().size.y;
-    float textSize = text.size();
 
-    if(textSize < capacity){
+    if(text.size() < capacity){
         capacity = text.size();
         block.Resize((int)capacity, 1); // TODO: calculate y
     } else {
@@ -25,13 +24,10 @@ void TextRenderer::SetText(std::string text){
         //       IF autoSize is off.
     }
 
-    if(capacity == 0) return;
-
+    block.dataArr.clear();
     // Full Text Wrap, cut off on limit
     for(int i = 0; i < capacity; i++){
-        CHAR_INFO c = {text[i], WHITE}; // TODO: Change WHITE to FontColor after testing
-        block.dataArr[i] = c;
-
+        block.dataArr.push_back({(WCHAR)text[i], WHITE});
     }
 }
 };

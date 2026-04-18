@@ -6,6 +6,7 @@
 #include "../Component.h"
 #include "../../CORE/IObserver.h"
 #include "../../CORE/Vector2.h"
+#include "../../CORE/Rect.h"
 #include "../../Game.h"
 
 // We can store all created instances to update every cycle

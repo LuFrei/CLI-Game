@@ -3,6 +3,8 @@
 #include "Time.h"
 #include "EntityManager.h"
 
+#include "Debugging/Debugger.h"
+
 namespace CLGEngine{
 Game* Game::_instance = nullptr;
 CORE::MainWindow* secondWindow;
@@ -27,6 +29,7 @@ Game::~Game(){
 
 void Game::Play() {
     while(running){
+
         CLGEngine::Time::CalculateDeltaTime();
 
         Input::Input::UpdateAllInputState();
@@ -34,6 +37,8 @@ void Game::Play() {
         CLGEngine::EntityManager::UpdateEntities();
 
         mainWindow->screen->Draw();
+
+        Debugger::UpdateWatchList();
     }
 
     //clean up

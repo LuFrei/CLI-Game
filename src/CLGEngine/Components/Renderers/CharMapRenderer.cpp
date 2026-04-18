@@ -15,15 +15,20 @@ CharMapRenderer::CharMapRenderer(Entity* ent, TileMap& charMap, bool isSquare)
 // ! Block is set to 0,0 0,0 cuz of entity!
 // For THIS, we will set the block based on charMap size
 void CharMapRenderer::SetCharMap(TileMap& charMap){
-	// TODO: IU really really really hate this. We need a bmore elegant way to do Square cells maybe higher in the chain..
+	// TODO: I really really really hate this. We need a bmore elegant way to do Square cells maybe higher in the chain..
 	int width = _squareCells ? charMap.size.x * 2 : charMap.size.x;
 	float xPos =  _squareCells ? charMap.offset.x * 2 : charMap.offset.x;
-	block.SetRect({
-		(int)xPos, 
-		charMap.offset.y, 
-		width, 
-		charMap.size.y
-	});
+	
+	block.x = (int)xPos;
+	block.y = charMap.offset.y;
+	block.Resize(width, charMap.size.y);
+	// block.SetRect({
+	// 	(int)xPos, 
+	// 	charMap.offset.y, 
+	// 	width, 
+	// 	charMap.size.y
+	// });
+	
 	int idx = 0;
     for(int y = charMap.offset.y; y < charMap.size.y + charMap.offset.y; y++){
 		for(int x = charMap.offset.x; x < charMap.size.x + charMap.offset.x; x++){

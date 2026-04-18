@@ -19,6 +19,7 @@ private:
 	CLGEngine::BlockRenderer* _rend;
 	void SnapRectToGrid();
 public:
+	CLGEngine::Vector2<float>* _test_position; // TODO(?): use Entity's rect
 	GameManager* gm;
 	Character(CLGEngine::Vector2<float> startPosition);
 	~Character();

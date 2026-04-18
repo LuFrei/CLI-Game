@@ -1,36 +1,39 @@
-#include <iostream>
-#include <Windows.h>
+#include <rpc.h>
+#include <rpcndr.h>
+#include <iostream> // May not need this anymore
+#include <array>
+#include <stdlib.h>
 
 #include "../shared.h"
+#include "Logger/Logger.h"
+#include "WatchList/WatchList.h"
+#include "globals.h"
+#include "libclr.h"
+
+#include <thread>
 
 int main(int argc, char* argv[]){
+    std::thread RpcServer(StartRpcServer);
     
-    HANDLE hFMO = OpenFileMapping(
-        FILE_MAP_READ,
-        FALSE,
-        "clgSharedData"
-    );
+    screen = new clr::Screen(SCREEN_WIDTH, SCREEN_HEIGHT);
+    InitLogger();
 
-    SYSTEM_INFO sysInfo;
-    GetSystemInfo(&sysInfo);
-
-    void* sharedData = MapViewOfFile(
-        hFMO,
-        FILE_MAP_READ,
-        0,
-        0, //sysInfo.dwAllocationGranularity,
-        0
-    );
-    // extracting to avoid doing ((Shared::PlayerData*)sharedData) 20000 times
-    Shared::PlayerData* pData = (Shared::PlayerData*)sharedData;
+    InitWatchList();
+    SetupFileMap();
 
     while(true){
-        printf("Player X Position: %d\nPlayer Y Position: %d", 
-            *(pData->xPlayerPos), 
-            *(pData->yPlayerPos)
-        );
+        RunLogger();
+        PrintWatchListItems();
+        screen->Draw(); 
     }
+    
+    CloseFileMap();
+    ExitLogger();
 
-    CloseHandle(hFMO);
+    delete screen;
     return 0;
 }
+
+
+
+
