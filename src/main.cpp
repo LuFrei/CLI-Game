@@ -44,7 +44,6 @@ inline void cleanup(){
     delete player;
     delete mapNameText;
     delete gm;
-    
 #ifdef DEBUG
     delete debugger;
     CloseHandle(hJob);
@@ -97,6 +96,7 @@ int main(int argc, char* argv[]) {
     debugger = new Debugger();
 
 #endif
+
     
     /*Level Setup
     * Have levels in a folder.
