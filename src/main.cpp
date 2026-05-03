@@ -19,7 +19,6 @@
 using namespace CLGEngine;
 
 #define SUB_PROCESS_PATH "SecondScreen.exe "
-#define DEBUG
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam){
     // Let's keep it empty for now.
@@ -34,8 +33,6 @@ ScreenText* instructionalText;
 ScreenText* mapNameText;
 Debugger* debugger;
 
-// PROCESS_INFORMATION procInfo;
-// STARTUPINFO startInfo;
 HANDLE hJob;
 
 
@@ -94,10 +91,10 @@ int main(int argc, char* argv[]) {
     }
     
     debugger = new Debugger();
-
+    Debugger::Open();
+    Debugger::Log("Test in Main");
 #endif
 
-    
     /*Level Setup
     * Have levels in a folder.
     * Load levels from directory into Level queue

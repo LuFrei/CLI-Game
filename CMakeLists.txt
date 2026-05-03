@@ -4,6 +4,10 @@ project(CLI-Game VERSION 0.0.1 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+if(NOT CMAKE_BUILD_TYPE STREQUAL "Release")
+    add_compile_definitions(DEBUG)
+endif()
+
 # global library
 link_directories(./libclr/build/Debug)
 include_directories(PUBLIC ./libclr)
@@ -27,5 +31,5 @@ target_link_libraries(SecondScreen PUBLIC Logger WatchList libclr Rpcrt4)
 
 add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND cp -u ${PROJECT_SOURCE_DIR}/libclr/build/Debug/libclr.dll ${CMAKE_BINARY_DIR}/Debug
+    COMMAND cp -u ${PROJECT_SOURCE_DIR}/libclr/build/Debug/libclr.dll ${CMAKE_BINARY_DIR}/$<CONFIG>
 )

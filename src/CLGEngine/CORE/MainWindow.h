@@ -31,12 +31,11 @@ namespace CORE {
 
 		Vector2<LONG> position;
 		Vector2<LONG> size;
-		// TODO: the distinciton of whtehr this is a console window should be in Screen
+		// TODO: The distinciton of whtehr this is a console window should be in Screen
 		//		If changing in the future, check here.
 		clr::Screen* screen;
 
 		MainWindow();
-		// /* testing purposes*/MainWindow(bool); //bool is irrelevant here.
 		~MainWindow();
 
 		/// @brief Move relative to current position in pixels.
@@ -48,9 +47,11 @@ namespace CORE {
 		void SetPosition(Vector2<LONG> newPosition);
 		
 		void Resize(Vector2<LONG> deltaSize);
-		void SetSize(Vector2<LONG> newsize);
+		void SetSize(Vector2<LONG> newSize);
+
+
+		bool CheckWindowResized();
+		// Where is the Window size going to be changed and managed?
 	};
-
-
 } // namespace CORE
 } // namespace CLGEngine

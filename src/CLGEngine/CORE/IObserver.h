@@ -10,6 +10,4 @@ public:
     virtual ~IObserver() {};
     virtual void OnNotify (Event e) = 0; //TODO: add Event support
 };
-}
-
-// Why is Entity here again?
+} // namespace CLGEngine
