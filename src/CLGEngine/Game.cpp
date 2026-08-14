@@ -37,8 +37,12 @@ void Game::Play() {
         CLGEngine::EntityManager::UpdateEntities();
 
         mainWindow->screen->Draw();
+        /*Test*/
+        // mainWindow->CheckWindowResized();
+        /*End Test*/
 
         Debugger::UpdateWatchList();
+
     }
 
     //clean up

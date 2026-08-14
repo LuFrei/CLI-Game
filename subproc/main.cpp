@@ -27,6 +27,7 @@ int main(int argc, char* argv[]){
         screen->Draw(); 
     }
     
+    // TODO: These never run. Should handle program exits from Alt-F4 and 'X'
     CloseFileMap();
     ExitLogger();
 

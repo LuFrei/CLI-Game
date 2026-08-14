@@ -1,11 +1,12 @@
 #include "MainWindow.h"
 #include "../Time.h"
+#include "../Debugging/Debugger.h"
 
 namespace CLGEngine {
 namespace CORE {
 
 	MainWindow::MainWindow() {
-        h_window = GetConsoleWindow();              // Hard coded to be the main window console.
+        h_window = GetConsoleWindow(); // Hard coded to be the main window console.
         GetWindowRect(h_window, &windowRect);
         screen = new clr::Screen(120, 30);
 
@@ -16,7 +17,7 @@ namespace CORE {
         };
 	}
 
-    /*! To be moved to Window.cpp !*/
+    /* TODO: create and move the below to Window.cpp */
 	// MainWindow::MainWindow(bool unimportant) {
 
     //     PROCESS_INFORMATION ProcInfo;
@@ -57,9 +58,8 @@ namespace CORE {
 
         HDWP h_windowPosition = BeginDeferWindowPos(1);
         DeferWindowPos(
-            
-            h_windowPosition,
-            h_window,
+            h_windowPosition,   
+            h_window,           
             NULL,
             position.x,
             position.y,
@@ -88,14 +88,24 @@ namespace CORE {
         EndDeferWindowPos(h_windowPosition);
     };
 
-    /*! Not needed anymore !*/
-    // MainWindow* MainWindow::GetMainWindow(){
-    //     if(_mainWindow != nullptr){
-    //         return _mainWindow;
-    //     }
-    //     _mainWindow = new MainWindow(GetConsoleWindow());
-    //     return _mainWindow;
-    // }
-
+    bool MainWindow::CheckWindowResized(){
+        LPMSG message = nullptr;
+        
+        bool res = PeekMessage( // I THINK ITS CRASHING BECASUE ITS WAITING
+            message,
+            h_window,
+            0,
+            0,
+            0
+        );
+        
+        if (res == -1) {
+            Debugger::Log("Some error happened");
+            return false;
+        }
+        Debugger::Log("Event found");
+        
+        return true;
+    }
 } // namespace CORE
 } // namespace CLGEngine

@@ -148,6 +148,10 @@ Shared::Data* SetupFileMapping(){
     }
 }
 
+// TODO: We may not need all of this, but simple put this in
+//          Init() and Close().
+//          Add checks on all static functiosn to make 
+//          sure the debugger has been intialized
 Debugger::Debugger() {
     if (hEventRPCFinished == NULL) { 
         printf("CreateEvent failed (%d)\n", GetLastError());
@@ -201,6 +205,7 @@ void Debugger::Close(){
 
 // TODO: Make sure logger is up before using RPC
 //      And cache logs if it's not.
+//  This does not seem to be working, i remember it used to...
 void Debugger::Log(std::string text){
     if(_running){
         AddEntry(reinterpret_cast<const unsigned char*>(text.c_str()));
